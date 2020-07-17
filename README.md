@@ -7,6 +7,18 @@ MongoDB Cheat Sheet with the most needed stuff..
 "C:\Program Files\MongoDB\Server\4.2\bin"
 ```  
 
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
+
+
 ## Export database with all collections to .bson
 ```bash
 mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_user_name --password your_password --out /target/folder/path
@@ -17,6 +29,18 @@ mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_use
 ```bash
 mongoexport -h id.mongolab.com:60599 -u username -p password -d mydb -c mycollection -o mybackup.json
 ```  
+
+
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
 
 
 ## find next alphabetic document with used = 0 and limit to 1 item
