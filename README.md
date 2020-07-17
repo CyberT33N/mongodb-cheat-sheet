@@ -27,7 +27,9 @@ mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_use
 
 ## Export specific collection with ALL fields to .json
 ```bash
-mongoexport -h id.mongolab.com:60599 -u username -p password -d mydb -c mycollection -o mybackup.json
+# --jsonArray will generated one json file. If not activated solo objects will be created to each document
+# --pretty will pretty print the JSON to be human read able
+mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p password -d mydb -c mycollection -o mybackup.json
 ```  
 
 
