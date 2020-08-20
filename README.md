@@ -83,6 +83,20 @@ collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) {
 ```
 
 
+
+## find specific data
+```javascript
+collection.find( {"token": token} ).toArray(function(e, docs) {
+log( 'docs:' + JSON.stringify(docs, null, 4) );
+        
+        
+if(!docs[0]) log( 'Search value was not found..' );
+else log( 'Search value was found..' );
+
+});
+```
+
+
 ## find random document with used = 0 and limit to 1 item
 ```javascript
 collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) {  });
