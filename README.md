@@ -84,6 +84,26 @@ collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) {
 
 
 
+
+
+
+
+
+
+
+## find object id
+```javascript
+var ObjectId = require('mongodb').ObjectId;
+var id = "5f2a40a54d054559dcc566ff";
+var o_id = new ObjectId(id);
+
+let collection = MongoDB.collection('export');
+collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { });
+```
+
+
+
+
 ## find specific data
 ```javascript
 collection.find( {"token": token} ).toArray(function(e, docs) {
