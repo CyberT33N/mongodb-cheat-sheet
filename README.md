@@ -105,6 +105,7 @@ collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { });
 
 
 ## find specific data
+Notice that it will returns an array with all results based on your search value. 
 ```javascript
 collection.find( {"token": token} ).toArray(function(e, docs) {
 log( 'docs:' + JSON.stringify(docs, null, 4) );
