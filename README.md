@@ -194,6 +194,7 @@ collection.updateOne(query, newvalues, function(e, res) {
 ## add timestamp to insert
 ```javascript
 // MongoDB will automatically conert new Date() to 2020-09-14T17:04:55.281+00:00
+// also nice to know your object id already includes a timestamp too..
 {"created_at": new Date()}
 ```
 
