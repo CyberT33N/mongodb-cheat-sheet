@@ -19,6 +19,8 @@ MongoDB Cheat Sheet with the most needed stuff..
 <br />
 
 
+
+
 ## Export database with all collections to .bson
 ```bash
 mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_user_name --password your_password --out /target/folder/path
@@ -44,6 +46,8 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 
 <br />
 <br />
+
+# Find something..
 
 
 ## find next alphabetic document with used = 0 and limit to 1 item
@@ -123,6 +127,28 @@ else log( 'Search value was found..' );
 collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) {  });
 ```
 
+
+
+
+
+
+
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
+
+
+# Update/insert
+
+
+
 ## update field in collection
 ```javascript
 
@@ -161,6 +187,14 @@ collection.updateOne(query, newvalues, function(e, res) {
   
  });
 
+```
+
+
+
+## add timestamp to insert
+```javascript
+// MongoDB will automatically conert new Date() to 2020-09-14T17:04:55.281+00:00
+{"created_at": new Date()}
 ```
 
 
