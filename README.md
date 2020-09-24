@@ -119,6 +119,18 @@ if(!docs[0]) log( 'Search value was not found..' );
 else log( 'Search value was found..' );
 
 });
+
+// async
+async function authCheck(token){
+
+    const collection = MongoDB.collection('auth');
+
+    const verify = await collection.find( {"token": token} ).toArray({});
+    log( 'Auth Check - verify:' + JSON.stringify(verify, null, 4) );
+    if(!verify[0]) return false;
+    else return true;
+
+}
 ```
 
 
