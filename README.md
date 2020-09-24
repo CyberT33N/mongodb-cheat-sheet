@@ -111,29 +111,7 @@ collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { });
 ## find specific data
 Notice that it will returns an array with all results based on your search value. 
 ```javascript
-// sync
-collection.find( {"token": token} ).toArray(function(e, docs) {
-log( 'docs:' + JSON.stringify(docs, null, 4) );
-        
-        
-if(!docs[0]) log( 'Search value was not found..' );
-else log( 'Search value was found..' );
-
-});
-
-
-
-// async
-async function authCheck(token){
-
-    const collection = MongoDB.collection('auth');
-
-    const verify = await collection.find( {"token": token} ).toArray({});
-    log( 'Auth Check - verify:' + JSON.stringify(verify, null, 4) );
-    if(!verify[0]) return false;
-    else return true;
-
-}
+collection.find( {"token": token} ).toArray(function(e, docs) { //.. });
 ```
 
 
@@ -172,17 +150,7 @@ var newvalues = { $set: { used: 1 } };
 
 
 var collection = MongoDB.collection('import');
-collection.updateOne(query, newvalues, function(e, res) {
- if(e){
-      log(chalk.red.bold('❌ ERROR') + ' #1 There was an error while try to mark the current page as used' + chalk.white.bold('error:\n') + e);
-      return;
-  } // if(e){
-//  assert.equal(err, null);
-//  assert.equal(1, result.result.n);
- log("Updated the current page and marked it as used=1..");
- //callback(result);
-
-});
+collection.updateOne(query, newvalues, function(e, res) { //.. });
 
 ```
 
@@ -190,17 +158,7 @@ collection.updateOne(query, newvalues, function(e, res) {
 
 ## insert json to collection
 ```javascript
- collection.insert(json, function(e, result) {
- 
-         if (e) {
-           //assert.equal(e, null);
-            log( chalk.red.bold('❌ ERROR') + ' - There was an error while write data to MongoDB.. Error:\n' + chalk.white.bold(e) );
-            return;
-          } // if (e) {
-
-           log( 'Inserted documents into the collection..' );
-  
- });
+ collection.insert(json, function(e, result) { //.. });
 
 ```
 
@@ -214,4 +172,33 @@ collection.updateOne(query, newvalues, function(e, res) {
 ```
 
 
+
+
+
+
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
+
+# Async
+
+```javascript
+async function authCheck(token){
+
+    const collection = MongoDB.collection('auth');
+
+    const verify = await collection.find( {"token": token} ).toArray({});
+    log( 'Auth Check - verify:' + JSON.stringify(verify, null, 4) );
+    if(!verify[0]) return false;
+    else return true;
+
+}
+```
 
