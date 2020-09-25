@@ -196,8 +196,7 @@ async function authCheck(token){
 
     const verify = await collection.find( {"token": token} ).toArray({});
     log( 'Auth Check - verify:' + JSON.stringify(verify, null, 4) );
-    if(!verify[0]) return false;
-    else return true;
+    if(verify[0]) return true;
 
 }
 ```
