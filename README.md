@@ -111,7 +111,11 @@ collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { });
 ## find specific data
 Notice that it will returns an array with all results based on your search value. 
 ```javascript
+// sync
 collection.find( {"token": token} ).toArray(function(e, docs) { //.. });
+
+// async
+const verify = await collection.find( {"token": token} ).toArray({});
 ```
 
 
@@ -173,31 +177,4 @@ collection.updateOne(query, newvalues, function(e, res) { //.. });
 
 
 
-
-
-
-<br />
-<br />
-
-
- _____________________________________________________
- _____________________________________________________
-
-
-<br />
-<br />
-
-# Async
-
-```javascript
-async function authCheck(token){
-
-    const collection = MongoDB.collection('auth');
-
-    const verify = await collection.find( {"token": token} ).toArray({});
-    log( 'Auth Check - verify:' + JSON.stringify(verify, null, 4) );
-    if(verify[0]) return true;
-
-}
-```
 
