@@ -162,8 +162,11 @@ collection.updateOne(query, newvalues, function(e, res) { //.. });
 
 ## insert json to collection
 ```javascript
- collection.insert(json, function(e, result) { //.. });
+//sync
+collection.insert(json, function(e, result) { //.. });
 
+//async
+const r = await collection.insert(json);
 ```
 
 
