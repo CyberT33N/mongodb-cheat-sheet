@@ -142,8 +142,7 @@ collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toAr
 <br />
 
 
-# Update/insert
-
+# Update
 
 
 ## update field in collection
@@ -160,13 +159,28 @@ collection.updateOne(query, newvalues, function(e, res) { //.. });
 
 
 
-## insert json to collection
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
+
+
+# Insert
+
+
+## Insert single object
 ```javascript
 //sync
-collection.insert(json, function(e, result) { //.. });
+collection.insertOne(json, function(e, result) { //.. });
 
 //async
-const r = await collection.insert(json);
+const r = await collection.insertOne(json);
 ```
 
 
@@ -176,6 +190,34 @@ const r = await collection.insert(json);
 // MongoDB will automatically conert new Date() to 2020-09-14T17:04:55.281+00:00
 // also nice to know your object id already includes a timestamp too..
 {"created_at": new Date()}
+```
+
+
+
+
+
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
+
+
+# Delete
+
+
+## Delete specific data
+```javascript
+//sync
+collection.deleteOne({"id": json.id}, function(e, result) { //.. });
+
+//async
+const r = await collection.deleteOne( {"id": json.id} );
 ```
 
 
