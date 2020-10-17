@@ -74,8 +74,11 @@ var ObjectId = require('mongodb').ObjectId;
 var id = "5f2a40a54d054559dcc566ff";
 var o_id = new ObjectId(id);
 
-let collection = MongoDB.collection('export');
+// sync 
 collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { });
+
+// async
+const r = await collection.find( {"itemdetails._id":o_id} ).toArray({});
 ```
 
 
@@ -95,12 +98,10 @@ const verify = await collection.find( {"token": token} ).toArray({});
 ## find random document with used = 0 and limit to 1 item
 ```javascript
 collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) {  });
+
+// async
+const r = await collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray({});
 ```
-
-
-
-
-
 
 
 <br />
@@ -118,16 +119,17 @@ collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toAr
 # Update
 
 
-## update field in collection
+## Update specific field
 ```javascript
 
 var query = { url: t33n.url };
 var newvalues = { $set: { used: 1 } };
 
-
-var collection = MongoDB.collection('import');
+//sync 
 collection.updateOne(query, newvalues, function(e, res) { //.. });
 
+// async
+const r = await collection.updateOne(query, newvalues);
 ```
 
 
