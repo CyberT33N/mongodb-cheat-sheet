@@ -97,6 +97,7 @@ const verify = await collection.find( {"token": token} ).toArray({});
 
 ## find random document with used = 0 and limit to 1 item
 ```javascript
+// sync
 collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) { /* .. */ });
 
 // async
