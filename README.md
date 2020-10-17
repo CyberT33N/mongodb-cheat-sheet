@@ -52,38 +52,11 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 
 ## find next alphabetic document with used = 0 and limit to 1 item
 ```javascript
+//sync
+collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) { //.. }); 
 
-var collection = MongoDB.collection('import');
-collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) {
-
-
-    if(e){
-       log( chalk.red.bold('❌ ERROR') + ' There was an error while try to get the current page - ' + chalk.white.bold('error:\n') + e );
-       //assert.equal(null, e);
-       return;
-     } 
-
-
-        if( docs[0] ){
-        log( 'Found the following records:\n' + JSON.stringify(docs, null, 4) );
-        log( chalk.green.bold('✔ SUCCESS') + ' LISTING AREA - We successfully get the current import from MongoDB:\n' + chalk.white.bold( docs[0].url ) );
-
-           t33n.url = docs[0].url;
-           log( 'current import url:' + t33n.url );
-
-        } 
-        else{
-
-          log(`It seems that we used now all data from the DB. Everything was marked as used..
-          ############ FINISH ##############`);
-
-        } 
-
-
-
-}); 
-
-
+// async
+const r = await collection.find( {"used": 0} ).limit( 1 ).toArray({});
 ```
 
 
