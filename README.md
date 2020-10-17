@@ -53,7 +53,7 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 ## find next alphabetic document with used = 0 and limit to 1 item
 ```javascript
 //sync
-collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) { //.. }); 
+collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) { /* .. */ }); 
 
 // async
 const r = await collection.find( {"used": 0} ).limit( 1 ).toArray({});
@@ -75,7 +75,7 @@ var id = "5f2a40a54d054559dcc566ff";
 var o_id = new ObjectId(id);
 
 // sync 
-collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { });
+collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { /* .. */ });
 
 // async
 const r = await collection.find( {"itemdetails._id":o_id} ).toArray({});
@@ -88,7 +88,7 @@ const r = await collection.find( {"itemdetails._id":o_id} ).toArray({});
 Notice that it will returns an array with all results based on your search value. 
 ```javascript
 // sync
-collection.find( {"token": token} ).toArray(function(e, docs) { //.. });
+collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
 
 // async
 const verify = await collection.find( {"token": token} ).toArray({});
@@ -97,7 +97,7 @@ const verify = await collection.find( {"token": token} ).toArray({});
 
 ## find random document with used = 0 and limit to 1 item
 ```javascript
-collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) {  });
+collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) { /* .. */ });
 
 // async
 const r = await collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray({});
@@ -126,7 +126,7 @@ var query = { url: t33n.url };
 var newvalues = { $set: { used: 1 } };
 
 //sync 
-collection.updateOne(query, newvalues, function(e, res) { //.. });
+collection.updateOne(query, newvalues, function(e, res) { /* .. */ });
 
 // async
 const r = await collection.updateOne(query, newvalues);
@@ -152,7 +152,7 @@ const r = await collection.updateOne(query, newvalues);
 ## Insert single object
 ```javascript
 //sync
-collection.insertOne(json, function(e, result) { //.. });
+collection.insertOne(json, function(e, result) { /* .. */ });
 
 //async
 const r = await collection.insertOne(json);
@@ -189,7 +189,7 @@ const r = await collection.insertOne(json);
 ## Delete specific data
 ```javascript
 //sync
-collection.deleteOne({"id": json.id}, function(e, result) { //.. });
+collection.deleteOne({"id": json.id}, function(e, result) { /* .. */ });
 
 //async
 const r = await collection.deleteOne( {"id": json.id} );
