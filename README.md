@@ -1,6 +1,11 @@
 # MongoDB Cheat Sheet
 MongoDB Cheat Sheet with the most needed stuff..
 
+
+# Logical Query operators
+- https://docs.mongodb.com/manual/reference/operator/query-logical/
+
+
 ## MongoDB bin locations
 ```bash
 #windows
@@ -9,6 +14,7 @@ MongoDB Cheat Sheet with the most needed stuff..
 
 <br />
 <br />
+
 
 
  _____________________________________________________
@@ -59,9 +65,9 @@ collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) { /* .. */ }
 const r = await collection.find( {"used": 0} ).limit( 1 ).toArray({});
 ```
 
+<br />
 
-
-## find value in document with multiple possible matches for the same field (https://docs.mongodb.com/manual/reference/operator/query/in/)
+## find value in same document with multiple possible matches for the same field (https://docs.mongodb.com/manual/reference/operator/query/in/)
 ```javascript
 //sync
 collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(function(e, docs) { /* .. */ }); 
@@ -70,10 +76,29 @@ collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(fu
 const r = await collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray({});
 ```
 
+<br />
+
+## find multiple values in same document, only if all search values can be found (https://docs.mongodb.com/manual/reference/operator/query/and/#op._S_and)
+```javascript
+//sync
+collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
+```
+
+## find multiple values in same document, only if atleast one search value can be found (https://docs.mongodb.com/manual/reference/operator/query/and/#op._S_and)
+```javascript
+//sync
+collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
+```
 
 
 
-
+<br />
 
 
 
@@ -91,7 +116,7 @@ collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { /* .. */
 const r = await collection.find( {"itemdetails._id":o_id} ).toArray({});
 ```
 
-
+<br />
 
 
 ## find specific data
@@ -103,7 +128,7 @@ collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
 // async
 const verify = await collection.find( {"token": token} ).toArray({});
 ```
-
+<br />
 
 ## find random document with used = 0 and limit to 1 item
 ```javascript
