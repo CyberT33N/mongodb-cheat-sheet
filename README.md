@@ -61,6 +61,16 @@ const r = await collection.find( {"used": 0} ).limit( 1 ).toArray({});
 
 
 
+## find value in document with multiple possible matches for the same field (https://docs.mongodb.com/manual/reference/operator/query/in/)
+```javascript
+//sync
+collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray({});
+```
+
+
 
 
 
