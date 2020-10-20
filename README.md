@@ -6,6 +6,18 @@ MongoDB Cheat Sheet with the most needed stuff..
 - https://docs.mongodb.com/manual/reference/operator/query-logical/
 
 
+<br />
+<br />
+
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
+
 ## MongoDB bin locations
 ```bash
 #windows
