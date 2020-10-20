@@ -75,7 +75,7 @@ const query = { id: json.id };
 const newValue = { $set: { title: json.title } };
 
 const r = await collection.updateOne(query, newValue);
-console.og( 'updatePizza() - result:' + JSON.stringify(r, null, 4) );
+console.log( 'updatePizza() - result:' + JSON.stringify(r, null, 4) );
 
 /*
 // if not successfully you will get r.result.n == 0
