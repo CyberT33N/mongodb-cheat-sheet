@@ -2,8 +2,9 @@
 MongoDB Cheat Sheet with the most needed stuff..
 
 
-# Logical Query operators
+# Query operators
 - https://docs.mongodb.com/manual/reference/operator/query-logical/
+- https://docs.mongodb.com/manual/reference/operator/query/
 
 
 <br />
