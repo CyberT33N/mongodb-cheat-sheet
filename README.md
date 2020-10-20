@@ -66,7 +66,30 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 <br />
 <br />
 
-# Find something..
+# Exist
+
+## Check if field exist ($exists)
+```javascript
+//sync
+collection.find( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]}  ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]} ).toArray({});
+```
+
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
+
+
+# Find
 
 
 ## find next alphabetic document with used = 0 and limit to 1 item
@@ -108,7 +131,6 @@ collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?
 // async
 const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
 ```
-
 
 
 <br />
