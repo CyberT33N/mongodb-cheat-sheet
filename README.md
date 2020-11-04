@@ -7,6 +7,7 @@ MongoDB Cheat Sheet with the most needed stuff..
 - https://docs.mongodb.com/manual/reference/operator/query/
 
 
+
 <br />
 <br />
 
@@ -66,6 +67,9 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 <br />
 <br />
 
+
+
+
 # Async
 
 ## Result
@@ -97,6 +101,59 @@ r: {"result":{"n":1,"nModified":1,"ok":1},"connection":{"_events":{},"_eventsCou
 <br />
 <br />
 
+# Connect
+
+```javascript
+
+const MongoDB;
+
+// sync
+log( 'MongoDB_DB_URL: ' + MongoDB_DB_URL );
+MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true }, function(e, client) {
+console.log( gradient('white', 'black')('\n\n=======================================\n\n') );
+
+   if(e){
+     log( chalk.red.bold('❌ ERROR') + ' Error while try to connect to MongoDB Database - ' + chalk.white.bold('error:\n') + e );
+     //assert.equal(null, e);
+     return;
+   } //   if(e){
+
+     log( 'MongoDB - Connected successfully to server..' );
+     MongoDB = client.db( MongoDB_DB_NAME );
+
+});
+
+
+// async
+async function connectMongoDB(){
+log('connectMongoDB()');
+
+      try {
+
+        const client = await MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+        MongoDB = client.db('dbname');
+        log( 'Successfully connected to MongoDB Database' );
+        return {code : "SUCCESS"};
+
+      } catch (e) {
+        log( chalk.red.bold('❌ ERROR') + ' Error while try to connect to MongoDB Database - ' + chalk.white.bold('error:\n') + e );
+        return {code : "ERROR", e: e};
+      }
+
+}; // (function connectMongoDB(){
+```
+
+
+<br />
+<br />
+
+
+ _____________________________________________________
+ _____________________________________________________
+
+
+<br />
+<br />
 
 
 # Exist
