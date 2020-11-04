@@ -105,7 +105,7 @@ r: {"result":{"n":1,"nModified":1,"ok":1},"connection":{"_events":{},"_eventsCou
 
 ```javascript
 
-const MongoDB;
+var MongoDB;
 
 // sync
 log( 'MongoDB_DB_URL: ' + MongoDB_DB_URL );
