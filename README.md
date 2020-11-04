@@ -123,7 +123,7 @@ log('connectMongoDB()');
       try {
 
         const client = await MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-        MongoDB = client.db('dbname');
+        MongoDB = client.db(MongoDB_DB_NAME);
         log( 'Successfully connected to MongoDB Database' );
         return {code : "SUCCESS"};
 
