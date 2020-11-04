@@ -104,21 +104,17 @@ r: {"result":{"n":1,"nModified":1,"ok":1},"connection":{"_events":{},"_eventsCou
 # Connect
 
 ```javascript
-
 var MongoDB;
 
 // sync
-log( 'MongoDB_DB_URL: ' + MongoDB_DB_URL );
 MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true }, function(e, client) {
-console.log( gradient('white', 'black')('\n\n=======================================\n\n') );
 
-   if(e) throw new Error('Error while try to connect to MongoDB Database - error: ' + e)
+   if(e) throw new Error('Error while try to connect to MongoDB Database - error: ' + e);
 
-   log( 'MongoDB - Connected successfully to server..' );
+   console.log( 'MongoDB - Connected successfully to server..' );
    MongoDB = client.db( MongoDB_DB_NAME );
 
 });
-
 
 // async
 async function connectMongoDB(){
