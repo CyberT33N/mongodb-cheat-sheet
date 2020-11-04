@@ -112,14 +112,10 @@ log( 'MongoDB_DB_URL: ' + MongoDB_DB_URL );
 MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true }, function(e, client) {
 console.log( gradient('white', 'black')('\n\n=======================================\n\n') );
 
-   if(e){
-     log( chalk.red.bold('❌ ERROR') + ' Error while try to connect to MongoDB Database - ' + chalk.white.bold('error:\n') + e );
-     //assert.equal(null, e);
-     return;
-   } //   if(e){
+   if(e) throw new Error('Error while try to connect to MongoDB Database - error: ' + e)
 
-     log( 'MongoDB - Connected successfully to server..' );
-     MongoDB = client.db( MongoDB_DB_NAME );
+   log( 'MongoDB - Connected successfully to server..' );
+   MongoDB = client.db( MongoDB_DB_NAME );
 
 });
 
