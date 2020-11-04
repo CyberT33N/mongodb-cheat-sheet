@@ -132,7 +132,7 @@ log('connectMongoDB()');
         return {code : "ERROR", e: e};
       }
 
-}; // (function connectMongoDB(){
+};
 ```
 
 
