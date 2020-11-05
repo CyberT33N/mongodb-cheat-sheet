@@ -173,6 +173,15 @@ const r = await collection.find( {$and: [{"client_id": json?.client_id}, {"clien
 
 # Find
 
+## find specific item (.findOne)
+```javascript
+//sync
+collection.findOne( {"id": msg.room}, (e, docs) => { /* .. */ }); 
+
+// async
+const match = await collection.findOne( {"id": msg.room} );
+```
+
 
 ## find next alphabetic document with used = 0 and limit to 1 item
 ```javascript
