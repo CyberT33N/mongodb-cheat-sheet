@@ -153,10 +153,10 @@ log('connectMongoDB()');
 ## Check if field exist ($exists)
 ```javascript
 //sync
-collection.find( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]}  ).toArray(function(e, docs) { /* .. */ }); 
+collection.findOne( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]}, (e, docs) => { /* .. */ }); 
 
 // async
-const r = await collection.find( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]} ).toArray({});
+const r = await collection.findOne( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]} )
 ```
 
 <br />
@@ -182,14 +182,27 @@ collection.findOne( {"id": msg.room}, (e, docs) => { /* .. */ });
 const match = await collection.findOne( {"id": msg.room} );
 ```
 
-
-## find next alphabetic document with used = 0 and limit to 1 item
+## find specific data and expect multiple results
 ```javascript
-//sync
-collection.find( {"used": 0} ).limit( 1 ).toArray(function(e, docs) { /* .. */ }); 
+// sync
+collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.find( {"used": 0} ).limit( 1 ).toArray({});
+const verify = await collection.find( {"token": token} ).toArray({});
+```
+
+<br>
+<br>
+
+
+
+## find next alphabetic document with used = 0 and limit to 2 item
+```javascript
+//sync
+collection.find( {"used": 0} ).limit( 2 ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( {"used": 0} ).limit( 2 ).toArray({});
 ```
 
 <br />
@@ -236,25 +249,14 @@ var id = "5f2a40a54d054559dcc566ff";
 var o_id = new ObjectId(id);
 
 // sync 
-collection.find( {"itemdetails._id":o_id} ).toArray(function(e, docs) { /* .. */ });
+collection.findOne( {"itemdetails._id":o_id}, (e, docs) => { /* .. */ });
 
 // async
-const r = await collection.find( {"itemdetails._id":o_id} ).toArray({});
+const r = await collection.findOne( {"itemdetails._id":o_id} )
 ```
 
 <br />
 
-
-## find specific data
-Notice that it will returns an array with all results based on your search value. 
-```javascript
-// sync
-collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
-
-// async
-const verify = await collection.find( {"token": token} ).toArray({});
-```
-<br />
 
 ## find random document with used = 0 and limit to 1 item
 ```javascript
