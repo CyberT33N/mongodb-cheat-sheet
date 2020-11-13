@@ -18,7 +18,7 @@ services:
     image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: cool
+      MONGO_INITDB_ROOT_PASSWORD: testpw
     ports:
       - 27017:27017
     volumes:
