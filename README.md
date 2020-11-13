@@ -8,6 +8,30 @@ MongoDB Cheat Sheet with the most needed stuff..
 ____________________________________________________<br><br>
 
 
+# Docker
+
+## docker-compose
+```yml
+version: '3.7'
+services:
+  mongodb_container:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: cool
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
+```
+
+<br><br>____________________________________________________
+____________________________________________________<br><br>
+
+
 # Query operators
 - https://docs.mongodb.com/manual/reference/operator/query-logical/
 - https://docs.mongodb.com/manual/reference/operator/query/
