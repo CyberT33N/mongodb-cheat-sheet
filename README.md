@@ -14,40 +14,85 @@ MongoDB Cheat Sheet with the most needed stuff..
 ## Start
 <br><br>
 #### MAC
-<br>Install Terminal Command: brew install mongodb
-<br>Start Command: brew services start mongodb
-<br>Stop Command: brew services stop mongodb
+<br>Install Terminal Command:
+```bash
+brew install mongodb
+```
+<br>Start Command:
+```bash
+brew services start mongodb
+```
+Stop Command:
+```bash
+brew services stop mongodb
+```
 
 
 
 #### Fedora:
-<br>Install Command: sudo dnf install downloadedpackage.rpm
-<br>Start Command: sudo service mongod start
-<br>Stop Command: sudo service mongod stop
-<br>Enable in general: sudo systemctl enable mongod
-
+<br>Install Command:
+```bash
+sudo dnf install downloadedpackage.rpm
+```
+<br>Start Command:
+```bash
+sudo service mongod start
+```
+Stop Command:
+```bash
+sudo service mongod stop
+```
+Enable in general:
+```bash
+sudo systemctl enable mongod
+```
 
 
 #### CentOS:
-<br>Install Command: sudo rpm -i downloadedpackage.rpm
-<br>Start Command: sudo service mongod start
-<br>Stop Command: sudo service mongod stop
-<br>Enable in general: sudo systemctl enable mongod
-
+<br>Install Command:
+```bash
+sudo rpm -i downloadedpackage.rpm
+```
+Start Command:
+```bash
+sudo service mongod start
+```
+Stop Command:
+```bash
+sudo service mongod stop
+```
+Enable in general:
+```bash
+sudo systemctl enable mongod
+```
 
 
 #### Ubuntu:
-<br>Install Command: Download and execute
-<br>Start Command: sudo service mongod start
-<br>Stop Command: sudo service mongod stop
-<br>Enable in general: sudo systemctl enable mongod
+<br>Start Command:
+```bash
+sudo service mongod start
+```
+<br>Stop Command:
+```bash
+sudo service mongod stop
+```
+<br>Enable in general:
+```bash
+sudo systemctl enable mongod
+```
 
 
 
 #### Windows:
-<br>Install Command: Install via .msi file
-<br>Start Command: net start MongoDB
-<br>Stop Command: net stop MongoDB
+- MongoDB Server should get an autostart entry by default after installation.
+Start Command:
+```bash
+net start MongoDB
+```
+Stop Command:
+```bash
+net stop MongoDB
+```
 
 <br><br>____________________________________________________
 ____________________________________________________<br><br>
