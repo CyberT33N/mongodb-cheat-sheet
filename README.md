@@ -13,8 +13,7 @@ MongoDB Cheat Sheet with the most needed stuff..
 - Ubuntu 20.04 - amd64 (https://repo.mongodb.org/apt/ubuntu/dists/focal/mongodb-org/4.4/multiverse/binary-amd64/mongodb-org-server_4.4.2_amd64.deb)
 
 <br><br>
-## Start
-#### MAC
+## MAC
 <br>Install Terminal Command:
 ```bash
 brew install mongodb
@@ -28,9 +27,9 @@ Stop Command:
 brew services stop mongodb
 ```
 
+<br><br>
 
-
-#### Fedora:
+## Fedora:
 <br>Install Command:
 ```bash
 sudo dnf install downloadedpackage.rpm
@@ -48,8 +47,9 @@ Enable in general:
 sudo systemctl enable mongod
 ```
 
+<br><br>
 
-#### CentOS:
+## CentOS:
 <br>Install Command:
 ```bash
 sudo rpm -i downloadedpackage.rpm
@@ -67,8 +67,9 @@ Enable in general:
 sudo systemctl enable mongod
 ```
 
+<br><br>
 
-#### Ubuntu:
+## Ubuntu:
 <br>Start Command:
 ```bash
 sudo service mongod start
@@ -82,9 +83,9 @@ sudo service mongod stop
 sudo systemctl enable mongod
 ```
 
+<br><br>
 
-
-#### Windows:
+## Windows:
 - MongoDB Server should get an autostart entry by default after installation.
 Start Command:
 ```bash
