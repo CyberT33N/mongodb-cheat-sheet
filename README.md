@@ -1,11 +1,57 @@
 # MongoDB Cheat Sheet
 MongoDB Cheat Sheet with the most needed stuff..
 
+
 # WEB GUI
 - https://github.com/mongo-express/mongo-express
 
+<br><br>_
+
+# Community Server
+- https://www.mongodb.com/try/download/community
+- Ubuntu 20.04 - amd64 (https://repo.mongodb.org/apt/ubuntu/dists/focal/mongodb-org/4.4/multiverse/binary-amd64/mongodb-org-server_4.4.2_amd64.deb)
+
+## Start
+<br><br>
+#### MAC
+<br>Install Terminal Command: brew install mongodb
+<br>Start Command: brew services start mongodb
+<br>Stop Command: brew services stop mongodb
+
+
+
+#### Fedora:
+<br>Install Command: sudo dnf install downloadedpackage.rpm
+<br>Start Command: sudo service mongod start
+<br>Stop Command: sudo service mongod stop
+<br>Enable in general: sudo systemctl enable mongod
+
+
+
+#### CentOS:
+<br>Install Command: sudo rpm -i downloadedpackage.rpm
+<br>Start Command: sudo service mongod start
+<br>Stop Command: sudo service mongod stop
+<br>Enable in general: sudo systemctl enable mongod
+
+
+
+#### Ubuntu:
+<br>Install Command: Download and execute
+<br>Start Command: sudo service mongod start
+<br>Stop Command: sudo service mongod stop
+<br>Enable in general: sudo systemctl enable mongod
+
+
+
+#### Windows:
+<br>Install Command: Install via .msi file
+<br>Start Command: net start MongoDB
+<br>Stop Command: net stop MongoDB
+
 <br><br>____________________________________________________
 ____________________________________________________<br><br>
+
 
 
 # Docker
