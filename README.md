@@ -14,11 +14,11 @@ MongoDB Cheat Sheet with the most needed stuff..
 
 <br><br>
 ## MAC
-<br>Install Terminal Command:
+Install Terminal Command:
 ```bash
 brew install mongodb
 ```
-<br>Start Command:
+Start Command:
 ```bash
 brew services start mongodb
 ```
@@ -30,11 +30,11 @@ brew services stop mongodb
 <br><br>
 
 ## Fedora:
-<br>Install Command:
+Install Command:
 ```bash
 sudo dnf install downloadedpackage.rpm
 ```
-<br>Start Command:
+Start Command:
 ```bash
 sudo service mongod start
 ```
@@ -50,7 +50,7 @@ sudo systemctl enable mongod
 <br><br>
 
 ## CentOS:
-<br>Install Command:
+Install Command:
 ```bash
 sudo rpm -i downloadedpackage.rpm
 ```
@@ -70,15 +70,15 @@ sudo systemctl enable mongod
 <br><br>
 
 ## Ubuntu:
-<br>Start Command:
+Start Command:
 ```bash
 sudo service mongod start
 ```
-<br>Stop Command:
+Stop Command:
 ```bash
 sudo service mongod stop
 ```
-<br>Enable in general:
+Enable in general:
 ```bash
 sudo systemctl enable mongod
 ```
