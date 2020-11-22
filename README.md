@@ -5,7 +5,7 @@ MongoDB Cheat Sheet with the most needed stuff..
 # WEB GUI
 - https://github.com/mongo-express/mongo-express
 
-<br><br>_
+<br><br>
 
 # Community Server
 - https://www.mongodb.com/try/download/community
