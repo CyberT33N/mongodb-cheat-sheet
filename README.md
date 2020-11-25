@@ -6,7 +6,33 @@ MongoDB Cheat Sheet with the most needed stuff..
 # WEB GUI
 - https://github.com/mongo-express/mongo-express
 
+
 <br><br>
+____________________________________________________
+____________________________________________________
+<br><br>
+
+
+# MongoDB Compass
+- Desktop GUI for showing local or remote Database.
+
+## Install
+- https://www.mongodb.com/try/download/compass
+```bash
+sudo dpkg -i 'mongodb-compass_1.23.0_amd64.deb'
+```
+
+
+## Uninstall
+```bash
+sudo dpkg --remove mongodb-compass
+```
+
+<br><br>
+____________________________________________________
+____________________________________________________
+<br><br>
+
 
 # Community Server
 - https://www.mongodb.com/try/download/community
@@ -98,10 +124,8 @@ net stop MongoDB
 
 
 <br><br>
-
 ____________________________________________________
 ____________________________________________________
-
 <br><br>
 
 
