@@ -18,12 +18,17 @@ ____________________________________________________
 
 ## Install
 - https://www.mongodb.com/try/download/compass
+
+#### Ubuntu
 ```bash
 sudo dpkg -i 'mongodb-compass_1.23.0_amd64.deb'
 ```
 
+<br><br>
 
 ## Uninstall
+
+#### Ubuntu
 ```bash
 sudo dpkg --remove mongodb-compass
 ```
