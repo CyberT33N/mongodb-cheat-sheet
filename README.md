@@ -658,8 +658,20 @@ ____________________________________________________
 
 ## find specific item (.findOne)
 ```javascript
-//sync
+// callback
 collection.findOne( {"id": msg.room}, (e, docs) => { /* .. */ }); 
+
+// promise
+collection
+  .findOne({"title": "any title"})
+  .then(doc => {
+    const title = doc.title;
+    // do something..
+   })
+   .catch(e => {
+    console.log('error: ' + e);
+  });
+
 
 // async
 const match = await collection.findOne( {"id": msg.room} );
