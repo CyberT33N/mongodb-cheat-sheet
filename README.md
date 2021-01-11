@@ -318,6 +318,16 @@ ____________________________________________________
 - Method #2 - Use username and password
 
 
+## .env
+```bash
+# Ticket: Connection
+# Rename this file to .env after filling in your MFLIX_DB_URI and your SECRET_KEY
+# Do not surround the URI with quotes
+SECRET_KEY=1234567887654321
+MFLIX_DB_URI=mongodb+srv://username:password@mflix.ptrji.mongodb.net/test
+MFLIX_NS=sample_mflix
+PORT=5000
+```  
 
 
 
