@@ -453,7 +453,7 @@ ____________________________________________________
 # Connect
 
 ```javascript
-let MongoDB;
+let myDB;
 const options = { 
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -462,12 +462,12 @@ const options = {
 }
 
 // sync
-MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true }, function(e, client) {
+MongoClient.connect(MongoDB_DB_URL, options, function(e, client) {
 
    if(e) throw new Error('Error while try to connect to MongoDB Database - error: ' + e);
 
    console.log( 'MongoDB - Connected successfully to server..' );
-   MongoDB = client.db( MongoDB_DB_NAME );
+   myDB = client.db( MongoDB_DB_NAME );
 
 });
 
@@ -478,7 +478,9 @@ log('connectMongoDB()');
 
       try {
         const client = await MongoClient.connect(MongoDB_DB_URL, options);
-        MongoDB = client.db(MongoDB_DB_NAME);
+        
+        // create database handle / connect to database
+        myDB = client.db(MongoDB_DB_NAME);
         
         // retrieve client options
         const clientOptions = client?.s?.options;
@@ -506,6 +508,106 @@ log('connectMongoDB()');
 ```
 
 
+
+
+
+
+
+
+<br><br>
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+# create database handler
+```javascript
+const myDB = client.db(MongoDB_DB_NAME);
+```
+
+
+# create collection handler
+```javascript
+const myDB = client.db(MongoDB_DB_NAME);
+const movies = myDB.collection('movies');
+```
+
+
+
+
+
+
+
+
+
+<br><br>
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+# listCollections
+- List all collections from Database
+```javascript
+const myDB = client.db(MongoDB_DB_NAME);
+const collections = await myDB.listCollections().toArray();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+# countDocuments
+- count all documents from collection
+```javascript
+const myDB = client.db(MongoDB_DB_NAME);
+const movies = myDB.collection('movies');
+const numMovies = await movies.countDocuments({}); // <-- will be number of documents
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 ____________________________________________________
@@ -524,6 +626,25 @@ collection.findOne( {$and: [{"client_id": json?.client_id}, {"client_secret": js
 // async
 const r = await collection.findOne( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]} )
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <br><br>
 
