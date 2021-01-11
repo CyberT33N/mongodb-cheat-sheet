@@ -24,6 +24,7 @@ ____________________________________________________
 sudo dpkg -i 'mongodb-compass_1.23.0_amd64.deb'
 ```
 
+
 <br><br>
 
 ## Uninstall
@@ -32,6 +33,24 @@ sudo dpkg -i 'mongodb-compass_1.23.0_amd64.deb'
 ```bash
 sudo dpkg --remove mongodb-compass
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <br><br>
 ____________________________________________________
@@ -128,12 +147,31 @@ net stop MongoDB
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 ____________________________________________________
 ____________________________________________________
 <br><br>
-
-
 
 
 # Docker
@@ -156,6 +194,79 @@ volumes:
   mongodb_data_container:
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+# srv (service record)
+- connect to database
+- username and password data is stored in database
+- host will only host the srv. srv will define its own DNS with list of hostnames where we resolve.
+- database is the cluster where will connect to
+- We can change the server inside of the srv without doing any changes at the client side app.
+```bash
+mongodb+srv://username:password@host/database
+
+# example
+mongodb+srv://username:password@any-example.mongodb.net/admin
+
+# specify options
+mongodb+srv://username:password@any-example.mongodb.net/admin?retryWrites=true
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 ____________________________________________________
@@ -166,6 +277,18 @@ ____________________________________________________
 # Query operators
 - https://docs.mongodb.com/manual/reference/operator/query-logical/
 - https://docs.mongodb.com/manual/reference/operator/query/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
