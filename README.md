@@ -816,6 +816,15 @@ const r = await collection.findOne( {"itemdetails._id":o_id} )
 ## .find
 
 
+#### go to next result (cursor)
+```javascript
+// async
+const result = await collection.find({title: 'any movie'});
+let {title} = await result.next();
+let {title2} = await result.next();
+```
+
+
 #### find specific data and expect multiple results
 ```javascript
 // sync
