@@ -1,10 +1,37 @@
 # MongoDB Cheat Sheet
 MongoDB Cheat Sheet with the most needed stuff..
 
+
+# Guides
+- MongoDB Course (https://university.mongodb.com/courses/M220JS/about)
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+____________________________________________________
+____________________________________________________
 <br><br>
 
 # WEB GUI
 - https://github.com/mongo-express/mongo-express
+
+
+
+
+
+
+
+
+
 
 
 <br><br>
@@ -255,6 +282,36 @@ mongodb+srv://username:password@any-example.mongodb.net/admin?retryWrites=true
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+# Atlas (https://www.mongodb.com/cloud/atlas)
+- cloud database service
+
+## Guides
+- Setting Up Atlas (https://www.youtube.com/watch?v=xhAYGeZoZTk)
 
 
 
