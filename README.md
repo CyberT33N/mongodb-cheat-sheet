@@ -313,6 +313,9 @@ ____________________________________________________
 ## Guides
 - Setting Up Atlas (https://www.youtube.com/watch?v=xhAYGeZoZTk)
 
+## Connect
+- Method #1 - Limit access to IP. If you want to allow all then add 0.0.0.0/0
+- Method #2 - Use username and password
 
 
 
