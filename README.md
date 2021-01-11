@@ -675,10 +675,47 @@ collection
 
 // async
 const match = await collection.findOne({"title": "any title"});
+console.log(match.title);
 
 // or directly access the title
 const {title} = await collection.findOne({"title": "any title"});
 ```
+
+
+<br><br>
+
+## find specific item and specify the result (projection)
+```javascript
+const query = [
+{title: "any title"},
+{projection: {title: 1, year: 1}},
+]
+
+// callback
+collection.findOne( ...query, (e, docs) => { /* .. */ }); 
+
+// promise
+collection
+  .findOne(...query)
+  .then(doc => {
+    const title = doc.title;
+    // do something..
+   })
+   .catch(e => {
+    console.log('error: ' + e);
+  });
+
+
+// async
+const match = await collection.findOne(...query);
+console.log(match.title);
+
+// or directly access the title
+const {title} = await collection.findOne(...query);
+```
+
+<br><br>
+
 
 ## find specific data and expect multiple results
 ```javascript
@@ -686,11 +723,10 @@ const {title} = await collection.findOne({"title": "any title"});
 collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
 
 // async
-const verify = await collection.find( {"token": token} ).toArray({});
+const verify = await collection.find({"token": token}).toArray({});
 ```
 
-<br>
-<br>
+<br><br>
 
 
 
