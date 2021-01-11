@@ -674,7 +674,10 @@ collection
 
 
 // async
-const match = await collection.findOne( {"id": msg.room} );
+const match = await collection.findOne({"title": "any title"});
+
+// or directly access the title
+const {title} = await collection.findOne({"title": "any title"});
 ```
 
 ## find specific data and expect multiple results
