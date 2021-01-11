@@ -670,28 +670,6 @@ const numMovies = await movies.countDocuments({}); // <-- will be number of docu
 
 
 
-<br><br>
-
-____________________________________________________
-____________________________________________________
-
-<br><br>
-
-
-# Exist
-
-## Check if field exist ($exists)
-```javascript
-//sync
-collection.findOne( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]}, (e, docs) => { /* .. */ }); 
-
-// async
-const r = await collection.findOne( {$and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}, {"token": {"$exists":true}}]} )
-```
-
-
-
-
 
 
 
@@ -795,6 +773,20 @@ collection.findOne( {"itemdetails._id":o_id}, (e, docs) => { /* .. */ });
 const r = await collection.findOne( {"itemdetails._id":o_id} )
 ```
 
+<br><br>
+
+
+## Check if field exist ($exists)
+```javascript
+const query = {"payload.discount": {$exists: true}};
+
+//sync
+collection.findOne(query, (e, docs) => { /* .. */ }); 
+
+// async
+// example #1
+const r = await collection.findOne(query)
+```
 
 
 
