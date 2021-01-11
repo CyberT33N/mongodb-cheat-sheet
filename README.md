@@ -654,9 +654,12 @@ ____________________________________________________
 <br><br>
 
 
-# Find
+# Find Data
 
-## find specific item (.findOne)
+
+## .findOne
+
+#### find specific item
 ```javascript
 // callback
 collection.findOne( {"id": msg.room}, (e, docs) => { /* .. */ }); 
@@ -684,7 +687,7 @@ const {title} = await collection.findOne({"title": "any title"});
 
 <br><br>
 
-## find specific item and specify the result (projection)
+#### find specific item and specify the result (projection)
 - By default, queries in MongoDB return all fields in matching documents. To limit the amount of data that MongoDB sends to applications, you can include a projection document to specify or restrict fields to return.
 ```javascript
 const query = [
@@ -717,66 +720,6 @@ const {title} = await collection.findOne(...query);
 
 <br><br>
 
-
-## find specific data and expect multiple results
-```javascript
-// sync
-collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
-
-// async
-const verify = await collection.find({"token": token}).toArray({});
-```
-
-<br><br>
-
-
-
-## find next alphabetic document with used = 0 and limit to 2 item
-```javascript
-//sync
-collection.find( {"used": 0} ).limit( 2 ).toArray(function(e, docs) { /* .. */ }); 
-
-// async
-const r = await collection.find( {"used": 0} ).limit( 2 ).toArray({});
-```
-
-<br />
-
-## find value in same document with multiple possible matches for the same field (https://docs.mongodb.com/manual/reference/operator/query/in/)
-```javascript
-//sync
-collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(function(e, docs) { /* .. */ }); 
-
-// async
-const r = await collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray({});
-```
-
-<br />
-
-## find multiple values in same document, only if all search values can be found (https://docs.mongodb.com/manual/reference/operator/query/and/#op._S_and)
-```javascript
-//sync
-collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
-
-// async
-const r = await collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
-```
-
-## find multiple values in same document, only if atleast one search value can be found (https://docs.mongodb.com/manual/reference/operator/query/or/#op._S_or)
-```javascript
-//sync
-collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
-
-// async
-const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
-```
-
-
-<br />
-
-
-
-
 ## find object id
 ```javascript
 var ObjectId = require('mongodb').ObjectId;
@@ -790,10 +733,93 @@ collection.findOne( {"itemdetails._id":o_id}, (e, docs) => { /* .. */ });
 const r = await collection.findOne( {"itemdetails._id":o_id} )
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+
+## .find
+
+
+#### find specific data and expect multiple results
+```javascript
+// sync
+collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
+
+// async
+const verify = await collection.find({"token": token}).toArray({});
+```
+
+<br><br>
+
+
+
+#### find next alphabetic document with used = 0 and limit to 2 item
+```javascript
+//sync
+collection.find( {"used": 0} ).limit( 2 ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( {"used": 0} ).limit( 2 ).toArray({});
+```
+
 <br />
 
+#### find value in same document with multiple possible matches for the same field (https://docs.mongodb.com/manual/reference/operator/query/in/)
+```javascript
+//sync
+collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(function(e, docs) { /* .. */ }); 
 
-## find random document with used = 0 and limit to 1 item
+// async
+const r = await collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray({});
+```
+
+<br />
+
+#### find multiple values in same document, only if all search values can be found (https://docs.mongodb.com/manual/reference/operator/query/and/#op._S_and)
+```javascript
+//sync
+collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
+```
+
+#### find multiple values in same document, only if atleast one search value can be found (https://docs.mongodb.com/manual/reference/operator/query/or/#op._S_or)
+```javascript
+//sync
+collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
+
+// async
+const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
+```
+
+
+
+
+
+
+
+
+
+<br><br>
+
+## aggregate
+
+#### find random document with used = 0 and limit to 1 item
 ```javascript
 // sync
 collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) { /* .. */ });
@@ -803,8 +829,40 @@ const r = await collection.aggregate([ { $match: { used: 0 } }, { $sample: { siz
 ```
 
 
-<br><br>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
 ____________________________________________________
 ____________________________________________________
 
