@@ -720,7 +720,7 @@ const {title} = await collection.findOne(...query);
 
 <br><br>
 
-## find object id
+#### find object id
 ```javascript
 var ObjectId = require('mongodb').ObjectId;
 var id = "5f2a40a54d054559dcc566ff";
@@ -761,6 +761,19 @@ collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
 
 // async
 const verify = await collection.find({"token": token}).toArray({});
+```
+
+<br><br>
+
+#### find multiple documents that match query
+```javascript
+const query = {title: {$all: ['sci-fi', 'action']}};
+
+// callback
+collection.find(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const verify = await collection.find(query).toArray({});
 ```
 
 <br><br>
