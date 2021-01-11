@@ -273,6 +273,11 @@ mongodb+srv://username:password@any-example.mongodb.net/admin
 mongodb+srv://username:password@any-example.mongodb.net/admin?retryWrites=true
 ```
 
+<br><br>
+
+# localhost url
+- mongodb://localhost:27017
+
 
 
 
@@ -376,24 +381,6 @@ ____________________________________________________
 #windows
 "C:\Program Files\MongoDB\Server\4.2\bin"
 ```  
-
-
-
-
-
-
-
-
-
-<br><br>
-
-____________________________________________________
-____________________________________________________
-
-<br><br>
-
-# localhost url
-- mongodb://localhost:27017
 
 
 
