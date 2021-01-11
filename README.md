@@ -453,7 +453,13 @@ ____________________________________________________
 # Connect
 
 ```javascript
-var MongoDB;
+let MongoDB;
+const options = { 
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  connectTimeoutMS: 200,
+  retryWrites: true,
+}
 
 // sync
 MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true }, function(e, client) {
@@ -465,17 +471,32 @@ MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology:
 
 });
 
+
 // async
 async function connectMongoDB(){
 log('connectMongoDB()');
 
       try {
-
-        const client = await MongoClient.connect(MongoDB_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+        const client = await MongoClient.connect(MongoDB_DB_URL, options);
         MongoDB = client.db(MongoDB_DB_NAME);
+        
+        // retrieve client options
+        const clientOptions = client?.s?.options;
+        
+        // verify custom set options
+        const timeout = clientOptions.connectTimeoutMS;
+        
+        // check for SSL
+        // clientOptions.ssl; <-- should be true if SSL
+        
+        // get user
+        // clientOptions.user;
+        
+        // check database user
+        // clientOptions.authSource;
+                
         log( 'Successfully connected to MongoDB Database' );
         return {code : "SUCCESS"};
-
       } catch (e) {
         log( chalk.red.bold('❌ ERROR') + ' Error while try to connect to MongoDB Database - ' + chalk.white.bold('error:\n') + e );
         return {code : "ERROR", e: e};
