@@ -862,9 +862,18 @@ const result = collection.find(query).sort([["year", 1]]).skip(5);
 
 <br><br>
 
+#### create pagination (cursor)
+- https://docs.mongodb.com/manual/reference/method/cursor.skip/
+```javascript
+// sync - Page is increasing every iteration ++ - We always show 20 items each page
+const moviesPerPage = 20;
+const skipMovies = page>0 ? page*moviesPerPage : 0;
+const displayCursor = collection.find(query).limit(moviesPerPage).skip(skipMovies);
+```
+
+
 
 <br><br>
-
 <br><br>
 
 
