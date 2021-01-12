@@ -836,7 +836,7 @@ let {title2} = await result.next();
 <br><br>
 
 
-#### filter result order (cursor) - .sort
+#### filter result ascending order (cursor) - .sort
 - https://docs.mongodb.com/manual/reference/method/cursor.sort/
 ```javascript
 const query = [
@@ -1027,7 +1027,7 @@ const r = await collection.aggregate(query).toArray({});
 
 <br><br>
 
-## sort order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
+## sort ascending order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
 ```javascript
 // sort results by year
 const query = [{ $sort: {year: 1}}];
