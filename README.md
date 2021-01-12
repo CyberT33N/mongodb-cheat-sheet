@@ -719,6 +719,14 @@ collection
 // async
 const match = await collection.findOne({"title": "any title"});
 console.log(match.title);
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
 
 // or directly access the title
 const {title} = await collection.findOne({"title": "any title"});
@@ -914,21 +922,75 @@ const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"clien
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
 
 ## aggregate
 
-#### find random document with used = 0 and limit to 1 item
+#### matchdom document with used = 0 and limit to 1 item
 ```javascript
+// method #1
+const query = [{$match: { used: 0 }}, {$limit: 1}];
+
+// method #2
+const query = [{$match: { used: 0 }}, {$sample: { size: 1 }}];
+
 // callback
-collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray({});
+const r = await collection.aggregate(query).toArray({});
 ```
 
 
+#### match random document with used = 0 and limit to 1 item and return only title and _id
+```javascript
+const query = [
+{$match: { used: 0 }},
+{$project: { title: 1, _id: 1 }},
+{$limit: 1},
+];
 
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
 
 
 
