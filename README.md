@@ -1233,10 +1233,11 @@ ____________________________________________________
 {"created_at": new Date()}
 ```
 
+<br><br>
 
-## .insertOne
-
-#### Insert object (https://www.youtube.com/watch?v=UzLB7a2YOOM)
+## .insertOne (https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/)
+- Insert only 1 document
+- Below example explains the insertOneWriteOpResult
 ```javascript
 const obj = {"title": "Fortnite", "year": 2015};
 
@@ -1263,8 +1264,39 @@ console.log(n); // 1
 console.log(ok); // 1
 ```
 
+<br><br>
+
+#### Insert object (https://www.youtube.com/watch?v=UzLB7a2YOOM)
+```javascript
+const obj = {"title": "Fortnite", "year": 2015};
+
+// callback
+collection.insertOne(obj, function(e, r) { /* .. */ });
+
+//async
+const r = await collection.insertOne(obj);
+```
+
+<br><br><br><br>
 
 
+## .insertMany (https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/)
+- Insert multiple documents
+
+#### Insert array with multiple objects (https://youtu.be/UzLB7a2YOOM?t=178)
+```javascript
+const ar = [
+  {title: 'Fortnite', year: 2015},
+  {title: 'Fifa', year: 2016},
+  {title: 'Halo', year: 2017},
+];
+
+// callback
+collection.insertMany(ar, function(e, r) { /* .. */ });
+
+//async
+const r = await collection.insertMany(ar);
+```
 
 
 
