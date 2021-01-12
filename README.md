@@ -1065,6 +1065,18 @@ const r = await collection.aggregate(query).toArray({});
 <br><br>
 
 
+## add numbers ($add)
+- https://docs.mongodb.com/manual/reference/operator/aggregation/add/
+```javascript
+// add price + fee
+const query = [{$project: {item: 1, total: {$add: [ "$price", "$fee" ]}}}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
 
 
 
