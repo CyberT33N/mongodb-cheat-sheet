@@ -836,7 +836,8 @@ let {title2} = await result.next();
 <br><br>
 
 
-#### filter result order (cursor)
+#### filter result order (cursor) - .sort
+- https://docs.mongodb.com/manual/reference/method/cursor.sort/
 ```javascript
 const query = [
 {title: "any title"},
