@@ -732,9 +732,16 @@ const {title} = await collection.findOne({"title": "any title"});
 - By default, queries in MongoDB return all fields in matching documents. To limit the amount of data that MongoDB sends to applications, you can include a projection document to specify or restrict fields to return.
 - 1 means true and 0 means false
 ```javascript
+// method #1
 const query = [
 {title: "any title"},
 {projection: {title: 1, year: 1}},
+]
+
+// method #2
+const query = [
+{title: "any title"},
+{title: 1, year: 1},
 ]
 
 // callback
