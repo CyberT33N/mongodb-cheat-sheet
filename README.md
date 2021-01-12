@@ -1199,18 +1199,59 @@ ____________________________________________________
 # Update
 
 
-## Update specific field
-```javascript
+## .updateOne (https://docs.mongodb.com/manual/reference/method/db.collection.updateOne/)
+- Update single document
 
-var query = { url: t33n.url };
-var newvalues = { $set: { used: 1 } };
+
+## find document by query and then set the fields to update
+```javascript
+const ar = [
+  // search query
+  {url: urlhere},
+  // fields to update
+  {$set: { used: 1 }},
+  // if query doesnt find a document, it will create a new document
+  {upsert: true},
+];
 
 // callback
-collection.updateOne(query, newvalues, function(e, res) { /* .. */ });
+collection.updateOne(...ar, function(e, res) {/* .. */ });
 
 // async
-const r = await collection.updateOne(query, newvalues);
+const r = await collection.updateOne(...ar);
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
