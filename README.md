@@ -1085,8 +1085,9 @@ const r = await collection.aggregate(query).toArray({});
 <br><br>
 
 
-## add numbers ($add)
-- https://docs.mongodb.com/manual/reference/operator/aggregation/add/
+## $add (https://docs.mongodb.com/manual/reference/operator/aggregation/add/)
+
+#### add numbers
 ```javascript
 // add price + fee
 const query = [{$project: {item: 1, total: {$add: [ "$price", "$fee" ]}}}];
@@ -1098,8 +1099,41 @@ collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 const r = await collection.aggregate(query).toArray({});
 ```
 
+<br><br>
 
 
+## $group (https://docs.mongodb.com/manual/reference/operator/aggregation/group/)
+
+#### find average of number - $avg
+- https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg
+```javascript
+/* Our collection looks like this:
+{ "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") }
+{ "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") }
+{ "_id" : 3, "item" : "xyz", "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") }
+{ "_id" : 4, "item" : "abc", "price" : 10, "quantity" : 10, "date" : ISODate("2014-02-15T08:00:00Z") }
+{ "_id" : 5, "item" : "xyz", "price" : 5, "quantity" : 10, "date" : ISODate("2014-02-15T09:12:00Z") }
+*/
+
+
+const query = [{$group: {
+                 _id: "$item",
+                avgAmount: { $avg: { $multiply: [ "$price", "$quantity" ] } },
+                avgQuantity: { $avg: "$quantity" }
+              }}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+
+/* operation will return:
+{ "_id" : "xyz", "avgAmount" : 37.5, "avgQuantity" : 7.5 }
+{ "_id" : "jkl", "avgAmount" : 20, "avgQuantity" : 1 }
+{ "_id" : "abc", "avgAmount" : 60, "avgQuantity" : 6 }
+*/
+```
 
 
 
