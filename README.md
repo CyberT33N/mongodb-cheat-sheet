@@ -1237,6 +1237,9 @@ let {n, ok} = r.result;
 // alternative you can check the amount of inserted documents by using "insertedCount"
 console.log(r.insertedCount); // 1
 
+// get the id from the document
+console.log(r.insertedId);
+
 // So in case of our example n will be 1 cause we inserted 1 document
 // And ok will be 1 too is the insert process worked as exapected
 console.log(n); // 1
