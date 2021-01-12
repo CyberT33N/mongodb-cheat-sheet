@@ -332,7 +332,7 @@ SECRET_KEY=1234567887654321
 MFLIX_DB_URI=mongodb+srv://username:password@mflix.ptrji.mongodb.net/test
 MFLIX_NS=sample_mflix
 PORT=5000
-```  
+```
 
 
 
@@ -442,7 +442,7 @@ ____________________________________________________
 ```bash
 #windows
 "C:\Program Files\MongoDB\Server\4.2\bin"
-```  
+```
 
 
 
@@ -463,7 +463,7 @@ ____________________________________________________
 ## Export database with all collections to .bson
 ```bash
 mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_user_name --password your_password --out /target/folder/path
-```  
+```
 
 
 ## Export specific collection with ALL fields to .json
@@ -472,7 +472,7 @@ mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_use
 # --pretty will pretty print the JSON to be human read able
 # https://docs.mongodb.com/manual/reference/program/mongoexport
 mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p password -d mydb -c mycollection -o mybackup.json
-```  
+```
 
 
 <br><br>
@@ -516,14 +516,14 @@ ____________________________________________________
 
 ```javascript
 let myDB;
-const options = { 
+const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   connectTimeoutMS: 200,
   retryWrites: true,
 }
 
-// sync
+// callback
 MongoClient.connect(MongoDB_DB_URL, options, function(e, client) {
 
    if(e) throw new Error('Error while try to connect to MongoDB Database - error: ' + e);
@@ -540,25 +540,25 @@ log('connectMongoDB()');
 
       try {
         const client = await MongoClient.connect(MongoDB_DB_URL, options);
-        
+
         // create database handle / connect to database
         myDB = client.db(MongoDB_DB_NAME);
-        
+
         // retrieve client options
         const clientOptions = client?.s?.options;
-        
+
         // verify custom set options
         const timeout = clientOptions.connectTimeoutMS;
-        
+
         // check for SSL
         // clientOptions.ssl; <-- should be true if SSL
-        
+
         // get user
         // clientOptions.user;
-        
+
         // check database user
         // clientOptions.authSource;
-                
+
         log( 'Successfully connected to MongoDB Database' );
         return {code : "SUCCESS"};
       } catch (e) {
@@ -702,7 +702,7 @@ ____________________________________________________
 #### find specific item
 ```javascript
 // callback
-collection.findOne( {"id": msg.room}, (e, docs) => { /* .. */ }); 
+collection.findOne( {"id": msg.room}, (e, docs) => { /* .. */ });
 
 // promise
 collection
@@ -738,7 +738,7 @@ const query = [
 ]
 
 // callback
-collection.findOne( ...query, (e, docs) => { /* .. */ }); 
+collection.findOne( ...query, (e, docs) => { /* .. */ });
 
 // promise
 collection
@@ -768,7 +768,7 @@ var ObjectId = require('mongodb').ObjectId;
 var id = "5f2a40a54d054559dcc566ff";
 var o_id = new ObjectId(id);
 
-// sync 
+// callback
 collection.findOne( {"itemdetails._id":o_id}, (e, docs) => { /* .. */ });
 
 // async
@@ -782,8 +782,8 @@ const r = await collection.findOne( {"itemdetails._id":o_id} )
 ```javascript
 const query = {"payload.discount": {$exists: true}};
 
-//sync
-collection.findOne(query, (e, docs) => { /* .. */ }); 
+// callback
+collection.findOne(query, (e, docs) => { /* .. */ });
 
 // async
 // example #1
@@ -861,8 +861,8 @@ const verify = await collection.find(query).toArray({});
 
 #### find next alphabetic document with used = 0 and limit to 2 item
 ```javascript
-//sync
-collection.find( {"used": 0} ).limit( 2 ).toArray(function(e, docs) { /* .. */ }); 
+// callback
+collection.find( {"used": 0} ).limit( 2 ).toArray(function(e, docs) { /* .. */ });
 
 // async
 const r = await collection.find( {"used": 0} ).limit( 2 ).toArray({});
@@ -872,8 +872,8 @@ const r = await collection.find( {"used": 0} ).limit( 2 ).toArray({});
 
 #### find value in same document with multiple possible matches for the same field (https://docs.mongodb.com/manual/reference/operator/query/in/)
 ```javascript
-//sync
-collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(function(e, docs) { /* .. */ }); 
+// callback
+collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(function(e, docs) { /* .. */ });
 
 // async
 const r = await collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray({});
@@ -883,8 +883,8 @@ const r = await collection.find( {title: {$in: ['some title', 'some other title'
 
 #### find multiple values in same document, only if all search values can be found (https://docs.mongodb.com/manual/reference/operator/query/and/#op._S_and)
 ```javascript
-//sync
-collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
+// callback
+collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ });
 
 // async
 const r = await collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
@@ -892,8 +892,8 @@ const r = await collection.find( { $and: [{"client_id": json?.client_id}, {"clie
 
 #### find multiple values in same document, only if atleast one search value can be found (https://docs.mongodb.com/manual/reference/operator/query/or/#op._S_or)
 ```javascript
-//sync
-collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ }); 
+// callback
+collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray(function(e, docs) { /* .. */ });
 
 // async
 const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
@@ -913,7 +913,7 @@ const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"clien
 
 #### find random document with used = 0 and limit to 1 item
 ```javascript
-// sync
+// callback
 collection.aggregate([ { $match: { used: 0 } }, { $sample: { size: 1 } } ]).toArray(function(e, docs) { /* .. */ });
 
 // async
@@ -970,7 +970,7 @@ ____________________________________________________
 var query = { url: t33n.url };
 var newvalues = { $set: { used: 1 } };
 
-//sync 
+// callback
 collection.updateOne(query, newvalues, function(e, res) { /* .. */ });
 
 // async
@@ -992,7 +992,7 @@ ____________________________________________________
 
 ## Insert single object
 ```javascript
-//sync
+// callback
 collection.insertOne(json, function(e, result) { /* .. */ });
 
 //async
@@ -1025,7 +1025,7 @@ ____________________________________________________
 
 ## Delete specific data
 ```javascript
-//sync
+// callback
 collection.deleteOne({"id": json.id}, function(e, result) { /* .. */ });
 
 //async
