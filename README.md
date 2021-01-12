@@ -756,15 +756,32 @@ const {title} = await collection.findOne(...query);
 
 #### find object id
 ```javascript
+// method #1
 var ObjectId = require('mongodb').ObjectId;
 var id = "5f2a40a54d054559dcc566ff";
 var o_id = new ObjectId(id);
+const query = {"itemdetails._id":o_id};
 
 // callback
-collection.findOne( {"itemdetails._id":o_id}, (e, docs) => { /* .. */ });
+collection.findOne(query, (e, docs) => { /* .. */ });
 
 // async
-const r = await collection.findOne( {"itemdetails._id":o_id} )
+const r = await collection.findOne(query)
+
+
+
+
+// method #2
+const r = await collection.insertOne(obj);
+
+// you can access the id of the result by using "insertedId)"
+const query = {_id: ObjectId(r.insertedId)};
+
+// callback
+collection.findOne(query, (e, r) => { /* .. */ });
+
+// async
+const r = await collection.findOne(query)
 ```
 
 <br><br>
