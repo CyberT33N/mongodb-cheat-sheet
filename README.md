@@ -727,8 +727,10 @@ const {title} = await collection.findOne({"title": "any title"});
 
 <br><br>
 
+
 #### find specific item and specify the result (projection)
 - By default, queries in MongoDB return all fields in matching documents. To limit the amount of data that MongoDB sends to applications, you can include a projection document to specify or restrict fields to return.
+- 1 means true and 0 means false
 ```javascript
 const query = [
 {title: "any title"},
@@ -815,11 +817,25 @@ const result = await collection.find({title: 'any movie'});
 let {title} = await result.next();
 let {title2} = await result.next();
 ```
+<br><br>
 
+
+#### query array
+```javascript
+const countries = ['nyc', 'paris'];
+const query = {countries: { $in: countries }};
+
+// callback
+collection.find(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const result = await collection.find(query).toArray({});
+```
+<br><br>
 
 #### find specific data and expect multiple results
 ```javascript
-// sync
+// callback
 collection.find( {"token": token} ).toArray(function(e, docs) { /* .. */ });
 
 // async
