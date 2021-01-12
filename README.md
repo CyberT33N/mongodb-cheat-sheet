@@ -1234,10 +1234,13 @@ const r = await collection.insertOne(obj);
 // ok means database responded that the command executed correctly
 let {n, ok} = r.result;
 
+// alternative you can check the amount of inserted documents by using "insertedCount"
+console.log(r.insertedCount); // 1
+
 // So in case of our example n will be 1 cause we inserted 1 document
 // And ok will be 1 too is the insert process worked as exapected
-console.log('n: ' + n); // 1
-console.log('ok: ' + ok); // 1
+console.log(n); // 1
+console.log(ok); // 1
 ```
 
 
