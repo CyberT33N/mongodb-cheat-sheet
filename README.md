@@ -1201,15 +1201,16 @@ ____________________________________________________
 
 ## .updateOne (https://docs.mongodb.com/manual/reference/method/db.collection.updateOne/)
 - Update single document
-
-
-## find document by query and then set the fields to update
+- Below example explain the result object that comes back: (https://youtu.be/UzLB7a2YOOM?t=235)
 ```javascript
 const ar = [
   // search query
   {url: urlhere},
+  
   // fields to update
   {$set: { used: 1 }},
+  
+  // options paramater
   // if query doesnt find a document, it will create a new document
   {upsert: true},
 ];
@@ -1219,7 +1220,14 @@ collection.updateOne(...ar, function(e, res) {/* .. */ });
 
 // async
 const r = await collection.updateOne(...ar);
+
+// get amount of documents that have been modified
+console.log(r.result.nModified);
+
+// get result of upserted
+console.log(r.result.upserted);
 ```
+
 
 
 
