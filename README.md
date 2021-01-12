@@ -436,6 +436,7 @@ ____________________________________________________
 
 <br><br>
 
+# CLI
 
 
 ## MongoDB bin locations
@@ -444,26 +445,15 @@ ____________________________________________________
 "C:\Program Files\MongoDB\Server\4.2\bin"
 ```
 
-
-
-
-
-
-
-
-
-
 <br><br>
 
-____________________________________________________
-____________________________________________________
-
-<br><br>
 
 ## Export database with all collections to .bson
 ```bash
 mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_user_name --password your_password --out /target/folder/path
 ```
+
+<br><br>
 
 
 ## Export specific collection with ALL fields to .json
@@ -475,35 +465,22 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 ```
 
 
-<br><br>
-
-____________________________________________________
-____________________________________________________
-
-<br><br>
 
 
 
 
-# Async
 
-## Result
-```javascript
 
-const query = { id: json.id };
-const newValue = { $set: { title: json.title } };
 
-const r = await collection.updateOne(query, newValue);
-console.log( 'updatePizza() - result:' + JSON.stringify(r, null, 4) );
 
-/*
-// if not successfully you will get r.result.n == 0
-r: {"result":{"n":0,"nModified":0,"ok":1},"connection":{"_events":{},"_eventsCount":4,"id":1,"address":"127.0.0.1:27017","bson":{},"socketTimeout":360000,"host":"localhost","port":27017,"monitorCommands":false,"closed":false,"destroyed":false,"lastIsMasterMS":5},"modifiedCount":0,"upsertedId":null,"upsertedCount":0,"matchedCount":0,"n":0,"nModified":0,"ok":1}
 
-// if successfully you will get r.result.n == 1
-r: {"result":{"n":1,"nModified":1,"ok":1},"connection":{"_events":{},"_eventsCount":4,"id":1,"address":"127.0.0.1:27017","bson":{},"socketTimeout":360000,"host":"localhost","port":27017,"monitorCommands":false,"closed":false,"destroyed":false,"lastIsMasterMS":1},"modifiedCount":1,"upsertedId":null,"upsertedCount":0,"matchedCount":1,"n":1,"nModified":1,"ok":1}
-*/
-```
+
+
+
+
+
+
+
 
 <br><br>
 
