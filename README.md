@@ -832,6 +832,21 @@ const result = await collection.find({title: 'any movie'});
 let {title} = await result.next();
 let {title2} = await result.next();
 ```
+
+<br><br>
+
+
+#### filter result order (cursor)
+```javascript
+const query = [
+{title: "any title"},
+{projection: {title: 1, year: 1}},
+]
+
+// sync
+const result = collection.find(query).sort([["year", 1]]);
+```
+
 <br><br>
 
 
