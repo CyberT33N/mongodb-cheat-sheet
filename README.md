@@ -1006,10 +1006,13 @@ ____________________________________________________
 
 ## dot notation (https://youtu.be/dpr_2cbC4Yk?t=191)
 ```javascript
-// In our document in our collection we would have an "imdb" object which is nested and contains rating. So in other workds "imdb.rating"
+/*
+In our document in our collection we would have an "imdb" object which is nested and contains rating key. So as example:
+const imdb = {"rating": 10};
+*/
 const query = [
 {$match: {used: 0}},
-{$project: {'imdb rating': 1}},
+{$project: {'imdb.rating': 1}},
 ];
 
 // callback
