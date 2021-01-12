@@ -848,6 +848,23 @@ const query = [
 const result = collection.find(query).sort([["year", 1]]);
 ```
 
+#### skip results (cursor)
+- https://docs.mongodb.com/manual/reference/method/cursor.skip/
+```javascript
+const query = [
+{title: "any title"},
+{projection: {title: 1, year: 1}},
+]
+
+// sync - skip 5 results
+const result = collection.find(query).sort([["year", 1]]).skip(5);
+```
+
+<br><br>
+
+
+<br><br>
+
 <br><br>
 
 
@@ -991,7 +1008,7 @@ collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 // async
 const r = await collection.aggregate(query).toArray({});
 ```
-
+<br><br>
 
 ## match random document with used = 0 and limit to 1 item and return only title and _id
 ```javascript
@@ -1008,6 +1025,8 @@ collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 const r = await collection.aggregate(query).toArray({});
 ```
 
+<br><br>
+
 ## sort order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
 ```javascript
 // sort results by year
@@ -1020,8 +1039,21 @@ collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 const r = await collection.aggregate(query).toArray({});
 ```
 
+<br><br>
 
+## skip results (https://docs.mongodb.com/manual/reference/operator/aggregation/skip/)
+```javascript
+// sort results by year
+const query = [{$skip: 5}];
 
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
+
+<br><br>
 
 
 
