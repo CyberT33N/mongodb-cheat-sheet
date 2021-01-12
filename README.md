@@ -1003,6 +1003,23 @@ ____________________________________________________
 
 # aggregation (.aggregate)
 
+
+## dot notation (https://youtu.be/dpr_2cbC4Yk?t=191)
+```javascript
+// In our document in our collection we would have an "imdb" object which is nested and contains rating. So in other workds "imdb.rating"
+const query = [
+{$match: {used: 0}},
+{$project: {'imdb rating': 1}},
+];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
+<br><br>
+
 ## matchdom document with used = 0 and limit to 1 item
 ```javascript
 // method #1
