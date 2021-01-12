@@ -1237,7 +1237,7 @@ ____________________________________________________
 
 ## .insertOne (https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/)
 - Insert only 1 document
-- Below example explains the insertOneWriteOpResult
+- Below example explains the insertOneWriteOpResult (https://www.youtube.com/watch?v=UzLB7a2YOOM)
 ```javascript
 const obj = {"title": "Fortnite", "year": 2015};
 
@@ -1264,26 +1264,18 @@ console.log(n); // 1
 console.log(ok); // 1
 ```
 
-<br><br>
 
-#### Insert object (https://www.youtube.com/watch?v=UzLB7a2YOOM)
-```javascript
-const obj = {"title": "Fortnite", "year": 2015};
 
-// callback
-collection.insertOne(obj, function(e, r) { /* .. */ });
 
-//async
-const r = await collection.insertOne(obj);
-```
+
+
 
 <br><br><br><br>
 
 
 ## .insertMany (https://docs.mongodb.com/manual/reference/method/db.collection.insertMany/)
 - Insert multiple documents
-
-#### Insert array with multiple objects (https://youtu.be/UzLB7a2YOOM?t=178)
+- Below example explains the insertOneWriteOpResult: (https://youtu.be/UzLB7a2YOOM?t=178)
 ```javascript
 const ar = [
   {title: 'Fortnite', year: 2015},
@@ -1296,8 +1288,23 @@ collection.insertMany(ar, function(e, r) { /* .. */ });
 
 //async
 const r = await collection.insertMany(ar);
-```
 
+// Just like .insertOne we get a result object back
+// n is the total documents inserted
+// ok means database responded that the command executed correctly
+let {n, ok} = r.result;
+
+// alternative you can check the amount of inserted documents by using "insertedCount"
+console.log(r.insertedCount); // 1
+
+// returns array with the ids from the documents
+console.log(r.insertedIds);
+
+// So in case of our example n will be 1 cause we inserted 1 document
+// And ok will be 1 too is the insert process worked as exapected
+console.log(n); // 1
+console.log(ok); // 1
+```
 
 
 
