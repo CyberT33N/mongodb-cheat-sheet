@@ -1008,7 +1008,7 @@ collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 const r = await collection.aggregate(query).toArray({});
 ```
 
-## sort order
+## sort order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
 ```javascript
 // sort results by year
 const query = [{ $sort: {year: 1}}];
