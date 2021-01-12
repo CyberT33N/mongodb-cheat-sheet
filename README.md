@@ -975,9 +975,9 @@ ____________________________________________________
 
 
 
-## aggregate
+# aggregation (.aggregate)
 
-#### matchdom document with used = 0 and limit to 1 item
+## matchdom document with used = 0 and limit to 1 item
 ```javascript
 // method #1
 const query = [{$match: { used: 0 }}, {$limit: 1}];
@@ -993,7 +993,7 @@ const r = await collection.aggregate(query).toArray({});
 ```
 
 
-#### match random document with used = 0 and limit to 1 item and return only title and _id
+## match random document with used = 0 and limit to 1 item and return only title and _id
 ```javascript
 const query = [
 {$match: { used: 0 }},
@@ -1008,6 +1008,17 @@ collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 const r = await collection.aggregate(query).toArray({});
 ```
 
+## sort order
+```javascript
+// sort results by year
+const query = [{ $sort: {year: 1}}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
 
 
 
