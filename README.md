@@ -1228,19 +1228,9 @@ ____________________________________________________
 <br><br>
 
 
-# Insert
+# Insert Data
 
-
-## Insert single object
-```javascript
-// callback
-collection.insertOne(json, function(e, result) { /* .. */ });
-
-//async
-const r = await collection.insertOne(json);
-```
-
-
+<br><br>
 
 ## add timestamp to insert
 ```javascript
@@ -1248,6 +1238,49 @@ const r = await collection.insertOne(json);
 // also nice to know your object id already includes a timestamp too..
 {"created_at": new Date()}
 ```
+
+
+## .insertOne
+
+#### Insert object (https://www.youtube.com/watch?v=UzLB7a2YOOM)
+```javascript
+const obj = {"title": "Fortnite", "year": 2015};
+
+// callback
+collection.insertOne(obj, function(e, r) { /* .. */ });
+
+//async
+const r = await collection.insertOne(obj);
+
+// When we insert a document we get an insertOneWriteOpResult back
+// n is the total documents inserted
+// ok means database responded that the command executed correctly
+let {n, ok} = r.result;
+
+// So in case of our example n will be 1 cause we inserted 1 document
+// And ok will be 1 too is the insert process worked as exapected
+console.log('n: ' + n); // 1
+console.log('ok: ' + ok); // 1
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
