@@ -1001,7 +1001,14 @@ ____________________________________________________
 
 
 
-# aggregation (.aggregate)
+# Aggregation (.aggregate)
+- https://www.youtube.com/watch?v=dpr_2cbC4Yk
+- Aggregation is a pipleline
+- Pipelines are composed of one or more stages
+- Stages use one or more expressions
+- Expressions are functions
+
+<br><br>
 
 
 ## dot notation (https://youtu.be/dpr_2cbC4Yk?t=191)
