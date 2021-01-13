@@ -1319,20 +1319,26 @@ The operation returns the following results:
 
 #### $lookup (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
 - **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
-- **let** (Specifies variables to use in the pipeline field stages. Use the variable expressions to access the fields from the documents input to the $lookup stage.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-let
+- **let** (Specifies variables to use in the pipeline field stages. Use the variable expressions to access the fields from the documents input to the $lookup stage. In other words pipleline only has access to the current collection where we run the lookup. To get access to the other collection where we run the join we use let to define the fields where we want access) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-let
 - **pipeline** (Specifies the pipeline to run on the joined collection. The pipeline determines the resulting documents from the joined collection. To return all documents, specify an empty pipeline [].) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-pipeline
 - **as** (Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the from collection. If the specified name already exists in the input document, the existing field is overwritten.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-as
+```javascript
+{
+  from: 'comments',
+  let: {id: '$_id'},
+  pipeline: [
+    {'$match': 
+      {'$expr': {'$eq': ['$movie_id', '$$id']}}
+    }
+  ]
+}
+```
 
 <br><br>
 
 #### guides
 - https://www.youtube.com/watch?v=j7ccC2F1yc0
-```javascript
-{
-  from: 'comments',
-  let: {id: '$_id'},
-}
-```
+
 
 
 
