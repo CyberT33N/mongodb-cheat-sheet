@@ -1105,45 +1105,17 @@ ____________________________________________________
 
 <br><br>
 
+## Operator
 
-## get number between range
+
+## $count (https://docs.mongodb.com/manual/reference/operator/aggregation/count/)
+
+#### show the amount of matches
 ```javascript
-// match results with year between 1980-1990
-const query = [{$match: {year: {'$gte': 1980, '$lt': 1990}}}];
-
-// callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(query).toArray({});
-```
-
-
-<br><br>
-
-
-## matchdom document with used = 0 and limit to 1 item
-```javascript
-// method #1
-const query = [{$match: { used: 0 }}, {$limit: 1}];
-
-// method #2
-const query = [{$match: { used: 0 }}, {$sample: { size: 1 }}];
-
-// callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(query).toArray({});
-```
-<br><br>
-
-## match random document with used = 0 and limit to 1 item and return only title and _id
-```javascript
+// add price + fee
 const query = [
-{$match: { used: 0 }},
-{$project: { title: 1, _id: 1 }},
-{$limit: 1},
+  {$match: {year: {'$gte': 1980, '$lt': 1990}}},
+  {'$count': 'count'},
 ];
 
 // callback
@@ -1154,35 +1126,6 @@ const r = await collection.aggregate(query).toArray({});
 ```
 
 <br><br>
-
-## sort ascending order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
-```javascript
-// sort results by year
-const query = [{ $sort: {year: 1}}];
-
-// callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(query).toArray({});
-```
-
-<br><br>
-
-## skip results (https://docs.mongodb.com/manual/reference/operator/aggregation/skip/)
-```javascript
-// sort results by year
-const query = [{$skip: 5}];
-
-// callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(query).toArray({});
-```
-
-<br><br>
-
 
 ## $add (https://docs.mongodb.com/manual/reference/operator/aggregation/add/)
 
@@ -1320,14 +1263,96 @@ The operation returns the following results:
 */
 ```
 
+
+
+
+
+
+
+
+
+
+
+<br><br>
 <br><br>
 
 
+## get number between range
+```javascript
+// match results with year between 1980-1990
+const query = [{$match: {year: {'$gte': 1980, '$lt': 1990}}}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
 
 
+<br><br>
 
 
+## matchdom document with used = 0 and limit to 1 item
+```javascript
+// method #1
+const query = [{$match: { used: 0 }}, {$limit: 1}];
 
+// method #2
+const query = [{$match: { used: 0 }}, {$sample: { size: 1 }}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
+<br><br>
+
+## match random document with used = 0 and limit to 1 item and return only title and _id
+```javascript
+const query = [
+{$match: { used: 0 }},
+{$project: { title: 1, _id: 1 }},
+{$limit: 1},
+];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
+
+<br><br>
+
+## sort ascending order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
+```javascript
+// sort results by year
+const query = [{ $sort: {year: 1}}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
+
+<br><br>
+
+## skip results (https://docs.mongodb.com/manual/reference/operator/aggregation/skip/)
+```javascript
+// sort results by year
+const query = [{$skip: 5}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
+
+<br><br>
 <br><br>
 
 ## Join
