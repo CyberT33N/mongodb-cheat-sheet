@@ -1240,6 +1240,9 @@ console.log(r.matchedCount);
 
 // get amount of modified/updated documents
 console.log(r.modifiedCount);
+
+// get id of new document if upserted was successfully
+console.log(r.upsertedId);
 ```
 
 
