@@ -1108,24 +1108,6 @@ ____________________________________________________
 ## Operator
 
 
-## $count (https://docs.mongodb.com/manual/reference/operator/aggregation/count/)
-
-#### show the amount of matches
-```javascript
-// add price + fee
-const query = [
-  {$match: {year: {'$gte': 1980, '$lt': 1990}}},
-  {'$count': 'count'},
-];
-
-// callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(query).toArray({});
-```
-
-<br><br>
 
 ## $add (https://docs.mongodb.com/manual/reference/operator/aggregation/add/)
 
@@ -1371,6 +1353,7 @@ const r = await collection.aggregate(query).toArray({});
 <br>
 
 - **as** (Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the from collection. If the specified name already exists in the input document, the existing field is overwritten.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-as
+
 ```javascript
 {
   from: 'comments',
@@ -1384,13 +1367,31 @@ const r = await collection.aggregate(query).toArray({});
 }
 ```
 
+
 <br><br>
+
 
 #### guides
 - https://www.youtube.com/watch?v=j7ccC2F1yc0
 
+<br><br><br><br>
 
 
+#### show the amount of matches - $count (https://docs.mongodb.com/manual/reference/operator/aggregation/count/)
+- Because we use a pipeline we will first match all the movie comments and then after this only response with the amount of matches as result
+```javascript
+{
+  from: 'comments',
+  let: {id: '$_id'},
+  pipeline: [
+    {'$match': 
+      {'$expr': {'$eq': ['$movie_id', '$$id']}} // $$id will be {id: '$_id'} from let
+    },
+    {'$count': 'count'},
+  ],
+  as: 'movie_comments'
+}
+```
 
 
 
