@@ -1315,11 +1315,23 @@ The operation returns the following results:
 
 <br><br>
 
-## $lookup (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
+## Join
 
-#### sample..
+#### $lookup (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
+- **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
+- **let** (Specifies variables to use in the pipeline field stages. Use the variable expressions to access the fields from the documents input to the $lookup stage.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-let
+- **pipeline** (Specifies the pipeline to run on the joined collection. The pipeline determines the resulting documents from the joined collection. To return all documents, specify an empty pipeline [].) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-pipeline
+- **as** (Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the from collection. If the specified name already exists in the input document, the existing field is overwritten.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-as
+
+<br><br>
+
+#### guides
+- https://www.youtube.com/watch?v=j7ccC2F1yc0
 ```javascript
-
+{
+  from: 'comments',
+  let: {id: '$_id'},
+}
 ```
 
 
