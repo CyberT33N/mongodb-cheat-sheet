@@ -1237,9 +1237,49 @@ console.log(r.result.upserted);
 ```
 
 
+<br><br>
 
 
+## update document and increase/decrease specific field (https://docs.mongodb.com/manual/reference/operator/update/inc/)
+```javascript
+/*
+{ Original Document:
+  _id: 1,
+  sku: "abc123",
+  quantity: 10,
+  metrics: {
+    orders: 2,
+    ratings: 3.5
+  }
+}
+*/
 
+const ar = [
+  // search query
+  { sku: "abc123" },
+  
+  // decrease quantity and increase orders
+  {$inc: {quantity: -2, "metrics.orders": 1}},
+];
+
+// callback
+collection.updateOne(...ar, function(e, res) {/* .. */ });
+
+// async
+const r = await collection.updateOne(...ar);
+
+/*Result:
+{
+   "_id" : 1,
+   "sku" : "abc123",
+   "quantity" : 8,
+   "metrics" : {
+      "orders" : 3,
+      "ratings" : 3.5
+   }
+}
+*/
+```
 
 
 
