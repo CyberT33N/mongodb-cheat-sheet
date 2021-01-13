@@ -1293,7 +1293,8 @@ ____________________________________________________
 
 ## write concern (https://docs.mongodb.com/manual/reference/write-concern/)
 -
-- Not defined write concern will be always 1. This means the data will be only written to 1 primary node (database)
+- Not defined write concern will be always "1". This means the data will be only written to 1 primary node (database)
+- If set to "0" it means it does not request a result of the write process. "Fire-and-forget". This is usefully when you want the fastest possible write process and do not care if some data gets lost. As example for real time monoitoring operations.
 - If set to "majority" it will wait until the data gets replicated to a secondary node. The secondary node send the result back to the primary and the primary back to the client. (https://docs.mongodb.com/manual/reference/write-concern/#writeconcern.%22majority%22)
 ```javascript
 const ar = [
