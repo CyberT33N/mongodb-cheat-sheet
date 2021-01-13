@@ -1294,11 +1294,11 @@ ____________________________________________________
 ## write concern (https://docs.mongodb.com/manual/reference/write-concern/)
 -
 - Not defined write concern will be always 1. This means the data will be only written to 1 primary node (database)
-- If set to 0 it will wait until the data gets replicated to a secondary node. The secondary node send the result back to the primary and the primary back to the client.
+- If set to "majority" it will wait until the data gets replicated to a secondary node. The secondary node send the result back to the primary and the primary back to the client. (https://docs.mongodb.com/manual/reference/write-concern/#writeconcern.%22majority%22)
 ```javascript
 const ar = [
 {"title": "Fortnite", "year": 2015}, // document to add to collection
-{w: 1} // options
+{w: 'majority'} // options
 ];
 
 // callback
