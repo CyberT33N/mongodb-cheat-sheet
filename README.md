@@ -1391,14 +1391,16 @@ ____________________________________________________
 
 # Delete
 
-
-## Delete specific data
+## .deleteOne (https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/)
+- delete a single document
 ```javascript
+const query = {"id": json.id};
+
 // callback
-collection.deleteOne({"id": json.id}, function(e, result) { /* .. */ });
+collection.deleteOne(query, function(e, result) { /* .. */ });
 
 //async
-const r = await collection.deleteOne( {"id": json.id} );
+const r = await collection.deleteOne(query);
 ```
 
 
