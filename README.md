@@ -1291,8 +1291,10 @@ ____________________________________________________
 
 <br><br>
 
-## write concern (https://www.youtube.com/watch?v=RIeSCrq6PHg)
-- Not defined write concern will be always 1
+## write concern (https://docs.mongodb.com/manual/reference/write-concern/)
+-
+- Not defined write concern will be always 1. This means the data will be only written to 1 primary node (database)
+- If set to 0 it will wait until the data gets replicated to a secondary node. The secondary node send the result back to the primary and the primary back to the server.
 ```javascript
 const ar = [
 {"title": "Fortnite", "year": 2015}, // document to add to collection
@@ -1305,6 +1307,9 @@ collection.insertOne(...ar, function(e, r) { /* .. */ });
 //async
 const r = await collection.insertOne(...ar);
 ```
+
+#### Guides
+- https://www.youtube.com/watch?v=RIeSCrq6PHg
 
 
 <br><br>
