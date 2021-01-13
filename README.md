@@ -1328,9 +1328,10 @@ The operation returns the following results:
   let: {id: '$_id'},
   pipeline: [
     {'$match': 
-      {'$expr': {'$eq': ['$movie_id', '$$id']}}
+      {'$expr': {'$eq': ['$movie_id', '$$id']}} // $$id will be {id: '$_id'} from let
     }
-  ]
+  ],
+  as: 'movie_comments'
 }
 ```
 
