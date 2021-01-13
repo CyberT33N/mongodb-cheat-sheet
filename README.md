@@ -811,6 +811,21 @@ const r = await collection.findOne(query)
 ## .find
 
 
+#### get all documents from collection
+```javascript
+// async
+const query = {};
+
+// callback
+collection.find(query).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.find(query).toArray({});
+```
+
+<br><br>
+
+
 #### go to next result (cursor)
 ```javascript
 // async
