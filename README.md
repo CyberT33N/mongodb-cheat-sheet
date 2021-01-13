@@ -352,13 +352,13 @@ ____________________________________________________
 # Logical Query Operators
 
 ## Comparison Query Operators (https://docs.mongodb.com/manual/reference/operator/query-comparison/)
-- $eq	Matches values that are equal to a specified value.
-- $gt	Matches values that are greater than a specified value.
-- $gte	Matches values that are greater than or equal to a specified value.
-- $in	Matches any of the values specified in an array.
-- $lt	Matches values that are less than a specified value.
-- $lte	Matches values that are less than or equal to a specified value.
-- $ne	Matches all values that are not equal to a specified value.
+- $eq	Matches values that are equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/eq/)
+- $gt	Matches values that are greater than a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/gt/)
+- $gte	Matches values that are greater than or equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/gte/)
+- $in	Matches any of the values specified in an array. (https://docs.mongodb.com/manual/reference/operator/aggregation/in/)
+- $lt	Matches values that are less than a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/lt/)
+- $lte	Matches values that are less than or equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/lte/)
+- $ne	Matches all values that are not equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/ne/)
 - $nin	Matches none of the values specified in an array.
 
 <br><br>
