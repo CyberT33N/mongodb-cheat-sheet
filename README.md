@@ -61,7 +61,13 @@ sudo dpkg -i 'mongodb-compass_1.23.0_amd64.deb'
 sudo dpkg --remove mongodb-compass
 ```
 
+<br><br>
 
+## Features
+- Export Aggregations to Code
+- Manage Connections
+- Export Database to .json and .csv
+- View Databases
 
 
 
@@ -1339,12 +1345,21 @@ const r = await collection.aggregate(query).toArray({});
 
 ## Join
 
+<br><br>
+
+
 #### $lookup (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
+- Allows us to apply aggregation pipelines before the data is joined
+
+<br><br>
+
+
 - **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
 
 <br>
 
-- **let** (Specifies variables to use in the pipeline field stages. Use the variable expressions to access the fields from the documents input to the $lookup stage. In other words pipleline only has access to the current collection where we run the lookup. To get access to the other collection where we run the join we use let to define the fields where we want access) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-let
+- **let** (Specifies variables to use in the pipeline field stages. Use the variable expressions to access the fields from the documents input to the $lookup stage.
+- In other words the pipleline only has access to the current collection where we run the lookup. To get access from the source collection where we run the join we use let to define the fields where we want access) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-let
 
 <br>
 
