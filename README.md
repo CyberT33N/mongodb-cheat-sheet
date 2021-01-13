@@ -580,6 +580,30 @@ const movies = myDB.collection('movies');
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 ____________________________________________________
 ____________________________________________________
@@ -593,6 +617,16 @@ ____________________________________________________
 const myDB = client.db(MongoDB_DB_NAME);
 const collections = await myDB.listCollections().toArray();
 ```
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -628,6 +662,65 @@ const myDB = client.db(MongoDB_DB_NAME);
 const movies = myDB.collection('movies');
 const numMovies = await movies.countDocuments({}); // <-- will be number of documents
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+## dot notation (https://youtu.be/dpr_2cbC4Yk?t=191)
+```javascript
+/*
+In our document in our collection we would have an "imdb" object which is nested and contains rating key. So as example:
+const imdb = {"rating": 10};
+*/
+const query = [
+{$match: {used: 0}},
+{$project: {'imdb.rating': 1}},
+];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
 
 
 
@@ -1009,27 +1102,10 @@ ____________________________________________________
 - Stages use one or more expressions
 - Expressions are functions
 
+
 <br><br>
 
 
-## dot notation (https://youtu.be/dpr_2cbC4Yk?t=191)
-```javascript
-/*
-In our document in our collection we would have an "imdb" object which is nested and contains rating key. So as example:
-const imdb = {"rating": 10};
-*/
-const query = [
-{$match: {used: 0}},
-{$project: {'imdb.rating': 1}},
-];
-
-// callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(query).toArray({});
-```
-<br><br>
 
 ## matchdom document with used = 0 and limit to 1 item
 ```javascript
