@@ -1208,6 +1208,7 @@ ____________________________________________________
 
 ## .updateOne (https://docs.mongodb.com/manual/reference/method/db.collection.updateOne/)
 - Update single document
+- If multiple matches are found then only the first match will be updated
 - Below example explain the result object that comes back: (https://youtu.be/UzLB7a2YOOM?t=235)
 ```javascript
 const ar = [
