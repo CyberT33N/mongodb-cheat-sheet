@@ -1295,6 +1295,49 @@ const r = await collection.updateOne(...ar);
 
 
 
+<br><br><br><br>
+
+
+
+
+
+
+
+
+## .updateMany (https://docs.mongodb.com/manual/reference/method/db.collection.updateMany/)
+- Update multiple documents
+- https://youtu.be/xq2_ht-cZHc?t=89
+```javascript
+const ar = [
+  // search query
+  {url: urlhere},
+  
+  // fields to update
+  {$set: { used: 1 }},
+  
+  // options paramater
+  // if query doesnt find a document, it will create a new document
+  {upsert: true},
+];
+
+// callback
+collection.updateOne(...ar, function(e, res) {/* .. */ });
+
+// async
+const r = await collection.updateOne(...ar);
+
+// get amount of matched documents (search query object)
+console.log(r.matchedCount);
+
+// get amount of modified/updated documents
+console.log(r.modifiedCount);
+```
+
+
+
+
+
+
 
 
 
