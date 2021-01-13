@@ -783,7 +783,7 @@ const r = await collection.findOne(query)
 ```javascript
 const query = {"payload.discount": {$exists: true}};
 
-// callback
+// callback.insertOne
 collection.findOne(query, (e, docs) => { /* .. */ });
 
 // async
@@ -1290,6 +1290,25 @@ ____________________________________________________
 ```
 
 <br><br>
+
+## write concern (https://www.youtube.com/watch?v=RIeSCrq6PHg)
+- Not defined write concern will be always 1
+```javascript
+const ar = [
+{"title": "Fortnite", "year": 2015}, // document to add to collection
+{w: 1} // options
+];
+
+// callback
+collection.insertOne(...ar, function(e, r) { /* .. */ });
+
+//async
+const r = await collection.insertOne(...ar);
+```
+
+
+<br><br>
+
 
 ## .insertOne (https://docs.mongodb.com/manual/reference/method/db.collection.insertOne/)
 - Insert only 1 document
