@@ -1234,6 +1234,12 @@ console.log(r.result.nModified);
 
 // get result of upserted
 console.log(r.result.upserted);
+
+// get amount of matched documents (search query object)
+console.log(r.matchedCount);
+
+// get amount of modified/updated documents
+console.log(r.modifiedCount);
 ```
 
 
