@@ -1355,16 +1355,41 @@ const r = await collection.aggregate(query).toArray({});
 - **as** (Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the from collection. If the specified name already exists in the input document, the existing field is overwritten.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-as
 
 ```javascript
-{
-  from: 'comments',
-  let: {id: '$_id'},
-  pipeline: [
-    {'$match': 
-      {'$expr': {'$eq': ['$movie_id', '$$id']}} // $$id will be {id: '$_id'} from let
+const query = [
+  {
+    '$match': {
+      'year': {
+        '$gte': 1980, 
+        '$lt': 1990
+      }
     }
-  ],
-  as: 'movie_comments'
-}
+  }, {
+    '$lookup': {
+      'from': 'comments', 
+      'let': {
+        'id': '$_id'
+      }, 
+      'pipeline': [
+        {
+          '$match': {
+            '$expr': {
+              '$eq': [
+                '$movie_id', '$$id'
+              ]
+            }
+          }
+        }
+      ], 
+      'as': 'movie_comments'
+    }
+  }
+];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
 ```
 
 
@@ -1380,17 +1405,43 @@ const r = await collection.aggregate(query).toArray({});
 #### show the amount of matches - $count (https://docs.mongodb.com/manual/reference/operator/aggregation/count/)
 - Because we use a pipeline we will first match all the movie comments and then after this only response with the amount of matches as result
 ```javascript
-{
-  from: 'comments',
-  let: {id: '$_id'},
-  pipeline: [
-    {'$match': 
-      {'$expr': {'$eq': ['$movie_id', '$$id']}} // $$id will be {id: '$_id'} from let
-    },
-    {'$count': 'count'},
-  ],
-  as: 'movie_comments'
-}
+const query = [
+  {
+    '$match': {
+      'year': {
+        '$gte': 1980, 
+        '$lt': 1990
+      }
+    }
+  }, {
+    '$lookup': {
+      'from': 'comments', 
+      'let': {
+        'id': '$_id'
+      }, 
+      'pipeline': [
+        {
+          '$match': {
+            '$expr': {
+              '$eq': [
+                '$movie_id', '$$id'
+              ]
+            }
+          }
+        }, {
+          '$count': 'count'
+        }
+      ], 
+      'as': 'movie_comments'
+    }
+  }
+];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
 ```
 
 
