@@ -696,14 +696,6 @@ collection
 // async
 const match = await collection.findOne({"title": "any title"});
 console.log(match.title);
-<br><br>
-
-____________________________________________________
-____________________________________________________
-
-<br><br>
-
-
 
 // or directly access the title
 const {title} = await collection.findOne({"title": "any title"});
