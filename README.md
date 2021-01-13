@@ -727,7 +727,7 @@ collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
 
 // async
 const r = await collection.aggregate(query).toArray({});
-
+```
 
 
 
