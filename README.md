@@ -1106,6 +1106,21 @@ ____________________________________________________
 <br><br>
 
 
+## get number between range
+```javascript
+// match results with year between 1980-1990
+const query = [{$match: {year: {'$gte': 1980, '$lt': 1990}}}];
+
+// callback
+collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(query).toArray({});
+```
+
+
+<br><br>
+
 
 ## matchdom document with used = 0 and limit to 1 item
 ```javascript
