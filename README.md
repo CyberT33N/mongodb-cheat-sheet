@@ -1297,6 +1297,7 @@ ____________________________________________________
 - In a 3-node replica set, the highest valid Write Concern is 3. A Write Concern of w: 5 or w: 4 would never be satisfied, because there are only 3 nodes in the set.
 
 <br>
+
 - If set to "majority" it will wait until the data gets replicated to a secondary node. The secondary node send the result back to the primary and the primary back to the client. (https://docs.mongodb.com/manual/reference/write-concern/#writeconcern.%22majority%22)
 ```javascript
 const ar = [
