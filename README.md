@@ -359,56 +359,56 @@ ____________________________________________________
 - $lt	Matches values that are less than a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/lt/)
 - $lte	Matches values that are less than or equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/lte/)
 - $ne	Matches all values that are not equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/ne/)
-- $nin	Matches none of the values specified in an array.
+- $nin	Matches none of the values specified in an array. (https://docs.mongodb.com/manual/reference/operator/query/nin/)
 
 <br><br>
 
 ## Logical Query Operators (https://docs.mongodb.com/manual/reference/operator/query-logical/)
-- $and	Joins query clauses with a logical AND returns all documents that match the conditions of both clauses.
-- $not	Inverts the effect of a query expression and returns documents that do not match the query expression.
-- $nor	Joins query clauses with a logical NOR returns all documents that fail to match both clauses.
-- $or	Joins query clauses with a logical OR returns all documents that match the conditions of either clause.
+- $and	Joins query clauses with a logical AND returns all documents that match the conditions of both clauses. (https://docs.mongodb.com/manual/reference/operator/query/and/)
+- $not	Inverts the effect of a query expression and returns documents that do not match the query expression. (https://docs.mongodb.com/manual/reference/operator/query/not/)
+- $nor	Joins query clauses with a logical NOR returns all documents that fail to match both clauses. (https://docs.mongodb.com/manual/reference/operator/query/nor/)
+- $or	Joins query clauses with a logical OR returns all documents that match the conditions of either clause. (https://docs.mongodb.com/manual/reference/operator/query/or/)
 
 <br><br>
 
 ## Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-element/)
-- $exists	Matches documents that have the specified field.
-- $type	Selects documents if a field is of the specified type.
+- $exists	Matches documents that have the specified field. (https://docs.mongodb.com/manual/reference/operator/query/exists/)
+- $type	Selects documents if a field is of the specified type. (https://docs.mongodb.com/manual/reference/operator/query/type/)
 
 <br><br>
 
 ## Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-evaluation/)
-- $expr	Allows use of aggregation expressions within the query language.
-- $jsonSchema	Validate documents against the given JSON Schema.
-- $mod	Performs a modulo operation on the value of a field and selects documents with a specified result.
-- $regex	Selects documents where values match a specified regular expression.
-- $text	Performs text search.
-- $where	Matches documents that satisfy a JavaScript expression.
+- $expr	Allows use of aggregation expressions within the query language. (https://docs.mongodb.com/manual/reference/operator/query/expr/)
+- $jsonSchema	Validate documents against the given JSON Schema. (https://docs.mongodb.com/manual/reference/operator/query/jsonSchema/)
+- $mod	Performs a modulo operation on the value of a field and selects documents with a specified result. (https://docs.mongodb.com/manual/reference/operator/query/mod/)
+- $regex	Selects documents where values match a specified regular expression. (https://docs.mongodb.com/manual/reference/operator/query/regex/)
+- $text	Performs text search. (https://docs.mongodb.com/manual/reference/operator/query/text/)
+- $where	Matches documents that satisfy a JavaScript expression. (https://docs.mongodb.com/manual/reference/operator/query/where/)
 
 <br><br>
 
 ## Geospatial Query Operators (https://docs.mongodb.com/manual/reference/operator/query-geospatial/)
-- $geoIntersects	Selects geometries that intersect with a GeoJSON geometry. The 2dsphere index supports $geoIntersects.
-- $geoWithin	Selects geometries within a bounding GeoJSON geometry. The 2dsphere and 2d indexes support $geoWithin.
-- $near	Returns geospatial objects in proximity to a point. Requires a geospatial index. The 2dsphere and 2d indexes support $near.
-- $nearSphere	Returns geospatial objects in proximity to a point on a sphere. Requires a geospatial index. The 2dsphere and 2d indexes support $nearSphere.
+- $geoIntersects	Selects geometries that intersect with a GeoJSON geometry. The 2dsphere index supports $geoIntersects. (https://docs.mongodb.com/manual/reference/operator/query/geoIntersects/)
+- $geoWithin	Selects geometries within a bounding GeoJSON geometry. The 2dsphere and 2d indexes support $geoWithin. (https://docs.mongodb.com/manual/reference/operator/query/geoWithin/)
+- $near	Returns geospatial objects in proximity to a point. Requires a geospatial index. The 2dsphere and 2d indexes support $near. (https://docs.mongodb.com/manual/reference/operator/query/near/)
+- $nearSphere	Returns geospatial objects in proximity to a point on a sphere. Requires a geospatial index. The 2dsphere and 2d indexes support $nearSphere. (https://docs.mongodb.com/manual/reference/operator/query/nearSphere/)
 
 
 <br><br>
 
 ## Array Query Operators (https://docs.mongodb.com/manual/reference/operator/query-array/)
-- $all	Matches arrays that contain all elements specified in the query.
-- $elemMatch	Selects documents if element in the array field matches all the specified $elemMatch conditions.
-- $size	Selects documents if the array field is a specified size.
+- $all	Matches arrays that contain all elements specified in the query. (https://docs.mongodb.com/manual/reference/operator/query/all/)
+- $elemMatch	Selects documents if element in the array field matches all the specified $elemMatch conditions. (https://docs.mongodb.com/manual/reference/operator/query/elemMatch/)
+- $size	Selects documents if the array field is a specified size. (https://docs.mongodb.com/manual/reference/operator/query/size/)
 
 
 <br><br>
 
 ## Bitwise Query Operators (https://docs.mongodb.com/manual/reference/operator/query-bitwise/)
-- $bitsAllClear	Matches numeric or binary values in which a set of bit positions all have a value of 0.
-- $bitsAllSet	Matches numeric or binary values in which a set of bit positions all have a value of 1.
-- $bitsAnyClear	Matches numeric or binary values in which any bit from a set of bit positions has a value of 0.
-- $bitsAnySet	Matches numeric or binary values in which any bit from a set of bit positions has a value of 1.
+- $bitsAllClear	Matches numeric or binary values in which a set of bit positions all have a value of 0. (https://docs.mongodb.com/manual/reference/operator/query/bitsAllClear/)
+- $bitsAllSet	Matches numeric or binary values in which a set of bit positions all have a value of 1. (https://docs.mongodb.com/manual/reference/operator/query/bitsAllSet/)
+- $bitsAnyClear	Matches numeric or binary values in which any bit from a set of bit positions has a value of 0. (https://docs.mongodb.com/manual/reference/operator/query/bitsAnyClear/)
+- $bitsAnySet	Matches numeric or binary values in which any bit from a set of bit positions has a value of 1. (https://docs.mongodb.com/manual/reference/operator/query/bitsAnySet/)
 
 
 
