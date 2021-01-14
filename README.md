@@ -1968,6 +1968,7 @@ ____________________________________________________
 
 
 ## .deleteOne (https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/)
+- **IMPORTANT** - When using .deleteOne make sure that your match query will 100% match the document you want to delete or your may delete the wrong one. As example try always to use document IDs for the match query.
 ```javascript
 const query = {id: anyID};
 
@@ -1976,10 +1977,17 @@ collection.deleteOne(query, function(e, result) { /* .. */ });
 
 //async
 const r = await collection.deleteOne(query);
+
+// check if delete was successfully
+console.log(r.result.n); // should be 1 if successfully and 0 if not
 ```
+
+<br><br>
+
 
 
 ## delete single document without match query
+- It will choose the first document that can be found in natural order.
 ```javascript
 const query = {};
 
@@ -2010,6 +2018,9 @@ collection.deleteOne(query, function(e, result) { /* .. */ });
 
 //async
 const r = await collection.deleteOne(query);
+
+// check if delete was successfully
+console.log(r.result.n); // gives the amount of deleted documents. If 4 documents was deleted then we get here 4. If 0 documents was deleted then we get 0.
 ```
 
 
