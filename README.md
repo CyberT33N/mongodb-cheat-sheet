@@ -1954,7 +1954,7 @@ ____________________________________________________
 ## .deleteOne (https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/)
 - delete a single document
 ```javascript
-const query = {"id": json.id};
+const query = {id: anyID};
 
 // callback
 collection.deleteOne(query, function(e, result) { /* .. */ });
@@ -1964,5 +1964,25 @@ const r = await collection.deleteOne(query);
 ```
 
 
+
+
+
+
+
+
+<br><br><br><br>
+
+
+## .deleteMany (https://docs.mongodb.com/manual/reference/method/db.collection.deleteMany/)
+- delete multiple documents
+```javascript
+const query = {url: yoururl};
+
+// callback
+collection.deleteOne(query, function(e, result) { /* .. */ });
+
+//async
+const r = await collection.deleteOne(query);
+```
 
 
