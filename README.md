@@ -2127,6 +2127,9 @@ console.log(r.modifiedCount);
 
 ## .bulkWrite (https://docs.mongodb.com/manual/reference/method/db.collection.bulkWrite/)
 - Performs multiple write operations with controls for order of execution.
+- Execution will be in order they got applied.
+- If any process is not executed successfully the bulk write process will cancel.
+
 
 ```javascript
 const ar = [
@@ -2161,11 +2164,24 @@ const r = await collection.bulkWrite(...ar);
 ```
 
 
+<br><br><br><br>
 
 
 
+#### ignore order of execution
+```javascript
+const ar = [
+   {insertOne: {title: 'Fortnite'}},
+   {insertOne: {title: 'COD'}},
+];
 
+// callback
+collection.bulkWrite(...ar, function(e, res) {/* .. */ });
 
+// async
+const r = await bulkWrite(...ar;
+
+```
 
 
 
