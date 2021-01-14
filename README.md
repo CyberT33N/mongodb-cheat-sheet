@@ -1951,6 +1951,17 @@ ____________________________________________________
 
 # Delete
 
+## What actually happens when we delete a document?
+- Collection data will be changed
+- Indexes will be updated
+- Entries in the oplog will be added (oplog is the mechanism that allows to replicate data)
+
+
+<br><br>
+
+
+
+
 ## .deleteOne (https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/)
 - delete a single document
 ```javascript
