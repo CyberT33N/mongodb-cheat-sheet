@@ -1153,6 +1153,9 @@ const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"clien
 
 
 
+
+
+
 <br><br>
 
 ____________________________________________________
@@ -1271,6 +1274,65 @@ const r = await collection.aggregate(query).toArray({});
 { "_id" : "abc", "avgAmount" : 60, "avgQuantity" : 6 }
 */
 ```
+
+<br><br>
+
+#### count amount of field with the same value
+- In this case we also sort the result descending and then limit the result to 20
+```javascript
+/* // One of documents looks like this:
+{
+    "_id": {
+        "$oid": "5a9427648b0beebeb69579cc"
+    },
+    "name": "Andrea Le",
+    "email": "andrea_le@fakegmail.com",
+    "movie_id": {
+        "$oid": "573a1390f29313caabcd418c"
+    },
+    "text": "Rem officiis eaque repellendus amet eos doloribus. Porro dolor voluptatum voluptates neque culpa molestias. Voluptate unde nulla temporibus ullam.",
+    "date": {
+        "$date": "2012-03-26T23:20:16.000Z"
+    }
+}
+*/
+
+
+const pipeline = [
+        {
+          '$group': {
+            '_id': '$email',
+            'count': {
+              '$sum': 1
+            }
+          }
+        }, {
+          '$sort': {
+            'count': -1
+          }
+        }, {
+          '$limit': 20
+        }
+      ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+_id:"roger_ashton-griffiths@gameofthron.es"
+count:331
+
+_id:"nathalie_emmanuel@gameofthron.es"
+count:327
+*/
+```
+
+
+
+
 
 
 
