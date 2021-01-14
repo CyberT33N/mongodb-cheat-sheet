@@ -1764,151 +1764,6 @@ const r = await collection.aggregate(query).toArray({});
 
 
 
-<br><br>
-____________________________________________________
-____________________________________________________
-
-<br><br>
-
-
-# Update
-
-
-## .updateOne (https://docs.mongodb.com/manual/reference/method/db.collection.updateOne/)
-- Update single document
-- If multiple matches are found then only the first match will be updated
-- Below example explain the result object that comes back: (https://youtu.be/UzLB7a2YOOM?t=235)
-```javascript
-const ar = [
-  // search query
-  {url: urlhere},
-  
-  // fields to update
-  {$set: { used: 1 }},
-  
-  // options paramater
-  // if query doesnt find a document, it will create a new document
-  {upsert: true},
-];
-
-// callback
-collection.updateOne(...ar, function(e, res) {/* .. */ });
-
-// async
-const r = await collection.updateOne(...ar);
-
-// get amount of documents that have been modified
-console.log(r.result.nModified);
-
-// get result of upserted
-console.log(r.result.upserted);
-
-// get amount of matched documents (search query object)
-console.log(r.matchedCount);
-
-// get amount of modified/updated documents
-console.log(r.modifiedCount);
-
-// get id of new document if upserted was successfully
-console.log(r.upsertedId);
-```
-
-
-<br><br>
-
-
-## update document and increase/decrease specific field (https://docs.mongodb.com/manual/reference/operator/update/inc/)
-```javascript
-/*
-{ Original Document:
-  _id: 1,
-  sku: "abc123",
-  quantity: 10,
-  metrics: {
-    orders: 2,
-    ratings: 3.5
-  }
-}
-*/
-
-const ar = [
-  // search query
-  { sku: "abc123" },
-  
-  // decrease quantity and increase orders
-  {$inc: {quantity: -2, "metrics.orders": 1}},
-];
-
-// callback
-collection.updateOne(...ar, function(e, res) {/* .. */ });
-
-// async
-const r = await collection.updateOne(...ar);
-
-/*Result:
-{
-   "_id" : 1,
-   "sku" : "abc123",
-   "quantity" : 8,
-   "metrics" : {
-      "orders" : 3,
-      "ratings" : 3.5
-   }
-}
-*/
-```
-
-
-
-
-
-
-
-
-
-<br><br><br><br>
-
-
-
-
-
-
-
-
-## .updateMany (https://docs.mongodb.com/manual/reference/method/db.collection.updateMany/)
-- Update multiple documents
-- https://youtu.be/xq2_ht-cZHc?t=89
-```javascript
-const ar = [
-  // search query
-  {url: urlhere},
-  
-  // fields to update
-  {$set: { used: 1 }},
-  
-  // options paramater
-  // if query doesnt find a document, it will create a new document
-  {upsert: true},
-];
-
-// callback
-collection.updateOne(...ar, function(e, res) {/* .. */ });
-
-// async
-const r = await collection.updateOne(...ar);
-
-// get amount of matched documents (search query object)
-console.log(r.matchedCount);
-
-// get amount of modified/updated documents
-console.log(r.modifiedCount);
-```
-
-
-
-
-
-
 
 
 
@@ -2050,6 +1905,206 @@ console.log(r.insertedIds);
 console.log(n); // 1
 console.log(ok); // 1
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Update
+
+
+#### .updateOne (https://docs.mongodb.com/manual/reference/method/db.collection.updateOne/)
+- Update single document
+- If multiple matches are found then only the first match will be updated
+- Below example explain the result object that comes back: (https://youtu.be/UzLB7a2YOOM?t=235)
+```javascript
+const ar = [
+  // search query
+  {url: urlhere},
+  
+  // fields to update
+  {$set: { used: 1 }},
+  
+  // options paramater
+  // if query doesnt find a document, it will create a new document
+  {upsert: true},
+];
+
+// callback
+collection.updateOne(...ar, function(e, res) {/* .. */ });
+
+// async
+const r = await collection.updateOne(...ar);
+
+// get amount of documents that have been modified
+console.log(r.result.nModified);
+
+// get result of upserted
+console.log(r.result.upserted);
+
+// get amount of matched documents (search query object)
+console.log(r.matchedCount);
+
+// get amount of modified/updated documents
+console.log(r.modifiedCount);
+
+// get id of new document if upserted was successfully
+console.log(r.upsertedId);
+```
+
+
+<br><br>
+
+
+#### update document and increase/decrease specific field (https://docs.mongodb.com/manual/reference/operator/update/inc/)
+```javascript
+/*
+{ Original Document:
+  _id: 1,
+  sku: "abc123",
+  quantity: 10,
+  metrics: {
+    orders: 2,
+    ratings: 3.5
+  }
+}
+*/
+
+const ar = [
+  // search query
+  { sku: "abc123" },
+  
+  // decrease quantity and increase orders
+  {$inc: {quantity: -2, "metrics.orders": 1}},
+];
+
+// callback
+collection.updateOne(...ar, function(e, res) {/* .. */ });
+
+// async
+const r = await collection.updateOne(...ar);
+
+/*Result:
+{
+   "_id" : 1,
+   "sku" : "abc123",
+   "quantity" : 8,
+   "metrics" : {
+      "orders" : 3,
+      "ratings" : 3.5
+   }
+}
+*/
+```
+
+
+
+
+
+
+<br><br><br><br>
+
+
+
+
+
+
+
+
+#### .updateMany (https://docs.mongodb.com/manual/reference/method/db.collection.updateMany/)
+- Update multiple documents
+- https://youtu.be/xq2_ht-cZHc?t=89
+```javascript
+const ar = [
+  // search query
+  {url: urlhere},
+  
+  // fields to update
+  {$set: { used: 1 }},
+  
+  // options paramater
+  // if query doesnt find a document, it will create a new document
+  {upsert: true},
+];
+
+// callback
+collection.updateOne(...ar, function(e, res) {/* .. */ });
+
+// async
+const r = await collection.updateOne(...ar);
+
+// get amount of matched documents (search query object)
+console.log(r.matchedCount);
+
+// get amount of modified/updated documents
+console.log(r.modifiedCount);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
