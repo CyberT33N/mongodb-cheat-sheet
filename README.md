@@ -666,7 +666,12 @@ ____________________________________________________
 ```javascript
 const myDB = client.db(MongoDB_DB_NAME);
 const movies = myDB.collection('movies');
-const numMovies = await movies.countDocuments({}); // <-- will be number of documents
+
+// method #1 - .countDocuments (https://docs.mongodb.com/manual/reference/method/db.collection.countDocuments/#db.collection.countDocuments)
+const numMovies = await movies.countDocuments({});
+
+// method #2 - .count (https://docs.mongodb.com/manual/reference/method/db.collection.count/)
+const numMovies = await movies.count({});
 ```
 
 
