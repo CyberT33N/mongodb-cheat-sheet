@@ -812,7 +812,13 @@ ____________________________________________________
 #### snapshot (https://docs.mongodb.com/manual/reference/read-concern-snapshot/#readconcern.%22snapshot%22)
 - If the transaction is not part of a causally consistent session, upon transaction commit with write concern "majority", the transaction operations are guaranteed to have read from a snapshot of majority-committed data.
 
+```javascript
+// callback
+collection.deleteOne(pipeline, {readConcern: { level: 'majority' }}, function(e, result) {/* .. */ });
 
+//async
+const r = await comments.aggregate(pipeline, {readConcern: { level: 'majority' }});
+```
 
 
 <br><br>
