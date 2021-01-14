@@ -2168,19 +2168,22 @@ const r = await collection.bulkWrite(...ar);
 
 
 
-#### ignore order of execution
+#### parallel/async execution
+- Does not stop if any execution fails but the results will show us later if any fails.
 ```javascript
 const ar = [
-   {insertOne: {title: 'Fortnite'}},
-   {insertOne: {title: 'COD'}},
+  [
+    {insertOne: {title: 'Fortnite'}},
+    {insertOne: {title: 'COD'}},
+  ],
+  {ordered: false},
 ];
 
 // callback
 collection.bulkWrite(...ar, function(e, res) {/* .. */ });
 
 // async
-const r = await bulkWrite(...ar;
-
+const r = await collection.bulkWrite(...ar);
 ```
 
 
