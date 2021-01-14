@@ -2168,7 +2168,7 @@ const r = await collection.bulkWrite(...ar);
 
 
 
-#### parallel/async execution
+#### parallel/async (non blocking) execution
 - Does not stop if any execution fails but the results will show us later if any fails.
 ```javascript
 const ar = [
