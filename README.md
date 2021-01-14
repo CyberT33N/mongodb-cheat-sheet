@@ -783,10 +783,12 @@ ____________________________________________________
 
 ## read concern (https://docs.mongodb.com/manual/reference/read-concern/)
 - The readConcern option allows you to control the consistency and isolation properties of the data read from replica sets and replica set shards.
+- If you want to read important data like account details, bank balance or stuff like that you should not use **local**. Instead you should use a higher isolation like as example **majority** to double check your read process.
 
 #### local (https://docs.mongodb.com/manual/reference/read-concern-local/#readconcern.%22local%22)
 - The default read concern will be always local and will be perfomaned on the primary node.
 - reads against secondaries if the reads are associated with causally consistent sessions.
+- It **does not** check that data has been replicated
 
 <br><br>
 
@@ -797,6 +799,8 @@ ____________________________________________________
 
 #### majority (https://docs.mongodb.com/manual/reference/read-concern-majority/#readconcern.%22majority%22)
 - The query returns the data that has been acknowledged by a majority of the replica set members. The documents returned by the read operation are durable, even in the event of failure.
+- In easy words we will double check if the data exist on primary and secondary node.
+- This will only returns data that has been replicated.
 
 <br><br>
 
