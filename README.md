@@ -1968,9 +1968,20 @@ ____________________________________________________
 
 
 ## .deleteOne (https://docs.mongodb.com/manual/reference/method/db.collection.deleteOne/)
-- delete a single document
 ```javascript
 const query = {id: anyID};
+
+// callback
+collection.deleteOne(query, function(e, result) { /* .. */ });
+
+//async
+const r = await collection.deleteOne(query);
+```
+
+
+## delete single document without match query
+```javascript
+const query = {};
 
 // callback
 collection.deleteOne(query, function(e, result) { /* .. */ });
