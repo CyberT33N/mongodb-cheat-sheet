@@ -1382,6 +1382,7 @@ const r = await collection.aggregate(query).toArray({});
 
 - **as** (Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the from collection. If the specified name already exists in the input document, the existing field is overwritten.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-as
 
+
 ```javascript
 const query = [
   {
@@ -1483,7 +1484,8 @@ const r = await collection.aggregate(query).toArray({});
 
 
 #### sort lookup results
-- In this example we want to sort the comments we lookup by date. Inside of the lookup pipeline we can use **{ '$sort': { 'date': -1 }** and access date. Later we will join it with **as**.
+- In this example we want to sort the comments we lookup by date. Inside of the lookup pipeline we can use **{ '$sort': { 'date': -1 }** and access date. All fields from the document we want to lookup are avaible in our pipeline. If we want to access fields from the source document we would have to use **let** like in this example with the movie ID.
+- 
 ```javascript
 /* // comments document
 {
