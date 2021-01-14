@@ -785,7 +785,7 @@ ____________________________________________________
 - The readConcern option allows you to control the consistency and isolation properties of the data read from replica sets and replica set shards.
 
 #### local (https://docs.mongodb.com/manual/reference/read-concern-local/#readconcern.%22local%22)
-- The default read concern will be always local on the primary node.
+- The default read concern will be always local and will be perfomaned on the primary node.
 - reads against secondaries if the reads are associated with causally consistent sessions.
 
 <br><br>
