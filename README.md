@@ -778,6 +778,58 @@ ____________________________________________________
 # Find Data
 
 
+
+<br><br>
+
+## read concern (https://docs.mongodb.com/manual/reference/read-concern/)
+- The readConcern option allows you to control the consistency and isolation properties of the data read from replica sets and replica set shards.
+
+#### local (https://docs.mongodb.com/manual/reference/read-concern-local/#readconcern.%22local%22)
+- The default read concern will be always local on the primary node.
+- reads against secondaries if the reads are associated with causally consistent sessions.
+
+<br><br>
+
+#### available (https://docs.mongodb.com/manual/reference/read-concern-available/#readconcern.%22available%22)
+- The query returns data from the instance with no guarantee that the data has been written to a majority of the replica set members (i.e. may be rolled back).
+
+<br><br>
+
+#### majority (https://docs.mongodb.com/manual/reference/read-concern-majority/#readconcern.%22majority%22)
+- The query returns the data that has been acknowledged by a majority of the replica set members. The documents returned by the read operation are durable, even in the event of failure.
+
+<br><br>
+
+#### linearizable (https://docs.mongodb.com/manual/reference/read-concern-linearizable/#readconcern.%22linearizable%22)
+- The query returns data that reflects all successful majority-acknowledged writes that completed prior to the start of the read operation. The query may wait for concurrently executing writes to propagate to a majority of replica set members before returning results.
+
+<br><br>
+
+#### snapshot (https://docs.mongodb.com/manual/reference/read-concern-snapshot/#readconcern.%22snapshot%22)
+- If the transaction is not part of a causally consistent session, upon transaction commit with write concern "majority", the transaction operations are guaranteed to have read from a snapshot of majority-committed data.
+
+
+
+
+<br><br>
+<br><br>
+
+
+#### Guides
+- https://www.youtube.com/watch?v=G2fP0J571zo
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
 ## .findOne
 
 #### find specific item
