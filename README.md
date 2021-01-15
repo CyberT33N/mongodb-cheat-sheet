@@ -262,8 +262,11 @@ ____________________________________________________
 
 <br><br>
 
+# Connection String
+- https://docs.mongodb.com/manual/reference/connection-string/index.html
 
-# srv (service record)
+
+## srv (service record)
 - connect to database
 - username and password data is stored in database
 - host will only host the srv. srv will define its own DNS with list of hostnames where we resolve.
@@ -281,7 +284,7 @@ mongodb+srv://username:password@any-example.mongodb.net/admin?retryWrites=true
 
 <br><br>
 
-# localhost url
+## localhost url
 - mongodb://localhost:27017
 
 
