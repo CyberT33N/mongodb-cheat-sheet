@@ -563,10 +563,14 @@ ____________________________________________________
 # Connection (http://mongodb.github.io/node-mongodb-native/2.1/reference/connecting/connection-settings/)
 - Always handle the **serverSelectionTimeout** in your error catch to check where any server gets down or when any problems happen
 ```javascript
+let myDB;
 var MongoClient = require('mongodb').MongoClient;
 
-let myDB;
+
+
+const MongoDB_DB_URL =
 const options = {
+  authSource: "admin", // This is the name of the cluster database that has the collection with the user credentials. For default it will be admin (https://docs.mongodb.com/manual/reference/connection-string/#urioption.authSource)
   useNewUrlParser: true,
   useUnifiedTopology: true,
   connectTimeoutMS: 200,
