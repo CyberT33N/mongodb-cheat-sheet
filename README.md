@@ -539,7 +539,7 @@ ____________________________________________________
 
 <br><br>
 
-## Arithmetic Expression Operators
+## Arithmetic Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#arithmetic-expression-operators)
 - $abs	Returns the absolute value of a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/abs/#exp._S_abs)
 - $add	Adds numbers to return the sum, or adds numbers and a date to return a new date. If adding numbers and a date, treats the numbers as milliseconds. Accepts any number of argument expressions, but at most, one expression can resolve to a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/add/#exp._S_add)
 - $ceil	Returns the smallest integer greater than or equal to the specified number. (https://docs.mongodb.com/manual/reference/operator/aggregation/ceil/#exp._S_ceil)
@@ -559,7 +559,7 @@ ____________________________________________________
 
 <br><br>
 
-## Array Expression Operators
+## Array Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#array-expression-operators)
 - $arrayElemAt	Returns the element at the specified array index. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayElemAt/#exp._S_arrayElemAt)
 - $arrayToObject	Converts an array of key value pairs to a document. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayToObject/#exp._S_arrayToObject)
 - $concatArrays	Concatenates arrays to return the concatenated array. (https://docs.mongodb.com/manual/reference/operator/aggregation/concatArrays/#exp._S_concatArrays)
@@ -580,7 +580,7 @@ ____________________________________________________
 
 <br><br>
 
-## Boolean Expression Operators
+## Boolean Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#boolean-expression-operators)
 - $and	Returns true only when all its expressions evaluate to true. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/and/#exp._S_and)
 - $not	Returns the boolean value that is the opposite of its argument expression. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/not/#exp._S_not)
 - $or	Returns true when any of its expressions evaluates to true. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/or/#exp._S_or)
@@ -588,7 +588,7 @@ ____________________________________________________
 
 <br><br>
 
-## Comparison Expression Operators
+## Comparison Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#comparison-expression-operators)
 - $cmp	Returns 0 if the two values are equivalent, 1 if the first value is greater than the second, and -1 if the first value is less than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/cmp/#exp._S_cmp)
 - $eq	Returns true if the values are equivalent. (https://docs.mongodb.com/manual/reference/operator/aggregation/eq/#exp._S_eq)
 - $gt	Returns true if the first value is greater than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/gt/#exp._S_gt)
@@ -601,7 +601,7 @@ ____________________________________________________
 <br><br>
 
 
-## Conditional Expression Operators
+## Conditional Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#conditional-expression-operators)
 - $cond	A ternary operator that evaluates one expression, and depending on the result, returns the value of one of the other two expressions. Accepts either three expressions in an ordered list or three named parameters. (https://docs.mongodb.com/manual/reference/operator/aggregation/cond/#exp._S_cond)
 - $ifNull	Returns either the non-null result of the first expression or the result of the second expression if the first expression results in a null result. Null result encompasses instances of undefined values or missing fields. Accepts two expressions as arguments. The result of the second expression can be null. (https://docs.mongodb.com/manual/reference/operator/aggregation/ifNull/#exp._S_ifNull)
 - $switch	Evaluates a series of case expressions. When it finds an expression which evaluates to true, $switch executes a specified expression and breaks out of the control flow. (https://docs.mongodb.com/manual/reference/operator/aggregation/switch/#exp._S_switch)
@@ -610,7 +610,7 @@ ____________________________________________________
 
 <br><br>
 
-## Custom Aggregation Expression Operators
+## Custom Aggregation Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#custom-aggregation-expression-operators)
 - $accumulator - Defines a custom accumulator function. (https://docs.mongodb.com/manual/reference/operator/aggregation/accumulator/#grp._S_accumulator)
 - $function	- Defines a custom function. (https://docs.mongodb.com/manual/reference/operator/aggregation/function/#exp._S_function)
 
@@ -618,7 +618,7 @@ ____________________________________________________
 
 <br><br>
 
-## Data Size Operators
+## Data Size Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#data-size-operators)
 - $binarySize	Returns the size of a given string or binary data value’s content in bytes. (https://docs.mongodb.com/manual/reference/operator/aggregation/binarySize/#exp._S_binarySize)
 - $bsonSize	Returns the size in bytes of a given document (i.e. bsontype Object) when encoded as BSON. (https://docs.mongodb.com/manual/reference/operator/aggregation/bsonSize/#exp._S_bsonSize)
 
@@ -627,7 +627,7 @@ ____________________________________________________
 
 <br><br>
 
-## Date Expression Operators
+## Date Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#date-expression-operators)
 - $dateFromParts	Constructs a BSON Date object given the date’s constituent parts. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromParts/#exp._S_dateFromParts)
 - $dateFromString	Converts a date/time string to a date object. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromString/#exp._S_dateFromString)
 - $dateToParts	Returns a document containing the constituent parts of a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateToParts/#exp._S_dateToParts)
@@ -648,6 +648,128 @@ ____________________________________________________
 - $year	Returns the year for a date as a number (e.g. 2014). (https://docs.mongodb.com/manual/reference/operator/aggregation/year/#exp._S_year)
 - $add	Adds numbers and a date to return a new date. If adding numbers and a date, treats the numbers as milliseconds. Accepts any number of argument expressions, but at most, one expression can resolve to a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/add/#exp._S_add)
 - $subtract	Returns the result of subtracting the second value from the first. If the two values are dates, return the difference in milliseconds. If the two values are a date and a number in milliseconds, return the resulting date. Accepts two argument expressions. If the two values are a date and a number, specify the date argument first as it is not meaningful to subtract a date from a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/subtract/#exp._S_subtract)
+
+
+
+
+<br><br>
+
+## Literal Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#literal-expression-operator)
+- $literal	Return a value without parsing. Use for values that the aggregation pipeline may interpret as an expression. For example, use a $literal expression to a string that starts with a $ to avoid parsing as a field path. (https://docs.mongodb.com/manual/reference/operator/aggregation/literal/#exp._S_literal)
+
+
+
+<br><br>
+
+## Miscellaneous Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#miscellaneous-operators)
+- $rand	Returns a random float between 0 and 1 (https://docs.mongodb.com/manual/reference/operator/aggregation/rand/#exp._S_rand)
+- $sampleRate	Randomly select documents at a given rate. Although the exact number of documents selected varies on each run, the quantity chosen approximates the sample rate expressed as a percentage of the total number of documents. (https://docs.mongodb.com/manual/reference/operator/aggregation/sampleRate/#exp._S_sampleRate)
+
+
+
+<br><br>
+
+## Object Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#object-expression-operators)
+- $mergeObjects	Combines multiple documents into a single document. (https://docs.mongodb.com/manual/reference/operator/aggregation/mergeObjects/#exp._S_mergeObjects)
+- $objectToArray	Converts a document to an array of documents representing key-value pairs. (https://docs.mongodb.com/manual/reference/operator/aggregation/objectToArray/#exp._S_objectToArray)
+
+
+<br><br>
+
+## Set Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#set-expression-operators)
+- $allElementsTrue	Returns true if no element of a set evaluates to false, otherwise, returns false. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/allElementsTrue/#exp._S_allElementsTrue)
+- $anyElementTrue	Returns true if any elements of a set evaluate to true; otherwise, returns false. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/anyElementTrue/#exp._S_anyElementTrue)
+- $setDifference	Returns a set with elements that appear in the first set but not in the second set; i.e. performs a relative complement of the second set relative to the first. Accepts exactly two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setDifference/#exp._S_setDifference)
+- $setEquals	Returns true if the input sets have the same distinct elements. Accepts two or more argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setEquals/#exp._S_setEquals)
+- $setIntersection	Returns a set with elements that appear in all of the input sets. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setIntersection/#exp._S_setIntersection)
+- $setIsSubset	Returns true if all elements of the first set appear in the second set, including when the first set equals the second set; i.e. not a strict subset. Accepts exactly two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setIsSubset/#exp._S_setIsSubset)
+- $setUnion	Returns a set with elements that appear in any of the input sets. (https://docs.mongodb.com/manual/reference/operator/aggregation/setUnion/#exp._S_setUnion)
+
+<br><br>
+
+## String Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#string-expression-operators)
+- $concat	Concatenates any number of strings. (https://docs.mongodb.com/manual/reference/operator/aggregation/concat/#exp._S_concat)
+- $dateFromString	Converts a date/time string to a date object. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromString/#exp._S_dateFromString)
+- $dateToString	Returns the date as a formatted string. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateToString/#exp._S_dateToString)
+- $indexOfBytes	Searches a string for an occurrence of a substring and returns the UTF-8 byte index of the first occurrence. If the substring is not found, returns -1. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexOfBytes/#exp._S_indexOfBytes)
+- $indexOfCP	Searches a string for an occurrence of a substring and returns the UTF-8 code point index of the first occurrence. If the substring is not found, returns -1 (https://docs.mongodb.com/manual/reference/operator/aggregation/indexOfCP/#exp._S_indexOfCP)
+- $ltrim	Removes whitespace or the specified characters from the beginning of a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/ltrim/#exp._S_ltrim)
+- $regexFind	Applies a regular expression (regex) to a string and returns information on the first matched substring. (https://docs.mongodb.com/manual/reference/operator/aggregation/regexFind/#exp._S_regexFind)
+- $regexFindAll	Applies a regular expression (regex) to a string and returns information on the all matched substrings. (https://docs.mongodb.com/manual/reference/operator/aggregation/regexFindAll/#exp._S_regexFindAll)
+- $regexMatch	Applies a regular expression (regex) to a string and returns a boolean that indicates if a match is found or not. (https://docs.mongodb.com/manual/reference/operator/aggregation/regexMatch/#exp._S_regexMatch)
+- $replaceOne	Replaces the first instance of a matched string in a given input. (https://docs.mongodb.com/manual/reference/operator/aggregation/replaceOne/#exp._S_replaceOne)
+- $replaceAll	Replaces all instances of a matched string in a given input. (https://docs.mongodb.com/manual/reference/operator/aggregation/replaceAll/#exp._S_replaceAll)
+- $rtrim	Removes whitespace or the specified characters from the end of a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/rtrim/#exp._S_rtrim)
+- $split	Splits a string into substrings based on a delimiter. Returns an array of substrings. If the delimiter is not found within the string, returns an array containing the original string. (https://docs.mongodb.com/manual/reference/operator/aggregation/split/#exp._S_split)
+- $strLenBytes	Returns the number of UTF-8 encoded bytes in a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/strLenBytes/#exp._S_strLenBytes)
+- $strLenCP	Returns the number of UTF-8 code points in a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/strLenCP/#exp._S_strLenCP)
+- $strcasecmp	Performs case-insensitive string comparison and returns: 0 if two strings are equivalent, 1 if the first string is greater than the second, and -1 if the first string is less than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/strcasecmp/#exp._S_strcasecmp)
+- $substr	Deprecated. Use $substrBytes or $substrCP. (https://docs.mongodb.com/manual/reference/operator/aggregation/substr/#exp._S_substr)
+- $substrBytes	Returns the substring of a string. Starts with the character at the specified UTF-8 byte index (zero-based) in the string and continues for the specified number of bytes. (https://docs.mongodb.com/manual/reference/operator/aggregation/substrBytes/#exp._S_substrBytes)
+- $substrCP	Returns the substring of a string. Starts with the character at the specified UTF-8 code point (CP) index (zero-based) in the string and continues for the number of code points specified. (https://docs.mongodb.com/manual/reference/operator/aggregation/substrCP/#exp._S_substrCP)
+- $toLower	Converts a string to lowercase. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/toLower/#exp._S_toLower)
+- $toString	Converts value to a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/toString/#exp._S_toString)
+- $trim	Removes whitespace or the specified characters from the beginning and end of a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/trim/#exp._S_trim)
+- $toUpper	Converts a string to uppercase. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/toUpper/#exp._S_toUpper)
+
+
+<br><br>
+
+## Text Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#text-expression-operator)
+- $meta	Access available per-document metadata related to the aggregation operation. (https://docs.mongodb.com/manual/reference/operator/aggregation/meta/#exp._S_meta)
+
+
+
+<br><br>
+
+## Text Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#trigonometry-expression-operators)
+- Trigonometry Expression Operators
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
