@@ -1809,16 +1809,20 @@ ____________________________________________________
 
 ## write concern (https://docs.mongodb.com/manual/reference/write-concern/)
 - Not defined write concern will be always "1". This means the data will be only written to 1 primary node (database)
+
+<br><br>
 - If set to "0" it means it does not request a result of the write process. "Fire-and-forget". This is usefully when you want the fastest possible write process and do not care if some data gets lost. As example for real time monoitoring operations.
+
+<br><br>
 - In a 3-node replica set, the highest valid Write Concern is 3. A Write Concern of w: 5 or w: 4 would never be satisfied, because there are only 3 nodes in the set.
 
-<br>
-
+<br><br>
 - If set to "majority" it will wait until the data gets replicated to a secondary node. The secondary node send the result back to the primary and the primary back to the client. (https://docs.mongodb.com/manual/reference/write-concern/#writeconcern.%22majority%22)
+- If set to "majority" you should **always** use a write concern timeout **{w: 'majority', wtimeout: 5000}**
 ```javascript
 const ar = [
 {"title": "Fortnite", "year": 2015}, // document to add to collection
-{w: 'majority'} // options
+{w: 'majority', wtimeout: 5000} // options
 ];
 
 // callback
