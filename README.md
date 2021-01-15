@@ -462,9 +462,11 @@ ____________________________________________________
 
 <br><br>
 
-# Logical Query Operators
+# Operators
 
-## Comparison Query Operators (https://docs.mongodb.com/manual/reference/operator/query-comparison/)
+## Logical Query Operators
+
+#### Comparison Query Operators (https://docs.mongodb.com/manual/reference/operator/query-comparison/)
 - $eq	Matches values that are equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/eq/)
 - $gt	Matches values that are greater than a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/gt/)
 - $gte	Matches values that are greater than or equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/gte/)
@@ -476,7 +478,7 @@ ____________________________________________________
 
 <br><br>
 
-## Logical Query Operators (https://docs.mongodb.com/manual/reference/operator/query-logical/)
+#### Logical Query Operators (https://docs.mongodb.com/manual/reference/operator/query-logical/)
 - $and	Joins query clauses with a logical AND returns all documents that match the conditions of both clauses. (https://docs.mongodb.com/manual/reference/operator/query/and/)
 - $not	Inverts the effect of a query expression and returns documents that do not match the query expression. (https://docs.mongodb.com/manual/reference/operator/query/not/)
 - $nor	Joins query clauses with a logical NOR returns all documents that fail to match both clauses. (https://docs.mongodb.com/manual/reference/operator/query/nor/)
@@ -484,13 +486,13 @@ ____________________________________________________
 
 <br><br>
 
-## Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-element/)
+#### Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-element/)
 - $exists	Matches documents that have the specified field. (https://docs.mongodb.com/manual/reference/operator/query/exists/)
 - $type	Selects documents if a field is of the specified type. (https://docs.mongodb.com/manual/reference/operator/query/type/)
 
 <br><br>
 
-## Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-evaluation/)
+#### Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-evaluation/)
 - $expr	Allows use of aggregation expressions within the query language. (https://docs.mongodb.com/manual/reference/operator/query/expr/)
 - $jsonSchema	Validate documents against the given JSON Schema. (https://docs.mongodb.com/manual/reference/operator/query/jsonSchema/)
 - $mod	Performs a modulo operation on the value of a field and selects documents with a specified result. (https://docs.mongodb.com/manual/reference/operator/query/mod/)
@@ -500,7 +502,7 @@ ____________________________________________________
 
 <br><br>
 
-## Geospatial Query Operators (https://docs.mongodb.com/manual/reference/operator/query-geospatial/)
+#### Geospatial Query Operators (https://docs.mongodb.com/manual/reference/operator/query-geospatial/)
 - $geoIntersects	Selects geometries that intersect with a GeoJSON geometry. The 2dsphere index supports $geoIntersects. (https://docs.mongodb.com/manual/reference/operator/query/geoIntersects/)
 - $geoWithin	Selects geometries within a bounding GeoJSON geometry. The 2dsphere and 2d indexes support $geoWithin. (https://docs.mongodb.com/manual/reference/operator/query/geoWithin/)
 - $near	Returns geospatial objects in proximity to a point. Requires a geospatial index. The 2dsphere and 2d indexes support $near. (https://docs.mongodb.com/manual/reference/operator/query/near/)
@@ -509,7 +511,7 @@ ____________________________________________________
 
 <br><br>
 
-## Array Query Operators (https://docs.mongodb.com/manual/reference/operator/query-array/)
+#### Array Query Operators (https://docs.mongodb.com/manual/reference/operator/query-array/)
 - $all	Matches arrays that contain all elements specified in the query. (https://docs.mongodb.com/manual/reference/operator/query/all/)
 - $elemMatch	Selects documents if element in the array field matches all the specified $elemMatch conditions. (https://docs.mongodb.com/manual/reference/operator/query/elemMatch/)
 - $size	Selects documents if the array field is a specified size. (https://docs.mongodb.com/manual/reference/operator/query/size/)
@@ -517,7 +519,7 @@ ____________________________________________________
 
 <br><br>
 
-## Bitwise Query Operators (https://docs.mongodb.com/manual/reference/operator/query-bitwise/)
+#### Bitwise Query Operators (https://docs.mongodb.com/manual/reference/operator/query-bitwise/)
 - $bitsAllClear	Matches numeric or binary values in which a set of bit positions all have a value of 0. (https://docs.mongodb.com/manual/reference/operator/query/bitsAllClear/)
 - $bitsAllSet	Matches numeric or binary values in which a set of bit positions all have a value of 1. (https://docs.mongodb.com/manual/reference/operator/query/bitsAllSet/)
 - $bitsAnyClear	Matches numeric or binary values in which any bit from a set of bit positions has a value of 0. (https://docs.mongodb.com/manual/reference/operator/query/bitsAnyClear/)
@@ -535,17 +537,17 @@ ____________________________________________________
 <br><br><br><br>
 
 
-# Aggregation Pipeline Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/)
+## Aggregation Pipeline Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/)
 
 
 <br><br>
 
-## Alphabetical Listing of Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#alphabetical-listing-of-expression-operators)
+#### Alphabetical Listing of Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#alphabetical-listing-of-expression-operators)
 
 <br><br>
 <br><br>
 
-## Arithmetic Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#arithmetic-expression-operators)
+#### Arithmetic Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#arithmetic-expression-operators)
 - $abs	Returns the absolute value of a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/abs/#exp._S_abs)
 - $add	Adds numbers to return the sum, or adds numbers and a date to return a new date. If adding numbers and a date, treats the numbers as milliseconds. Accepts any number of argument expressions, but at most, one expression can resolve to a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/add/#exp._S_add)
 - $ceil	Returns the smallest integer greater than or equal to the specified number. (https://docs.mongodb.com/manual/reference/operator/aggregation/ceil/#exp._S_ceil)
@@ -565,7 +567,7 @@ ____________________________________________________
 
 <br><br>
 
-## Array Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#array-expression-operators)
+#### Array Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#array-expression-operators)
 - $arrayElemAt	Returns the element at the specified array index. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayElemAt/#exp._S_arrayElemAt)
 - $arrayToObject	Converts an array of key value pairs to a document. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayToObject/#exp._S_arrayToObject)
 - $concatArrays	Concatenates arrays to return the concatenated array. (https://docs.mongodb.com/manual/reference/operator/aggregation/concatArrays/#exp._S_concatArrays)
@@ -586,7 +588,7 @@ ____________________________________________________
 
 <br><br>
 
-## Boolean Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#boolean-expression-operators)
+#### Boolean Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#boolean-expression-operators)
 - $and	Returns true only when all its expressions evaluate to true. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/and/#exp._S_and)
 - $not	Returns the boolean value that is the opposite of its argument expression. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/not/#exp._S_not)
 - $or	Returns true when any of its expressions evaluates to true. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/or/#exp._S_or)
@@ -594,7 +596,7 @@ ____________________________________________________
 
 <br><br>
 
-## Comparison Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#comparison-expression-operators)
+#### Comparison Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#comparison-expression-operators)
 - $cmp	Returns 0 if the two values are equivalent, 1 if the first value is greater than the second, and -1 if the first value is less than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/cmp/#exp._S_cmp)
 - $eq	Returns true if the values are equivalent. (https://docs.mongodb.com/manual/reference/operator/aggregation/eq/#exp._S_eq)
 - $gt	Returns true if the first value is greater than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/gt/#exp._S_gt)
@@ -607,7 +609,7 @@ ____________________________________________________
 <br><br>
 
 
-## Conditional Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#conditional-expression-operators)
+#### Conditional Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#conditional-expression-operators)
 - $cond	A ternary operator that evaluates one expression, and depending on the result, returns the value of one of the other two expressions. Accepts either three expressions in an ordered list or three named parameters. (https://docs.mongodb.com/manual/reference/operator/aggregation/cond/#exp._S_cond)
 - $ifNull	Returns either the non-null result of the first expression or the result of the second expression if the first expression results in a null result. Null result encompasses instances of undefined values or missing fields. Accepts two expressions as arguments. The result of the second expression can be null. (https://docs.mongodb.com/manual/reference/operator/aggregation/ifNull/#exp._S_ifNull)
 - $switch	Evaluates a series of case expressions. When it finds an expression which evaluates to true, $switch executes a specified expression and breaks out of the control flow. (https://docs.mongodb.com/manual/reference/operator/aggregation/switch/#exp._S_switch)
@@ -616,7 +618,7 @@ ____________________________________________________
 
 <br><br>
 
-## Custom Aggregation Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#custom-aggregation-expression-operators)
+#### Custom Aggregation Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#custom-aggregation-expression-operators)
 - $accumulator - Defines a custom accumulator function. (https://docs.mongodb.com/manual/reference/operator/aggregation/accumulator/#grp._S_accumulator)
 - $function	- Defines a custom function. (https://docs.mongodb.com/manual/reference/operator/aggregation/function/#exp._S_function)
 
@@ -624,7 +626,7 @@ ____________________________________________________
 
 <br><br>
 
-## Data Size Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#data-size-operators)
+#### Data Size Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#data-size-operators)
 - $binarySize	Returns the size of a given string or binary data value’s content in bytes. (https://docs.mongodb.com/manual/reference/operator/aggregation/binarySize/#exp._S_binarySize)
 - $bsonSize	Returns the size in bytes of a given document (i.e. bsontype Object) when encoded as BSON. (https://docs.mongodb.com/manual/reference/operator/aggregation/bsonSize/#exp._S_bsonSize)
 
@@ -633,7 +635,7 @@ ____________________________________________________
 
 <br><br>
 
-## Date Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#date-expression-operators)
+#### Date Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#date-expression-operators)
 - $dateFromParts	Constructs a BSON Date object given the date’s constituent parts. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromParts/#exp._S_dateFromParts)
 - $dateFromString	Converts a date/time string to a date object. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromString/#exp._S_dateFromString)
 - $dateToParts	Returns a document containing the constituent parts of a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateToParts/#exp._S_dateToParts)
@@ -660,14 +662,14 @@ ____________________________________________________
 
 <br><br>
 
-## Literal Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#literal-expression-operator)
+#### Literal Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#literal-expression-operator)
 - $literal	Return a value without parsing. Use for values that the aggregation pipeline may interpret as an expression. For example, use a $literal expression to a string that starts with a $ to avoid parsing as a field path. (https://docs.mongodb.com/manual/reference/operator/aggregation/literal/#exp._S_literal)
 
 
 
 <br><br>
 
-## Miscellaneous Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#miscellaneous-operators)
+#### Miscellaneous Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#miscellaneous-operators)
 - $rand	Returns a random float between 0 and 1 (https://docs.mongodb.com/manual/reference/operator/aggregation/rand/#exp._S_rand)
 - $sampleRate	Randomly select documents at a given rate. Although the exact number of documents selected varies on each run, the quantity chosen approximates the sample rate expressed as a percentage of the total number of documents. (https://docs.mongodb.com/manual/reference/operator/aggregation/sampleRate/#exp._S_sampleRate)
 
@@ -675,14 +677,14 @@ ____________________________________________________
 
 <br><br>
 
-## Object Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#object-expression-operators)
+#### Object Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#object-expression-operators)
 - $mergeObjects	Combines multiple documents into a single document. (https://docs.mongodb.com/manual/reference/operator/aggregation/mergeObjects/#exp._S_mergeObjects)
 - $objectToArray	Converts a document to an array of documents representing key-value pairs. (https://docs.mongodb.com/manual/reference/operator/aggregation/objectToArray/#exp._S_objectToArray)
 
 
 <br><br>
 
-## Set Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#set-expression-operators)
+#### Set Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#set-expression-operators)
 - $allElementsTrue	Returns true if no element of a set evaluates to false, otherwise, returns false. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/allElementsTrue/#exp._S_allElementsTrue)
 - $anyElementTrue	Returns true if any elements of a set evaluate to true; otherwise, returns false. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/anyElementTrue/#exp._S_anyElementTrue)
 - $setDifference	Returns a set with elements that appear in the first set but not in the second set; i.e. performs a relative complement of the second set relative to the first. Accepts exactly two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setDifference/#exp._S_setDifference)
@@ -693,7 +695,7 @@ ____________________________________________________
 
 <br><br>
 
-## String Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#string-expression-operators)
+#### String Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#string-expression-operators)
 - $concat	Concatenates any number of strings. (https://docs.mongodb.com/manual/reference/operator/aggregation/concat/#exp._S_concat)
 - $dateFromString	Converts a date/time string to a date object. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromString/#exp._S_dateFromString)
 - $dateToString	Returns the date as a formatted string. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateToString/#exp._S_dateToString)
@@ -721,14 +723,14 @@ ____________________________________________________
 
 <br><br>
 
-## Text Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#text-expression-operator)
+#### Text Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#text-expression-operator)
 - $meta	Access available per-document metadata related to the aggregation operation. (https://docs.mongodb.com/manual/reference/operator/aggregation/meta/#exp._S_meta)
 
 
 
 <br><br>
 
-## Trigonometry Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#trigonometry-expression-operators)
+#### Trigonometry Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#trigonometry-expression-operators)
 - $sin	Returns the sine of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/sin/#exp._S_sin)
 - $cos	Returns the cosine of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/cos/#exp._S_cos)
 - $tan	Returns the tangent of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/tan/#exp._S_tan)
@@ -748,7 +750,7 @@ ____________________________________________________
 
 <br><br>
 
-## Type Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#type-expression-operators)
+#### Type Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#type-expression-operators)
 - $convert	Converts a value to a specified type. (https://docs.mongodb.com/manual/reference/operator/aggregation/convert/#exp._S_convert)
 - $isNumber	Returns boolean true if the specified expression resolves to an integer, decimal, double, or long. Returns boolean false if the expression resolves to any other BSON type, null, or a missing field. (https://docs.mongodb.com/manual/reference/operator/aggregation/isNumber/#exp._S_isNumber)
 - $toBool	Converts value to a boolean. (https://docs.mongodb.com/manual/reference/operator/aggregation/toBool/#exp._S_toBool)
@@ -766,7 +768,7 @@ ____________________________________________________
 
 <br><br>
 
-## Accumulators ($group) (https://docs.mongodb.com/manual/reference/operator/aggregation/#accumulators-group)
+#### Accumulators ($group) (https://docs.mongodb.com/manual/reference/operator/aggregation/#accumulators-group)
 - https://docs.mongodb.com/manual/reference/operator/aggregation/group/#pipe._S_group
 
 <br><br>
@@ -789,7 +791,7 @@ ____________________________________________________
 
 <br><br>
 
-## Accumulators (in Other Stages)
+#### Accumulators (in Other Stages)
 - $avg	Returns an average of the specified expression or list of expressions for each document. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg)
 - $max	Returns the maximum of the specified expression or list of expressions for each document (https://docs.mongodb.com/manual/reference/operator/aggregation/max/#grp._S_max)
 - $min	Returns the minimum of the specified expression or list of expressions for each document (https://docs.mongodb.com/manual/reference/operator/aggregation/min/#grp._S_min)
@@ -803,7 +805,7 @@ ____________________________________________________
 
 <br><br>
 
-## Variable Expression Operators
+#### Variable Expression Operators
 - $let	Defines variables for use within the scope of a subexpression and returns the result of the subexpression. Accepts named parameters. Accepts any number of argument expressions.
 
 
