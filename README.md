@@ -2575,3 +2575,81 @@ console.log(r.result.n); // gives the amount of deleted documents. If 4 document
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+# Error Handling
+
+<br><br>
+
+## Duplicated Key Error (E11000 duplicate key error collection)
+- https://youtu.be/ELazfOluptY?t=24
+```javascript
+const query = {_id: 0};
+
+// callback
+collection.insertOne(query, function(e, result) {/* .. */ });
+
+//async
+const r = await collection.insertOne(query);
+
+// try to insert a new document with same  ID
+try{
+  const r = await collection.insertOne(query);
+} catch (e) {
+  console.log(e.errmsg); // E11000 duplicate key error collection
+}
+```
+
+
+
+
+
+
+
+
+
