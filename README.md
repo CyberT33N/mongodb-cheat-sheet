@@ -1465,6 +1465,15 @@ ____________________________________________________
 - Stages use one or more expressions
 - Expressions are functions
 
+## Guides
+- What can I understand under aggregation? (https://www.youtube.com/watch?v=5_oSSbQpGSM)
+
+
+
+
+
+
+
 
 <br><br>
 
