@@ -1464,10 +1464,24 @@ ____________________________________________________
 - Pipelines are composed of one or more stages
 - Stages use one or more expressions
 - Expressions are functions
+```javascript
+const pipeline = [
+[{stage1}, {stage2}, {stage3}],
+{options}
+];
+
+// callback
+collection.aggregate(...pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(...pipeline).toArray({});
+```
+
+
 
 ## Guides
 - What can I understand under aggregation? (https://www.youtube.com/watch?v=5_oSSbQpGSM)
-
+- Structure and Syntax (https://www.youtube.com/watch?v=SYtRQ5crN6U)
 
 
 
@@ -1486,13 +1500,13 @@ ____________________________________________________
 #### add numbers
 ```javascript
 // add price + fee
-const query = [{$project: {item: 1, total: {$add: [ "$price", "$fee" ]}}}];
+const pipeline = [{$project: {item: 1, total: {$add: [ "$price", "$fee" ]}}}];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
@@ -1516,15 +1530,15 @@ const r = await collection.aggregate(query).toArray({});
 */
 
 // add price + fee
-const query = [
+const pipeline = [
      {$project: {date: 1, item: 1, total: {$multiply: [ "$price", "$quantity" ]}}}
    ];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 
 /*
 The operation returns the following results:
@@ -1558,17 +1572,17 @@ The operation returns the following results:
 */
 
 
-const query = [{$group: {
+const pipeline = [{$group: {
                  _id: "$item",
                 avgAmount: { $avg: { $multiply: [ "$price", "$quantity" ] } },
                 avgQuantity: { $avg: "$quantity" }
               }}];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 
 /* operation will return:
 { "_id" : "xyz", "avgAmount" : 37.5, "avgQuantity" : 7.5 }
@@ -1577,7 +1591,11 @@ const r = await collection.aggregate(query).toArray({});
 */
 ```
 
+
+
 <br><br>
+
+
 
 #### count amount of field with the same value
 - In this case we also sort the result descending and then limit the result to 20
@@ -1645,6 +1663,8 @@ count:327
 
 
 
+
+
 <br><br>
 
 ## $multiply (https://docs.mongodb.com/manual/reference/operator/aggregation/multiply/)
@@ -1658,15 +1678,15 @@ count:327
 */
 
 // add price + fee
-const query = [
+const pipeline = [
      {$project: {date: 1, item: 1, total: {$multiply: [ "$price", "$quantity" ]}}}
    ];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 
 /*
 The operation returns the following results:
@@ -1693,13 +1713,13 @@ The operation returns the following results:
 ## get number between range
 ```javascript
 // match results with year between 1980-1990
-const query = [{$match: {year: {'$gte': 1980, '$lt': 1990}}}];
+const pipeline = [{$match: {year: {'$gte': 1980, '$lt': 1990}}}];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
@@ -1709,32 +1729,32 @@ const r = await collection.aggregate(query).toArray({});
 ## matchdom document with used = 0 and limit to 1 item
 ```javascript
 // method #1
-const query = [{$match: { used: 0 }}, {$limit: 1}];
+const pipeline = [{$match: { used: 0 }}, {$limit: 1}];
 
 // method #2
-const query = [{$match: { used: 0 }}, {$sample: { size: 1 }}];
+const pipeline = [{$match: { used: 0 }}, {$sample: { size: 1 }}];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 <br><br>
 
 ## match random document with used = 0 and limit to 1 item and return only title and _id
 ```javascript
-const query = [
+const pipeline = [
 {$match: { used: 0 }},
 {$project: { title: 1, _id: 1 }},
 {$limit: 1},
 ];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 <br><br>
@@ -1742,13 +1762,13 @@ const r = await collection.aggregate(query).toArray({});
 ## sort ascending order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
 ```javascript
 // sort results by year
-const query = [{ $sort: {year: 1}}];
+const pipeline = [{ $sort: {year: 1}}];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 <br><br>
@@ -1756,13 +1776,13 @@ const r = await collection.aggregate(query).toArray({});
 ## skip results (https://docs.mongodb.com/manual/reference/operator/aggregation/skip/)
 ```javascript
 // sort results by year
-const query = [{$skip: 5}];
+const pipeline = [{$skip: 5}];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
@@ -1809,7 +1829,7 @@ const r = await collection.aggregate(query).toArray({});
 
 
 ```javascript
-const query = [
+const pipeline = [
   {
     '$match': {
       'year': {
@@ -1840,10 +1860,10 @@ const query = [
 ];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
@@ -1859,7 +1879,7 @@ const r = await collection.aggregate(query).toArray({});
 #### show the amount of matches - $count (https://docs.mongodb.com/manual/reference/operator/aggregation/count/)
 - Because we use a pipeline we will first match all the movie comments and then after this only response with the amount of matches as result
 ```javascript
-const query = [
+const pipeline = [
   {
     '$match': {
       'year': {
@@ -1892,10 +1912,10 @@ const query = [
 ];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
@@ -1975,7 +1995,7 @@ const r = await collection.aggregate(query).toArray({});
 
 
 
-const query = [
+const pipeline = [
   {
     '$match': {
       '_id': new ObjectId('573a13b5f29313caabd42c2f')
@@ -2007,10 +2027,10 @@ const query = [
 ];
 
 // callback
-collection.aggregate(query).toArray(function(e, docs) { /* .. */ });
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 
 // async
-const r = await collection.aggregate(query).toArray({});
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
