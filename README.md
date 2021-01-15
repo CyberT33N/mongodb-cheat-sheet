@@ -2306,3 +2306,105 @@ console.log(r.result.n); // gives the amount of deleted documents. If 4 document
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+# Connection (http://mongodb.github.io/node-mongodb-native/2.1/reference/connecting/connection-settings/)
+```javascript
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:50000,localhost:50001/myproject';
+// Use connect method to connect to the Server passing in
+// additional options
+MongoClient.connect(url, {
+  poolSize: 10, ssl: true
+}, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+
+  db.close();
+});
+```
+
+<br><br>
+
+## Connection Pooling 
+- Allows reusing Database Connections. For default you create a connection and then close it. With Connection Pooling you reuse the connection.
+- Requests are faster and use less Hardware Resources
+- Default size is 100
+```javascript
+var MongoClient = require('mongodb').MongoClient
+  , assert = require('assert');
+
+// Connection URL
+var url = 'mongodb://localhost:50000,localhost:50001/myproject';
+// Use connect method to connect to the Server passing in
+// additional options
+MongoClient.connect(url, {
+  poolSize: 10, ssl: true
+}, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected correctly to server");
+
+  db.close();
+});
+```
+
+
