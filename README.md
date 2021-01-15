@@ -1426,7 +1426,7 @@ const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"clien
 <br><br><br><br>
 
 
-#### Using temp files on disk at large searches
+#### Using temp files on disk at large searches (https://docs.mongodb.com/manual/reference/method/cursor.allowDiskUse/)
 ```javascript
 const query = {"payload.discount": {$exists: true}};
 
@@ -1480,7 +1480,6 @@ ____________________________________________________
 
 
 # Aggregation - .aggregate (https://docs.mongodb.com/manual/reference/aggregation/)
-- https://www.youtube.com/watch?v=dpr_2cbC4Yk
 - Aggregation is a pipleline
 - Pipelines are composed of one or more stages
 - Stages use one or more expressions
@@ -1498,11 +1497,14 @@ collection.aggregate(...pipeline).toArray(function(e, docs) { /* .. */ });
 const r = await collection.aggregate(...pipeline).toArray({});
 ```
 
+## Ref
+- https://docs.mongodb.com/manual/reference/command/aggregate/
 
 
 ## Guides
 - What can I understand under aggregation? (https://www.youtube.com/watch?v=5_oSSbQpGSM)
 - Structure and Syntax (https://www.youtube.com/watch?v=SYtRQ5crN6U)
+- m220 Basic Aggregation (https://www.youtube.com/watch?v=dpr_2cbC4Yk)
 
 
 
