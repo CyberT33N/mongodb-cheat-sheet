@@ -492,7 +492,7 @@ ____________________________________________________
 
 <br><br>
 
-#### Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-evaluation/)
+#### Evaluation Query Operators (https://docs.mongodb.com/manual/reference/operator/query-evaluation/)
 - $expr	Allows use of aggregation expressions within the query language. (https://docs.mongodb.com/manual/reference/operator/query/expr/)
 - $jsonSchema	Validate documents against the given JSON Schema. (https://docs.mongodb.com/manual/reference/operator/query/jsonSchema/)
 - $mod	Performs a modulo operation on the value of a field and selects documents with a specified result. (https://docs.mongodb.com/manual/reference/operator/query/mod/)
