@@ -85,18 +85,36 @@ sudo dpkg --remove mongodb-compass
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 ____________________________________________________
 ____________________________________________________
 <br><br>
 
 
-# Community Server
+# Server
+
+## Community Server
 - https://www.mongodb.com/try/download/community
-- Ubuntu 20.04 - amd64 (https://repo.mongodb.org/apt/ubuntu/dists/focal/mongodb-org/4.4/multiverse/binary-amd64/mongodb-org-server_4.4.2_amd64.deb)
 
 <br><br>
-## MAC
+#### MAC
 Install Terminal Command:
 ```bash
 brew install mongodb
@@ -112,7 +130,7 @@ brew services stop mongodb
 
 <br><br>
 
-## Fedora:
+#### Fedora:
 Install Command:
 ```bash
 sudo dnf install downloadedpackage.rpm
@@ -132,7 +150,7 @@ sudo systemctl enable mongod
 
 <br><br>
 
-## CentOS:
+#### CentOS:
 Install Command:
 ```bash
 sudo rpm -i downloadedpackage.rpm
@@ -152,7 +170,7 @@ sudo systemctl enable mongod
 
 <br><br>
 
-## Ubuntu:
+#### Ubuntu:
 Start Command:
 ```bash
 sudo service mongod start
@@ -168,7 +186,7 @@ sudo systemctl enable mongod
 
 <br><br>
 
-## Windows:
+#### Windows:
 - MongoDB Server should get an autostart entry by default after installation.
 Start Command:
 ```bash
@@ -178,6 +196,31 @@ Stop Command:
 ```bash
 net stop MongoDB
 ```
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+
+## Enterprise Server
+- https://www.mongodb.com/try/download/enterprise
+
+
+#### Guides
+- https://docs.mongodb.com/manual/administration/install-enterprise/
+
+
+
+
+
 
 
 
