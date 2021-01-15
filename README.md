@@ -1379,7 +1379,7 @@ collection.find( {"used": 0} ).limit( 2 ).toArray(function(e, docs) { /* .. */ }
 const r = await collection.find( {"used": 0} ).limit( 2 ).toArray({});
 ```
 
-<br />
+<br><br>
 
 #### find value in same document with multiple possible matches for the same field (https://docs.mongodb.com/manual/reference/operator/query/in/)
 ```javascript
@@ -1390,7 +1390,7 @@ collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray(fu
 const r = await collection.find( {title: {$in: ['some title', 'some other title']}} ).toArray({});
 ```
 
-<br />
+<br><br>
 
 #### find multiple values in same document, only if all search values can be found (https://docs.mongodb.com/manual/reference/operator/query/and/#op._S_and)
 ```javascript
@@ -1400,6 +1400,8 @@ collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json
 // async
 const r = await collection.find( { $and: [{"client_id": json?.client_id}, {"client_secret": json?.client_secret}] } ).toArray({});
 ```
+
+<br><br>
 
 #### find multiple values in same document, only if atleast one search value can be found (https://docs.mongodb.com/manual/reference/operator/query/or/#op._S_or)
 ```javascript
@@ -1412,6 +1414,25 @@ const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"clien
 
 
 
+
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
+
+#### Using temp files on disk at large searches
+```javascript
+const query = {"payload.discount": {$exists: true}};
+
+// await
+const r = await collection.findOne(query).allowDiskUse();
+```
 
 
 
@@ -1784,6 +1805,39 @@ collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 // async
 const r = await collection.aggregate(pipeline).toArray({});
 ```
+
+
+
+
+
+
+<br><br>
+
+
+#### Using temp files on disk at large searches
+```javascript
+// sort results by year
+const pipeline = [
+  [{ $sort: {year: 1}}],
+  {allowDiskUse: true}
+];
+
+// callback
+collection.aggregate(...pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(...pipeline).toArray({});
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
