@@ -110,6 +110,30 @@ ____________________________________________________
 
 # Server
 
+<br><br>
+
+## Windows
+
+<br><br>
+
+#### Set Environment Variable
+- In some cases you may not able to use **mongo** in your terminal. To fix this **Right Click Computer > Settings > Advanced Settings > Environment Variables > System Variables > Edit > New
+```bash
+C:\Program Files\MongoDB\Server\4.4\bin;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Community Server
 - https://www.mongodb.com/try/download/community
 
