@@ -532,26 +532,122 @@ ____________________________________________________
 
 
 
+<br><br><br><br>
+
+
+# Aggregation Pipeline Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/)
+
+<br><br>
+
+## Arithmetic Expression Operators
+- $abs	Returns the absolute value of a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/abs/#exp._S_abs)
+- $add	Adds numbers to return the sum, or adds numbers and a date to return a new date. If adding numbers and a date, treats the numbers as milliseconds. Accepts any number of argument expressions, but at most, one expression can resolve to a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/add/#exp._S_add)
+- $ceil	Returns the smallest integer greater than or equal to the specified number. (https://docs.mongodb.com/manual/reference/operator/aggregation/ceil/#exp._S_ceil)
+- $divide	Returns the result of dividing the first number by the second. Accepts two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/divide/#exp._S_divide)
+- $exp	Raises e to the specified exponent. (https://docs.mongodb.com/manual/reference/operator/aggregation/exp/#exp._S_exp)
+- $floor	Returns the largest integer less than or equal to the specified number. (https://docs.mongodb.com/manual/reference/operator/aggregation/floor/#exp._S_floor)
+- $ln	Calculates the natural log of a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/ln/#exp._S_ln)
+- $log	Calculates the log of a number in the specified base. (https://docs.mongodb.com/manual/reference/operator/aggregation/log/#exp._S_log)
+- $log10	Calculates the log base 10 of a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/log10/#exp._S_log10)
+- $mod	Returns the remainder of the first number divided by the second. Accepts two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/mod/#exp._S_mod)
+- $multiply	Multiplies numbers to return the product. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/multiply/#exp._S_multiply)
+- $pow	Raises a number to the specified exponent. (https://docs.mongodb.com/manual/reference/operator/aggregation/pow/#exp._S_pow)
+- $round	Rounds a number to to a whole integer or to a specified decimal place. (https://docs.mongodb.com/manual/reference/operator/aggregation/round/#exp._S_round)
+- $sqrt	Calculates the square root. (https://docs.mongodb.com/manual/reference/operator/aggregation/sqrt/#exp._S_sqrt)
+- $subtract	Returns the result of subtracting the second value from the first. If the two values are numbers, return the difference. If the two values are dates, return the difference in milliseconds. If the two values are a date and a number in milliseconds, return the resulting date. Accepts two argument expressions. If the two values are a date and a number, specify the date argument first as it is not meaningful to subtract a date from a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/subtract/#exp._S_subtract)
+- $trunc	Truncates a number to a whole integer or to a specified decimal place. (https://docs.mongodb.com/manual/reference/operator/aggregation/trunc/#exp._S_trunc)
+
+<br><br>
+
+## Array Expression Operators
+- $arrayElemAt	Returns the element at the specified array index. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayElemAt/#exp._S_arrayElemAt)
+- $arrayToObject	Converts an array of key value pairs to a document. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayToObject/#exp._S_arrayToObject)
+- $concatArrays	Concatenates arrays to return the concatenated array. (https://docs.mongodb.com/manual/reference/operator/aggregation/concatArrays/#exp._S_concatArrays)
+- $filter	Selects a subset of the array to return an array with only the elements that match the filter condition. (https://docs.mongodb.com/manual/reference/operator/aggregation/filter/#exp._S_filter)
+- $first	Returns the first array element. Distinct from $first accumulator. (https://docs.mongodb.com/manual/reference/operator/aggregation/first-array-element/#exp._S_first)
+- $in	Returns a boolean indicating whether a specified value is in an array. (https://docs.mongodb.com/manual/reference/operator/aggregation/in/#exp._S_in)
+- $indexOfArray	Searches an array for an occurrence of a specified value and returns the array index of the first occurrence. If the substring is not found, returns -1. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexOfArray/#exp._S_indexOfArray)
+- $isArray	Determines if the operand is an array. Returns a boolean. (https://docs.mongodb.com/manual/reference/operator/aggregation/isArray/#exp._S_isArray)
+- $last	Returns the last array element. Distinct from $last accumulator. (https://docs.mongodb.com/manual/reference/operator/aggregation/last-array-element/#exp._S_last)
+- $map	Applies a subexpression to each element of an array and returns the array of resulting values in order. Accepts named parameters. (https://docs.mongodb.com/manual/reference/operator/aggregation/map/#exp._S_map)
+- $objectToArray	Converts a document to an array of documents representing key-value pairs. (https://docs.mongodb.com/manual/reference/operator/aggregation/objectToArray/#exp._S_objectToArray)
+- $range	Outputs an array containing a sequence of integers according to user-defined inputs. (https://docs.mongodb.com/manual/reference/operator/aggregation/range/#exp._S_range)
+- $reduce	Applies an expression to each element in an array and combines them into a single value. (https://docs.mongodb.com/manual/reference/operator/aggregation/reduce/#exp._S_reduce)
+- $reverseArray	Returns an array with the elements in reverse order. (https://docs.mongodb.com/manual/reference/operator/aggregation/reverseArray/#exp._S_reverseArray)
+- $size	Returns the number of elements in the array. Accepts a single expression as argument. (https://docs.mongodb.com/manual/reference/operator/aggregation/size/#exp._S_size)
+- $slice	Returns a subset of an array. (https://docs.mongodb.com/manual/reference/operator/aggregation/slice/#exp._S_slice)
+- $zip	Merge two arrays together. (https://docs.mongodb.com/manual/reference/operator/aggregation/zip/#exp._S_zip)
+
+<br><br>
+
+## Boolean Expression Operators
+- $and	Returns true only when all its expressions evaluate to true. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/and/#exp._S_and)
+- $not	Returns the boolean value that is the opposite of its argument expression. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/not/#exp._S_not)
+- $or	Returns true when any of its expressions evaluates to true. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/or/#exp._S_or)
+
+
+<br><br>
+
+## Comparison Expression Operators
+- $cmp	Returns 0 if the two values are equivalent, 1 if the first value is greater than the second, and -1 if the first value is less than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/cmp/#exp._S_cmp)
+- $eq	Returns true if the values are equivalent. (https://docs.mongodb.com/manual/reference/operator/aggregation/eq/#exp._S_eq)
+- $gt	Returns true if the first value is greater than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/gt/#exp._S_gt)
+- $gte	Returns true if the first value is greater than or equal to the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/gte/#exp._S_gte)
+- $lt	Returns true if the first value is less than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/lt/#exp._S_lt)
+- $lte	Returns true if the first value is less than or equal to the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/lte/#exp._S_lte)
+- $ne	Returns true if the values are not equivalent. (https://docs.mongodb.com/manual/reference/operator/aggregation/ne/#exp._S_ne)
+
+
+<br><br>
+
+
+## Conditional Expression Operators
+- $cond	A ternary operator that evaluates one expression, and depending on the result, returns the value of one of the other two expressions. Accepts either three expressions in an ordered list or three named parameters. (https://docs.mongodb.com/manual/reference/operator/aggregation/cond/#exp._S_cond)
+- $ifNull	Returns either the non-null result of the first expression or the result of the second expression if the first expression results in a null result. Null result encompasses instances of undefined values or missing fields. Accepts two expressions as arguments. The result of the second expression can be null. (https://docs.mongodb.com/manual/reference/operator/aggregation/ifNull/#exp._S_ifNull)
+- $switch	Evaluates a series of case expressions. When it finds an expression which evaluates to true, $switch executes a specified expression and breaks out of the control flow. (https://docs.mongodb.com/manual/reference/operator/aggregation/switch/#exp._S_switch)
+
+
+
+<br><br>
+
+## Custom Aggregation Expression Operators
+- $accumulator - Defines a custom accumulator function. (https://docs.mongodb.com/manual/reference/operator/aggregation/accumulator/#grp._S_accumulator)
+- $function	- Defines a custom function. (https://docs.mongodb.com/manual/reference/operator/aggregation/function/#exp._S_function)
+
+
+
+<br><br>
+
+## Data Size Operators
+- $binarySize	Returns the size of a given string or binary data value’s content in bytes. (https://docs.mongodb.com/manual/reference/operator/aggregation/binarySize/#exp._S_binarySize)
+- $bsonSize	Returns the size in bytes of a given document (i.e. bsontype Object) when encoded as BSON. (https://docs.mongodb.com/manual/reference/operator/aggregation/bsonSize/#exp._S_bsonSize)
 
 
 
 
+<br><br>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Date Expression Operators
+- $dateFromParts	Constructs a BSON Date object given the date’s constituent parts. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromParts/#exp._S_dateFromParts)
+- $dateFromString	Converts a date/time string to a date object. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateFromString/#exp._S_dateFromString)
+- $dateToParts	Returns a document containing the constituent parts of a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateToParts/#exp._S_dateToParts)
+- $dateToString	Returns the date as a formatted string. (https://docs.mongodb.com/manual/reference/operator/aggregation/dateToString/#exp._S_dateToString)
+- $dayOfMonth	Returns the day of the month for a date as a number between 1 and 31. (https://docs.mongodb.com/manual/reference/operator/aggregation/dayOfMonth/#exp._S_dayOfMonth)
+- $dayOfWeek	Returns the day of the week for a date as a number between 1 (Sunday) and 7 (Saturday). (https://docs.mongodb.com/manual/reference/operator/aggregation/dayOfWeek/#exp._S_dayOfWeek)
+- $dayOfYear	Returns the day of the year for a date as a number between 1 and 366 (leap year). (https://docs.mongodb.com/manual/reference/operator/aggregation/dayOfYear/#exp._S_dayOfYear)
+- $hour	Returns the hour for a date as a number between 0 and 23. (https://docs.mongodb.com/manual/reference/operator/aggregation/hour/#exp._S_hour)
+- $isoDayOfWeek	Returns the weekday number in ISO 8601 format, ranging from 1 (for Monday) to 7 (for Sunday). (https://docs.mongodb.com/manual/reference/operator/aggregation/isoDayOfWeek/#exp._S_isoDayOfWeek)
+- $isoWeek	Returns the week number in ISO 8601 format, ranging from 1 to 53. Week numbers start at 1 with the week (Monday through Sunday) that contains the year’s first Thursday. (https://docs.mongodb.com/manual/reference/operator/aggregation/isoWeek/#exp._S_isoWeek)
+- $isoWeekYear	Returns the year number in ISO 8601 format. The year starts with the Monday of week 1 (ISO 8601) and ends with the Sunday of the last week (ISO 8601). (https://docs.mongodb.com/manual/reference/operator/aggregation/isoWeekYear/#exp._S_isoWeekYear)
+- $millisecond	Returns the milliseconds of a date as a number between 0 and 999. (https://docs.mongodb.com/manual/reference/operator/aggregation/millisecond/#exp._S_millisecond)
+- $minute	Returns the minute for a date as a number between 0 and 59. (https://docs.mongodb.com/manual/reference/operator/aggregation/minute/#exp._S_minute)
+- $month	Returns the month for a date as a number between 1 (January) and 12 (December). (https://docs.mongodb.com/manual/reference/operator/aggregation/month/#exp._S_month)
+- $second	Returns the seconds for a date as a number between 0 and 60 (leap seconds). (https://docs.mongodb.com/manual/reference/operator/aggregation/second/#exp._S_second)
+- $toDate	Converts value to a Date. (https://docs.mongodb.com/manual/reference/operator/aggregation/toDate/#exp._S_toDate)
+- $week	Returns the week number for a date as a number between 0 (the partial week that precedes the first Sunday of the year) and 53 (leap year). (https://docs.mongodb.com/manual/reference/operator/aggregation/week/#exp._S_week)
+- $year	Returns the year for a date as a number (e.g. 2014). (https://docs.mongodb.com/manual/reference/operator/aggregation/year/#exp._S_year)
+- $add	Adds numbers and a date to return a new date. If adding numbers and a date, treats the numbers as milliseconds. Accepts any number of argument expressions, but at most, one expression can resolve to a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/add/#exp._S_add)
+- $subtract	Returns the result of subtracting the second value from the first. If the two values are dates, return the difference in milliseconds. If the two values are a date and a number in milliseconds, return the resulting date. Accepts two argument expressions. If the two values are a date and a number, specify the date argument first as it is not meaningful to subtract a date from a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/subtract/#exp._S_subtract)
 
 
 
