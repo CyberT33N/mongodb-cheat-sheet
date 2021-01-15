@@ -2655,6 +2655,7 @@ try{
 ## Timeout Error
 - https://youtu.be/ELazfOluptY?t=81
 - In order to prevent app crashes add a timeout by using write timeout **{wtimeoutMS: 2000}** and add a try/catch block to prevent crashes and to catch the error.
+- You can avoid problems by lower the write concern value or by increasing the write concern timeout.
 ```javascript
 const ar = [
   {_id: 0},
@@ -2668,6 +2669,24 @@ try{
 }
 ```
 
+
+<br><br>
+
+## writeConcernError
+- https://youtu.be/ELazfOluptY?t=122
+- In this example we told our insert operation that we have 5 nodes {w: 5} but our cluster actually only got 3. We will get back a writeConcernError which gives us more details (https://youtu.be/ELazfOluptY?t=146) 
+```javascript
+const ar = [
+  {_id: 0},
+  {w: 5},
+];
+
+try{
+  const r = await collection.insertOne(...ar);
+} catch (e) {
+  console.log(e.result.writeConcernError);
+}
+```
 
 
 
