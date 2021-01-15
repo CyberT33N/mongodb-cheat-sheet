@@ -537,6 +537,12 @@ ____________________________________________________
 
 # Aggregation Pipeline Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/)
 
+
+<br><br>
+
+## Alphabetical Listing of Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#alphabetical-listing-of-expression-operators)
+
+<br><br>
 <br><br>
 
 ## Arithmetic Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#arithmetic-expression-operators)
@@ -781,12 +787,24 @@ ____________________________________________________
 
 
 
+<br><br>
+
+## Accumulators (in Other Stages)
+- $avg	Returns an average of the specified expression or list of expressions for each document. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg)
+- $max	Returns the maximum of the specified expression or list of expressions for each document (https://docs.mongodb.com/manual/reference/operator/aggregation/max/#grp._S_max)
+- $min	Returns the minimum of the specified expression or list of expressions for each document (https://docs.mongodb.com/manual/reference/operator/aggregation/min/#grp._S_min)
+- $stdDevPop	Returns the population standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevPop/#grp._S_stdDevPop)
+- $stdDevSamp	Returns the sample standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevSamp/#grp._S_stdDevSamp)
+- $sum	Returns a sum of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/sum/#grp._S_sum)
 
 
 
 
 
+<br><br>
 
+## Variable Expression Operators
+- $let	Defines variables for use within the scope of a subexpression and returns the result of the subexpression. Accepts named parameters. Accepts any number of argument expressions.
 
 
 
