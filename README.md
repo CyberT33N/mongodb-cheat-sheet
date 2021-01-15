@@ -722,16 +722,60 @@ ____________________________________________________
 
 <br><br>
 
-## Text Expression Operator (https://docs.mongodb.com/manual/reference/operator/aggregation/#trigonometry-expression-operators)
-- Trigonometry Expression Operators
+## Trigonometry Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#trigonometry-expression-operators)
+- $sin	Returns the sine of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/sin/#exp._S_sin)
+- $cos	Returns the cosine of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/cos/#exp._S_cos)
+- $tan	Returns the tangent of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/tan/#exp._S_tan)
+- $asin	Returns the inverse sin (arc sine) of a value in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/asin/#exp._S_asin)
+- $acos	Returns the inverse cosine (arc cosine) of a value in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/acos/#exp._S_acos)
+- $atan	Returns the inverse tangent (arc tangent) of a value in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/atan/#exp._S_atan)
+- $atan2	Returns the inverse tangent (arc tangent) of y / x in radians, where y and x are the first and second values passed to the expression respectively. (https://docs.mongodb.com/manual/reference/operator/aggregation/atan2/#exp._S_atan2)
+- $asinh	Returns the inverse hyperbolic sine (hyperbolic arc sine) of a value in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/asinh/#exp._S_asinh)
+- $acosh	Returns the inverse hyperbolic cosine (hyperbolic arc cosine) of a value in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/acosh/#exp._S_acosh)
+- $atanh	Returns the inverse hyperbolic tangent (hyperbolic arc tangent) of a value in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/atanh/#exp._S_atanh)
+- $sinh	Returns the hyperbolic sine of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/sinh/#exp._S_sinh)
+- $cosh	Returns the hyperbolic cosine of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/cosh/#exp._S_cosh)
+- $tanh	Returns the hyperbolic tangent of a value that is measured in radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/tanh/#exp._S_tanh)
+- $degreesToRadians	Converts a value from degrees to radians. (https://docs.mongodb.com/manual/reference/operator/aggregation/degreesToRadians/#exp._S_degreesToRadians)
+- $radiansToDegrees	Converts a value from radians to degrees. (https://docs.mongodb.com/manual/reference/operator/aggregation/radiansToDegrees/#exp._S_radiansToDegrees)
+
+
+<br><br>
+
+## Type Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#type-expression-operators)
+- $convert	Converts a value to a specified type. (https://docs.mongodb.com/manual/reference/operator/aggregation/convert/#exp._S_convert)
+- $isNumber	Returns boolean true if the specified expression resolves to an integer, decimal, double, or long. Returns boolean false if the expression resolves to any other BSON type, null, or a missing field. (https://docs.mongodb.com/manual/reference/operator/aggregation/isNumber/#exp._S_isNumber)
+- $toBool	Converts value to a boolean. (https://docs.mongodb.com/manual/reference/operator/aggregation/toBool/#exp._S_toBool)
+- $toDate	Converts value to a Date. (https://docs.mongodb.com/manual/reference/operator/aggregation/toDate/#exp._S_toDate)
+- $toDecimal	Converts value to a Decimal128. (https://docs.mongodb.com/manual/reference/operator/aggregation/toDecimal/#exp._S_toDecimal)
+- $toDouble	Converts value to a double. (https://docs.mongodb.com/manual/reference/operator/aggregation/toDouble/#exp._S_toDouble)
+- $toInt	Converts value to an integer. (https://docs.mongodb.com/manual/reference/operator/aggregation/toInt/#exp._S_toInt)
+- $toLong	Converts value to a long. (https://docs.mongodb.com/manual/reference/operator/aggregation/toLong/#exp._S_toLong)
+- $toObjectId	Converts value to an ObjectId. (https://docs.mongodb.com/manual/reference/operator/aggregation/toObjectId/#exp._S_toObjectId)
+- $toString	Converts value to a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/toString/#exp._S_toString)
+- $type	Return the BSON data type of the field. (https://docs.mongodb.com/manual/reference/operator/aggregation/type/#exp._S_type)
 
 
 
 
+<br><br>
 
+## Accumulators ($group) (https://docs.mongodb.com/manual/reference/operator/aggregation/#accumulators-group)
+- https://docs.mongodb.com/manual/reference/operator/aggregation/group/#pipe._S_group
 
-
-
+<br><br>
+- $accumulator	Returns the result of a user-defined accumulator function. (https://docs.mongodb.com/manual/reference/operator/aggregation/accumulator/#grp._S_accumulator)
+- $addToSet	Returns an array of unique expression values for each group. Order of the array elements is undefined. (https://docs.mongodb.com/manual/reference/operator/aggregation/addToSet/#grp._S_addToSet)
+- $avg	Returns an average of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg)
+- $first	Returns a value from the first document for each group. Order is only defined if the documents are in a defined order. Distinct from the $first array operator. (https://docs.mongodb.com/manual/reference/operator/aggregation/first/#grp._S_first)
+- $last	Returns a value from the last document for each group. Order is only defined if the documents are in a defined order. Distinct from the $last array operator. (https://docs.mongodb.com/manual/reference/operator/aggregation/last/#grp._S_last)
+- $max	Returns the highest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/max/#grp._S_max)
+- $mergeObjects	Returns a document created by combining the input documents for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/mergeObjects/#exp._S_mergeObjects)
+- $min	Returns the lowest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/min/#grp._S_min)
+- $push	Returns an array of expression values for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/push/#grp._S_push)
+- $stdDevPop	Returns the population standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevPop/#grp._S_stdDevPop)
+- $stdDevSamp	Returns the sample standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevSamp/#grp._S_stdDevSamp)
+- $sum	Returns a sum of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/sum/#grp._S_sum)
 
 
 
