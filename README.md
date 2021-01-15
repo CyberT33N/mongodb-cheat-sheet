@@ -1513,6 +1513,38 @@ const r = await collection.aggregate(...pipeline).toArray({});
 
 
 <br><br>
+<br><br>
+
+## Expressions (https://youtu.be/SYtRQ5crN6U?t=172)
+- https://docs.mongodb.com/manual/reference/aggregation-variables/
+```javascript
+// Field Path - Access the field inside of a document
+'$fieldName'       ('$apples')
+
+// System Variable - Will be always with uppercase and is on system level. $$CURRENT reference to the current document.
+'$$UPPERCASE'       ('$$CURRENT')
+
+// User Variable - Will be as example used by let inside of lookup
+'$$foo'
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
 
 ## Operator
 
