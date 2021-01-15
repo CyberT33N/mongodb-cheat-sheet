@@ -2352,7 +2352,7 @@ console.log(r.modifiedCount);
 ## .bulkWrite (https://docs.mongodb.com/manual/reference/method/db.collection.bulkWrite/)
 - Performs multiple write operations with controls for order of execution.
 - Execution will be in order they got applied.
-- If any process is not executed successfully the bulk write process will cancel.
+- If any operation is not executed successfully the **next operation and all operations after this will be canceld!** But all operations before the error were written.
 
 
 ```javascript
