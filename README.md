@@ -2632,7 +2632,12 @@ ____________________________________________________
 const query = {_id: 0};
 
 // callback
-collection.insertOne(query, function(e, result) {/* .. */ });
+collection.insertOne(query, function(e, result) {
+  if(e){
+    console.log(e.errmsg); // E11000 duplicate key error collection
+    throw new Error(e);
+  }
+});
 
 //async
 const r = await collection.insertOne(query);
@@ -2645,7 +2650,23 @@ try{
 }
 ```
 
+<br><br>
 
+## Timeout Error
+- https://youtu.be/ELazfOluptY?t=81
+- In order to prevent app crashes add a timeout by using write timeout **{wtimeoutMS: 2000}** and add a try/catch block to prevent crashes and to catch the error.
+```javascript
+const ar = [
+  {_id: 0},
+  {wtimeoutMS: 2000},
+];
+
+try{
+  const r = await collection.insertOne(...ar);
+} catch (e) {
+  console.log(e);
+}
+```
 
 
 
