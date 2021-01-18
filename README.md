@@ -2240,6 +2240,74 @@ const r = await collection.aggregate(query).toArray({});
 
 
 
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+
+
+#### allowDiskUse (https://docs.mongodb.com/manual/reference/method/cursor.allowDiskUse/)
+- allowDiskUse() allows MongoDB to use temporary files on disk to store data exceeding the 100 megabyte system memory limit while processing a blocking sort operation. If MongoDB requires using more than 100 megabytes of system memory for the blocking sort operation, MongoDB returns an error unless the query specifies cursor.allowDiskUse().
+```javascript
+// ------- AGGREGATE -------
+
+// sort results by year
+const pipeline = [
+  [{ $sort: {year: 1}}],
+  {allowDiskUse: true}
+];
+
+// callback
+collection.aggregate(...pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(...pipeline).toArray({});
+
+
+
+
+
+// ------- CURSOR -------
+const query = {"payload.discount": {$exists: true}};
+
+// await
+const r = await collection.findOne(query).allowDiskUse();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2624,25 +2692,6 @@ const r = await collection.find( { $or: [{"client_id": json?.client_id}, {"clien
 
 
 
-<br><br><br><br>
-
-
-#### Using temp files on disk at large searches (https://docs.mongodb.com/manual/reference/method/cursor.allowDiskUse/)
-```javascript
-const query = {"payload.discount": {$exists: true}};
-
-// await
-const r = await collection.findOne(query).allowDiskUse();
-```
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2994,23 +3043,12 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 
-<br><br>
 
 
-#### Using temp files on disk at large searches
-```javascript
-// sort results by year
-const pipeline = [
-  [{ $sort: {year: 1}}],
-  {allowDiskUse: true}
-];
 
-// callback
-collection.aggregate(...pipeline).toArray(function(e, docs) { /* .. */ });
 
-// async
-const r = await collection.aggregate(...pipeline).toArray({});
-```
+
+
 
 
 
