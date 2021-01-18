@@ -1107,10 +1107,54 @@ The operation returns the following results:
 - $subtract	Returns the result of subtracting the second value from the first. If the two values are numbers, return the difference. If the two values are dates, return the difference in milliseconds. If the two values are a date and a number in milliseconds, return the resulting date. Accepts two argument expressions. If the two values are a date and a number, specify the date argument first as it is not meaningful to subtract a date from a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/subtract/#exp._S_subtract)
 - $trunc	Truncates a number to a whole integer or to a specified decimal place. (https://docs.mongodb.com/manual/reference/operator/aggregation/trunc/#exp._S_trunc)
 
+
+
 <br><br>
 
 #### Array Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#array-expression-operators)
 - $arrayElemAt	Returns the element at the specified array index. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayElemAt/#exp._S_arrayElemAt)
+- Syntax:
+```javascript
+{ $arrayElemAt: [ <array>, <idx> ] }
+```
+- Example
+```javascript
+/* our collection looks like this:
+{ "_id" : 1, "name" : "dave123", favorites: [ "chocolate", "cake", "butter", "apples" ] }
+{ "_id" : 2, "name" : "li", favorites: [ "apples", "pudding", "pie" ] }
+{ "_id" : 3, "name" : "ahn", favorites: [ "pears", "pecans", "chocolate", "cherries" ] }
+{ "_id" : 4, "name" : "ty", favorites: [ "ice cream" ] }
+*/
+
+// multiply price with quantitiy
+const pipeline = [
+   {
+     $project:
+      {
+         name: 1,
+         first: { $arrayElemAt: [ "$favorites", 0 ] },
+         last: { $arrayElemAt: [ "$favorites", -1 ] }
+      }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+The operation returns the following results:
+{ "_id" : 1, "name" : "dave123", "first" : "chocolate", "last" : "apples" }
+{ "_id" : 2, "name" : "li", "first" : "apples", "last" : "pie" }
+{ "_id" : 3, "name" : "ahn", "first" : "pears", "last" : "cherries" }
+{ "_id" : 4, "name" : "ty", "first" : "ice cream", "last" : "ice cream" }
+*/
+```
+<br><br>
+
+
 - $arrayToObject	Converts an array of key value pairs to a document. (https://docs.mongodb.com/manual/reference/operator/aggregation/arrayToObject/#exp._S_arrayToObject)
 - $concatArrays	Concatenates arrays to return the concatenated array. (https://docs.mongodb.com/manual/reference/operator/aggregation/concatArrays/#exp._S_concatArrays)
 - $filter	Selects a subset of the array to return an array with only the elements that match the filter condition. (https://docs.mongodb.com/manual/reference/operator/aggregation/filter/#exp._S_filter)
