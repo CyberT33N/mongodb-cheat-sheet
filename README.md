@@ -329,9 +329,9 @@ ____________________________________________________
 
 <br><br>
 
-# Connection String
-- https://docs.mongodb.com/manual/reference/connection-string/index.html
+# Connection String (https://docs.mongodb.com/manual/reference/connection-string/index.html)
 
+<br><br>
 
 ## srv (service record)
 - connect to database
@@ -351,7 +351,20 @@ mongodb+srv://username:password@any-example.mongodb.net/admin?retryWrites=true
 
 <br><br>
 
-## localhost url
+## Standard URI
+```bash
+# standalone
+mongodb://mongodb0.example.com:27017
+
+# For a standalone that enforces access control (https://docs.mongodb.com/manual/tutorial/enable-authentication/):
+mongodb://myDBReader:D1fficultP%40ssw0rd@mongodb0.example.com:27017/?authSource=admin
+```
+
+
+
+<br><br>
+
+## localhost URI
 - mongodb://localhost:27017
 
 
