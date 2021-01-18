@@ -572,14 +572,16 @@ ____________________________________________________
 - $listSessions	Lists all sessions that have been active long enough to propagate to the system.sessions collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/listSessions/#pipe._S_listSessions)
 - $lookup	Performs a left outer join to another collection in the same database to filter in documents from the “joined” collection for processing. (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#pipe._S_lookup)
 
-<br>
+<br><br>
+
 - $match	Filters the document stream to allow only matching documents to pass unmodified into the next pipeline stage. For each input document, outputs either one document (a match) or zero documents (no match). (https://docs.mongodb.com/manual/reference/operator/aggregation/match/#pipe._S_match)
 - $match uses standard MongoDB Query Operators.
 - We can not use $where
 - If we use $text the $match stage must be the first.
 - If $match is first stage it can take advantages of index and is faster.
 - $match uses the same query syntax as find.
-<br>
+
+<br><br>
 
 - $merge	Writes the resulting documents of the aggregation pipeline to a collection. The stage can incorporate (insert new documents, merge documents, replace documents, keep existing documents, fail the operation, process documents with a custom update pipeline) the results into an output collection. To use the $merge stage, it must be the last stage in the pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#pipe._S_merge)
 - $out	Writes the resulting documents of the aggregation pipeline to a collection. To use the $out stage, it must be the last stage in the pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/out/#pipe._S_out)
