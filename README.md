@@ -2115,9 +2115,6 @@ const r = await collection.aggregate(...pipeline).toArray({});
 
 
 ## $group (https://docs.mongodb.com/manual/reference/operator/aggregation/group/)
-
-#### find average of number - $avg
-- https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg
 ```javascript
 /* Our collection looks like this:
 { "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") }
@@ -2146,11 +2143,6 @@ const r = await collection.aggregate(pipeline).toArray({});
 { "_id" : "abc", "avgAmount" : 60, "avgQuantity" : 6 }
 */
 ```
-
-
-
-<br><br>
-
 
 
 #### count amount of field with the same value
@@ -2205,60 +2197,6 @@ _id:"nathalie_emmanuel@gameofthron.es"
 count:327
 */
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<br><br>
-
-## $multiply (https://docs.mongodb.com/manual/reference/operator/aggregation/multiply/)
-
-#### multiply numbers
-```javascript
-/* our collection looks like this:
-{ "_id" : 1, "item" : "abc", "price" : 10, "quantity": 2, date: ISODate("2014-03-01T08:00:00Z") }
-{ "_id" : 2, "item" : "jkl", "price" : 20, "quantity": 1, date: ISODate("2014-03-01T09:00:00Z") }
-{ "_id" : 3, "item" : "xyz", "price" : 5, "quantity": 10, date: ISODate("2014-03-15T09:00:00Z") }
-*/
-
-// add price + fee
-const pipeline = [
-     {$project: {date: 1, item: 1, total: {$multiply: [ "$price", "$quantity" ]}}}
-   ];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-
-/*
-The operation returns the following results:
-{ "_id" : 1, "item" : "abc", "date" : ISODate("2014-03-01T08:00:00Z"), "total" : 20 }
-{ "_id" : 2, "item" : "jkl", "date" : ISODate("2014-03-01T09:00:00Z"), "total" : 20 }
-{ "_id" : 3, "item" : "xyz", "date" : ISODate("2014-03-15T09:00:00Z"), "total" : 50 }
-*/
-```
-
-
-
-
-
-
-
-
 
 
 
