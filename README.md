@@ -3064,22 +3064,6 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 
 
-## matchdom document with used = 0 and limit to 1 item
-```javascript
-// method #1
-const pipeline = [{$match: { used: 0 }}, {$limit: 1}];
-
-// method #2
-const pipeline = [{$match: { used: 0 }}, {$sample: { size: 1 }}];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-```
-<br><br>
-
 ## match random document with used = 0 and limit to 1 item and return only title and _id
 ```javascript
 const pipeline = [
