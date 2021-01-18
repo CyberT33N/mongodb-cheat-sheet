@@ -1266,6 +1266,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 
 - $sort	Reorders the document stream by a specified sort key. Only the order changes; the documents remain unmodified. For each input document, outputs one document. (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/#pipe._S_sort)
+- You can sort on multiple fields. The sort priority will be in order of your sort queries
 - Syntax:
 ```javascript
 { $sort: { <field1>: <sort order>, <field2>: <sort order> ... } }
@@ -1278,6 +1279,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 ```
 - Example
 ```javascript
+// ------ SINGLE SORT --------
 /* // source collection:
 [
    { "_id" : 1, "name" : "Central Park Cafe", "borough" : "Manhattan"},
@@ -1288,7 +1290,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 ]
 */
 
-// skip first 2 documents in natural order
+// sort the borough field is ascending order
 const pipeline = [
      { $sort : { borough : 1 } }
    ];
@@ -1306,7 +1308,41 @@ const r = await collection.aggregate(pipeline).toArray({});
 { "_id" : 1, "name" : "Central Park Cafe", "borough" : "Manhattan" }
 { "_id" : 4, "name" : "Stan's Pizzaria", "borough" : "Manhattan" }
 { "_id" : 2, "name" : "Rock A Feller Bar and Grill", "borough" : "Queens" }
+*/
 
+
+
+
+
+
+
+
+
+
+
+// ------ MULTIPLE SORT --------
+/* // source collection:
+[
+   { "_id" : 1, "name" : "Central Park Cafe", "borough" : "Manhattan"},
+   { "_id" : 2, "name" : "Rock A Feller Bar and Grill", "borough" : "Queens"},
+   { "_id" : 3, "name" : "Empire State Pub", "borough" : "Brooklyn"},
+   { "_id" : 4, "name" : "Stan's Pizzaria", "borough" : "Manhattan"},
+   { "_id" : 5, "name" : "Jane's Deli", "borough" : "Brooklyn"},
+]
+*/
+
+// First sort through borough in ascending order and after this sort name in descending order
+const pipeline = [
+     {$sort : {borough : 1, name: -1}}
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
 { "_id" : 5, "name" : "Jane's Deli", "borough" : "Brooklyn" }
 { "_id" : 3, "name" : "Empire State Pub", "borough" : "Brooklyn" }
 { "_id" : 4, "name" : "Stan's Pizzaria", "borough" : "Manhattan" }
