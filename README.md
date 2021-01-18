@@ -1315,7 +1315,54 @@ The operation returns the following results:
 - $anyElementTrue	Returns true if any elements of a set evaluate to true; otherwise, returns false. Accepts a single argument expression. (https://docs.mongodb.com/manual/reference/operator/aggregation/anyElementTrue/#exp._S_anyElementTrue)
 - $setDifference	Returns a set with elements that appear in the first set but not in the second set; i.e. performs a relative complement of the second set relative to the first. Accepts exactly two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setDifference/#exp._S_setDifference)
 - $setEquals	Returns true if the input sets have the same distinct elements. Accepts two or more argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setEquals/#exp._S_setEquals)
+
+<br><br>
 - $setIntersection	Returns a set with elements that appear in all of the input sets. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setIntersection/#exp._S_setIntersection)
+- Syntax:
+```javascript
+{ $setIntersection: [ <array1>, <array2>, ... ] }
+```
+- Example:
+```javascript
+/* our collection looks like this:
+{ "_id" : 1, "A" : [ "red", "blue" ], "B" : [ "red", "blue" ] }
+{ "_id" : 2, "A" : [ "red", "blue" ], "B" : [ "blue", "red", "blue" ] }
+{ "_id" : 3, "A" : [ "red", "blue" ], "B" : [ "red", "blue", "green" ] }
+{ "_id" : 4, "A" : [ "red", "blue" ], "B" : [ "green", "red" ] }
+{ "_id" : 5, "A" : [ "red", "blue" ], "B" : [ ] }
+{ "_id" : 6, "A" : [ "red", "blue" ], "B" : [ [ "red" ], [ "blue" ] ] }
+{ "_id" : 7, "A" : [ "red", "blue" ], "B" : [ [ "red", "blue" ] ] }
+{ "_id" : 8, "A" : [ ], "B" : [ ] }
+{ "_id" : 9, "A" : [ ], "B" : [ "red" ] }
+*/
+
+// The following aggregation operation uses $map with the $add expression to increment each element in the quizzes array by 2.
+const pipeline = [
+     { $project: { A: 1, B: 1, commonToBoth: { $setIntersection: [ "$A", "$B" ] }, _id: 0 } }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+{ "A" : [ "red", "blue" ], "B" : [ "red", "blue" ], "commonToBoth" : [ "blue", "red" ] }
+{ "A" : [ "red", "blue" ], "B" : [ "blue", "red", "blue" ], "commonToBoth" : [ "blue", "red" ] }
+{ "A" : [ "red", "blue" ], "B" : [ "red", "blue", "green" ], "commonToBoth" : [ "blue", "red" ] }
+{ "A" : [ "red", "blue" ], "B" : [ "green", "red" ], "commonToBoth" : [ "red" ] }
+{ "A" : [ "red", "blue" ], "B" : [ ], "commonToBoth" : [ ] }
+{ "A" : [ "red", "blue" ], "B" : [ [ "red" ], [ "blue" ] ], "commonToBoth" : [ ] }
+{ "A" : [ "red", "blue" ], "B" : [ [ "red", "blue" ] ], "commonToBoth" : [ ] }
+{ "A" : [ ], "B" : [ ], "commonToBoth" : [ ] }
+{ "A" : [ ], "B" : [ "red" ], "commonToBoth" : [ ] }
+*/
+```
+<br><br>
+
+
 - $setIsSubset	Returns true if all elements of the first set appear in the second set, including when the first set equals the second set; i.e. not a strict subset. Accepts exactly two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/setIsSubset/#exp._S_setIsSubset)
 - $setUnion	Returns a set with elements that appear in any of the input sets. (https://docs.mongodb.com/manual/reference/operator/aggregation/setUnion/#exp._S_setUnion)
 
