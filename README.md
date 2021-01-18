@@ -818,7 +818,31 @@ ____________________________________________________
 - $expr	Allows use of aggregation expressions within the query language. (https://docs.mongodb.com/manual/reference/operator/query/expr/)
 - $jsonSchema	Validate documents against the given JSON Schema. (https://docs.mongodb.com/manual/reference/operator/query/jsonSchema/)
 - $mod	Performs a modulo operation on the value of a field and selects documents with a specified result. (https://docs.mongodb.com/manual/reference/operator/query/mod/)
+
+<br><br>
 - $regex	Selects documents where values match a specified regular expression. (https://docs.mongodb.com/manual/reference/operator/query/regex/)
+```javascript
+/* Our collection looks like this:
+  {"_id": 1, "item": "word with spaces"}
+  {"_id": 2, "item": "wordwithoutspaces"}
+*/
+
+// match single words without white spaces
+const pipeline = [{$match: {'title': {'$regex': /^[^\s]+$/ }}}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+
+/* operation will return:
+  {"_id" : 2, "item" : "wordwithoutspaces"}
+*/
+```
+<br><br>
+
 - $text	Performs text search. (https://docs.mongodb.com/manual/reference/operator/query/text/)
 - $where	Matches documents that satisfy a JavaScript expression. (https://docs.mongodb.com/manual/reference/operator/query/where/)
 
