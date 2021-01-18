@@ -1693,6 +1693,55 @@ The operation returns the following results:
 
 #### Conditional Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#conditional-expression-operators)
 - $cond	A ternary operator that evaluates one expression, and depending on the result, returns the value of one of the other two expressions. Accepts either three expressions in an ordered list or three named parameters. (https://docs.mongodb.com/manual/reference/operator/aggregation/cond/#exp._S_cond)
+- Syntax:
+```javascript
+// syntax #1
+{ $cond: { if: <boolean-expression>, then: <true-case>, else: <false-case> } }
+
+// syntax #2
+{ $cond: [ <boolean-expression>, <true-case>, <false-case> ] }
+```
+- Example:
+```javascript
+/* our collection looks like this:
+[
+  { "_id" : 1, "item" : "abc1", qty: 300 },
+  { "_id" : 2, "item" : "abc2", qty: 200 },
+  { "_id" : 3, "item" : "xyz1", qty: 250 },
+]
+*/
+
+// The following aggregation operation uses $map with the $add expression to increment each element in the quizzes array by 2.
+const pipeline = [
+      {
+         $project:
+           {
+             item: 1,
+             discount:
+               {
+                 $cond: { if: { $gte: [ "$qty", 250 ] }, then: 30, else: 20 }
+               }
+           }
+      }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : 1, "item" : "abc1", "discount" : 30 },
+  { "_id" : 2, "item" : "abc2", "discount" : 20 },
+  { "_id" : 3, "item" : "xyz1", "discount" : 30 },
+]
+*/
+```
+<br><br>
+
 - $ifNull	Returns either the non-null result of the first expression or the result of the second expression if the first expression results in a null result. Null result encompasses instances of undefined values or missing fields. Accepts two expressions as arguments. The result of the second expression can be null. (https://docs.mongodb.com/manual/reference/operator/aggregation/ifNull/#exp._S_ifNull)
 - $switch	Evaluates a series of case expressions. When it finds an expression which evaluates to true, $switch executes a specified expression and breaks out of the control flow. (https://docs.mongodb.com/manual/reference/operator/aggregation/switch/#exp._S_switch)
 
