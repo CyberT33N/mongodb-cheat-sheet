@@ -2750,6 +2750,24 @@ const r = await collection.aggregate(...pipeline).toArray({});
 ## Ref
 - https://docs.mongodb.com/manual/reference/command/aggregate/
 
+<br><br>
+
+## Options
+- https://docs.mongodb.com/manual/reference/method/db.collection.aggregate/
+```javascript
+- explain | Optional. Specifies to return the information on the processing of the pipeline
+- allowDiskUse | Optional. Enables writing to temporary files. When set to true, aggregation operations can write data to the _tmp subdirectory in the dbPath directory. See Perform Large Sort Operation with External Sort for an example.
+- cursor | Optional. Specifies the initial batch size for the cursor. The value of the cursor field is a document with the field batchSize. See Specify an Initial Batch Size for syntax and example.
+- maxTimeMS | Optional. Specifies a time limit in milliseconds for processing operations on a cursor. If you do not specify a value for maxTimeMS, operations will not time out. A value of 0 explicitly specifies the default unbounded behavior.
+- bypassDocumentValidation | Optional. Applicable only if you specify the $out or $merge aggregation stages.
+- readConcern | Optional. Specifies the read concern.
+- writeConcern | Optional. A document that expresses the write concern to use with the $out or $merge stage.
+- collation | Optional. Specifies the collation to use for the operation. Collation allows users to specify language-specific rules for string comparison, such as rules for lettercase and accent marks.
+- hint | Optional. The index to use for the aggregation. The index is on the initial collection/view against which the aggregation is run.
+- comment | Optional. Users can specify an arbitrary string to help trace the operation through the database profiler, currentOp, and logs.
+- 
+```
+<br><br>
 
 ## Guides
 - What can I understand under aggregation? (https://www.youtube.com/watch?v=5_oSSbQpGSM)
