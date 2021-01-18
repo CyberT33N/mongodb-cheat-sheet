@@ -1712,6 +1712,7 @@ The operation returns the following results:
 */
 
 // The following aggregation operation uses $map with the $add expression to increment each element in the quizzes array by 2.
+// method 1
 const pipeline = [
       {
          $project:
@@ -1724,6 +1725,21 @@ const pipeline = [
            }
       }
    ];
+   
+// method 2 (short)   
+const pipeline = [
+     {
+         $project:
+           {
+             item: 1,
+             discount:
+               {
+                 $cond: [ { $gte: [ "$qty", 250 ] }, 30, 20 ]
+               }
+           }
+      }
+   ]
+
 
 // callback
 collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
