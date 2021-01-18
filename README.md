@@ -1268,6 +1268,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 - You must manually specify each field which you want to return. Only **_id** field will be also returned! If you do not want this then use **{_id: 0}**
 - You can compare it with .map from javascript.
 - Can be used as many time as you want within aggregation pipeline.
+- Accumulator Expressions only works with an array inside of our current document. They do not carry values over all documents.
 ```javascript
 const pipeline = [{$project: {_id: 0, item: 1}}];
 
@@ -1715,7 +1716,112 @@ The operation returns the following results:
 
 - $objectToArray	Converts a document to an array of documents representing key-value pairs. (https://docs.mongodb.com/manual/reference/operator/aggregation/objectToArray/#exp._S_objectToArray)
 - $range	Outputs an array containing a sequence of integers according to user-defined inputs. (https://docs.mongodb.com/manual/reference/operator/aggregation/range/#exp._S_range)
+
+<br><br>
 - $reduce	Applies an expression to each element in an array and combines them into a single value. (https://docs.mongodb.com/manual/reference/operator/aggregation/reduce/#exp._S_reduce)
+- Syntax:
+```javascript
+{
+    $reduce: {
+        input: <array>,
+        initialValue: <expression>,
+        in: <expression>
+    }
+}
+```
+- Example:
+```javascript
+/* // source collection:
+[
+  {_id:1, "type":"die", "experimentId":"r5", "description":"Roll a 5", "eventNum":1, "probability":0.16666666666667},
+  {_id:2, "type":"card", "experimentId":"d3rc", "description":"Draw 3 red cards", "eventNum":1, "probability":0.5},
+  {_id:3, "type":"card", "experimentId":"d3rc", "description":"Draw 3 red cards", "eventNum":2, "probability":0.49019607843137},
+  {_id:4, "type":"card", "experimentId":"d3rc", "description":"Draw 3 red cards", "eventNum":3, "probability":0.48},
+  {_id:5, "type":"die", "experimentId":"r16", "description":"Roll a 1 then a 6", "eventNum":1, "probability":0.16666666666667},
+  {_id:6, "type":"die", "experimentId":"r16", "description":"Roll a 1 then a 6", "eventNum":2, "probability":0.16666666666667},
+  {_id:7, "type":"card", "experimentId":"dak", "description":"Draw an ace, then a king", "eventNum":1, "probability":0.07692307692308},
+  {_id:8, "type":"card", "experimentId":"dak", "description":"Draw an ace, then a king", "eventNum":2, "probability":0.07843137254902},
+]
+*/
+
+
+/*
+1. Use $group to group by the experimentId and use $push to create an array with the probability of each event.
+2. Use $reduce with $multiply to multiply and combine the elements of probabilityArr into a single value and project it.
+*/
+const pipeline = [
+    {
+      $group: {
+        _id: "$experimentId",
+        "probabilityArr": { $push: "$probability" }
+      }
+    },
+    {
+      $project: {
+        "description": 1,
+        "results": {
+          $reduce: {
+            input: "$probabilityArr",
+            initialValue: 1,
+            in: { $multiply: [ "$$value", "$$this" ] }
+          }
+        }
+      }
+    }
+  ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* result:
+[
+  { "_id" : "dak", "results" : 0.00603318250377101 },
+  { "_id" : "r5", "results" : 0.16666666666667 },
+  { "_id" : "r16", "results" : 0.027777777777778886 },
+  { "_id" : "d3rc", "results" : 0.11764705882352879 },
+]
+*/
+
+
+
+
+
+// ------ OTHER EXAMPLES -------
+const pipeline = [{
+   $reduce: {
+      input: [ 1, 2, 3, 4 ],
+      initialValue: { sum: 5, product: 2 },
+      in: {
+         sum: { $add : ["$$value.sum", "$$this"] },
+         product: { $multiply: [ "$$value.product", "$$this" ] }
+      }
+   }
+}];
+
+/* result:
+{ "sum" : 15, "product" : 48 }
+*/
+
+
+
+const pipeline = [{
+   $reduce: {
+      input: [ [ 3, 4 ], [ 5, 6 ] ],
+      initialValue: [ 1, 2 ],
+      in: { $concatArrays : ["$$value", "$$this"] }
+   }
+}];
+
+/* result:
+[ 1, 2, 3, 4, 5, 6 ]
+*/
+```
+<br><br>
+
+
 - $reverseArray	Returns an array with the elements in reverse order. (https://docs.mongodb.com/manual/reference/operator/aggregation/reverseArray/#exp._S_reverseArray)
 - $size	Returns the number of elements in the array. Accepts a single expression as argument. (https://docs.mongodb.com/manual/reference/operator/aggregation/size/#exp._S_size)
 - $slice	Returns a subset of an array. (https://docs.mongodb.com/manual/reference/operator/aggregation/slice/#exp._S_slice)
