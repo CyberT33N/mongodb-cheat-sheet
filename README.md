@@ -2126,8 +2126,8 @@ ____________________________________________________
 - Expressions are functions
 ```javascript
 const pipeline = [
-[{stage1}, {stage2}, {stage3}],
-{options}
+  [{stage1}, {stage2}, {stage3}],
+  {options}
 ];
 
 // callback
@@ -2190,13 +2190,41 @@ const r = await collection.aggregate(...pipeline).toArray({});
 
 <br><br>
 
+#### use operator inside of another one
+```javascript
+/* our collection looks like this:
+{ "_id" : 1, "item" : "abc", "price" : 10, "discount": 2, taxes: 2, date: ISODate("2014-03-01T08:00:00Z") }
+{ "_id" : 2, "item" : "jkl", "price" : 20, "discount": 2, taxes: 2, date: ISODate("2014-03-01T09:00:00Z") }
+{ "_id" : 3, "item" : "xyz", "price" : 5, "discount": 2, taxes: 2, date: ISODate("2014-03-15T09:00:00Z") }
+*/
 
-## $project (https://docs.mongodb.com/manual/reference/operator/aggregation/project/)
+const pipeline = [
+  {$project: {date: 1, item: 1, newPrice: {$divide: [{$add: ["$price", "$taxes"]}, "$discount"]}}}
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+The operation returns the following results:
+{ "_id" : 1, "item" : "abc", "date" : ISODate("2014-03-01T08:00:00Z"), "newPrice" : 6 }
+{ "_id" : 2, "item" : "jkl", "date" : ISODate("2014-03-01T09:00:00Z"), "newPrice" : 11 }
+{ "_id" : 3, "item" : "xyz", "date" : ISODate("2014-03-15T09:00:00Z"), "newPrice" : 3.5 }
+*/
+```
+
+
+<br><br>
+
+#### $project (https://docs.mongodb.com/manual/reference/operator/aggregation/project/)
 - The logic is same to **projection** but **$project** got way more options.
 
 <br><br>
 
-## create new field based of value
+#### create new field based of value
 ```javascript
 /*
 {
