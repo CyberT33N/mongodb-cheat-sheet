@@ -810,7 +810,21 @@ ____________________________________________________
 
 #### Element Query Operators (https://docs.mongodb.com/manual/reference/operator/query-element/)
 - $exists	Matches documents that have the specified field. (https://docs.mongodb.com/manual/reference/operator/query/exists/)
+```javascript
+const query = {"payload.discount": {$exists: true}};
+
+// callback.insertOne
+collection.findOne(query, (e, docs) => { /* .. */ });
+
+// async
+// example #1
+const r = await collection.findOne(query)
+```
+<br><br>
+
 - $type	Selects documents if a field is of the specified type. (https://docs.mongodb.com/manual/reference/operator/query/type/)
+
+
 
 <br><br>
 
@@ -1898,35 +1912,24 @@ collection.findOne(query, (e, r) => { /* .. */ });
 const r = await collection.findOne(query)
 ```
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
-
-
-## Check if field exist ($exists)
-```javascript
-const query = {"payload.discount": {$exists: true}};
-
-// callback.insertOne
-collection.findOne(query, (e, docs) => { /* .. */ });
-
-// async
-// example #1
-const r = await collection.findOne(query)
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <br><br>
 
 
