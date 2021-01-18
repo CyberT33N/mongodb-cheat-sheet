@@ -1742,6 +1742,7 @@ The operation returns the following results:
 
 #### Conditional Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#conditional-expression-operators)
 - $cond	A ternary operator that evaluates one expression, and depending on the result, returns the value of one of the other two expressions. Accepts either three expressions in an ordered list or three named parameters. (https://docs.mongodb.com/manual/reference/operator/aggregation/cond/#exp._S_cond)
+- $cond is very usefully when and expression would get null if it does not exist.
 - Syntax:
 ```javascript
 // syntax #1
