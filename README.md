@@ -1001,9 +1001,28 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $geoNear	Returns an ordered stream of documents based on the proximity to a geospatial point. Incorporates the functionality of $match, $sort, and $limit for geospatial data. The output documents include an additional distance field and can include a location identifier field. (https://docs.mongodb.com/manual/reference/operator/aggregation/geoNear/#pipe._S_geoNear)
+- You can only use $geoNear as the first stage of a pipeline.
+- You must include the distanceField option. The distanceField option specifies the field that will contain the calculated distance.
+- $geoNear requires a geospatial index.
+- If you have more than one geospatial index on the collection, use the keys parameter to specify which field to use in the calculation. If you have only one geospatial index, $geoNear implicitly uses the indexed field for the calculation.
+- You cannot specify a $near predicate in the query field of the $geoNear stage.
+- Views do not support geoNear operations (i.e. $geoNear pipeline stage).
 - Syntax:
 ```javascript
 { $geoNear: { <geoNear options> } }
+```
+- Options:
+```javascript
+- near | The point for which to find the closest documents.
+- distanceField | The output field that contains the calculated distance. To specify a field within an embedded document, use dot notation.
+- spherical | Optional. Determines how MongoDB calculates the distance between two points.
+- maxDistance | Optional. The maximum distance from the center point that the documents can be. MongoDB limits the results to those documents that fall within the specified -distance from the center point.
+- query | Optional. Limits the results to the documents that match the query. The query syntax is the usual MongoDB read operation query syntax.
+- distanceMultiplier | Optional. The factor to multiply all distances returned by the query. For example, use the distanceMultiplier to convert radians, as returned by a spherical query, to kilometers by multiplying by the radius of the Earth.
+- includeLocs | Optional. This specifies the output field that identifies the location used to calculate the distance. This option is useful when a location field contains multiple locations. To specify a field within an embedded document, use dot notation.
+- uniqueDocs | Optional. If this value is true, the query returns a matching document once, even if more than one of the document’s location fields match the query.
+- minDistance | Optional. The minimum distance from the center point that the documents can be. MongoDB limits the results to those documents that fall outside the specified distance from the center point.
+- key | Optional. Specify the geospatial indexed field to use when calculating the distance.
 ```
 - Example:
 ```javascript
@@ -1014,12 +1033,12 @@ Consider a collection places that has a 2dsphere index. The following aggregatio
 const pipeline = [
    {
      $geoNear: {
-        near: { type: "Point", coordinates: [ -73.99279 , 40.719296 ] },
-        distanceField: "dist.calculated",
+        near: { type: "Point", coordinates: [ -73.99279 , 40.719296 ] }, // <-- required 
+        distanceField: "dist.calculated", // <-- required 
         maxDistance: 2,
         query: { category: "Parks" },
         includeLocs: "dist.location",
-        spherical: true
+        spherical: true // <-- required 
      }
    }
 ];
