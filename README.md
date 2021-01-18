@@ -1450,6 +1450,29 @@ const r = await comments.aggregate(pipeline, {readConcern: { level: 'majority' }
 
 
 
+<br><br>
+
+
+
+
+
+#### pretty the result (https://docs.mongodb.com/manual/reference/method/cursor.pretty/)
+```javascript
+const query = {"id": msg.room};
+
+// async
+const r = await collection.findOne(query).pretty();
+
+/*
+{
+    "_id" : ObjectId("54f612b6029b47909a90ce8d"),
+    "title" : "A Tale of Two Cities",
+    "text" : "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness...",
+    "authorship" : "Charles Dickens"
+}
+*/
+```
+
 
 
 
