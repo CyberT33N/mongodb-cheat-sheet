@@ -2141,7 +2141,56 @@ const r = await collection.aggregate(pipeline).toArray({});
 - $avg	Returns an average of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg)
 - $first	Returns a value from the first document for each group. Order is only defined if the documents are in a defined order. Distinct from the $first array operator. (https://docs.mongodb.com/manual/reference/operator/aggregation/first/#grp._S_first)
 - $last	Returns a value from the last document for each group. Order is only defined if the documents are in a defined order. Distinct from the $last array operator. (https://docs.mongodb.com/manual/reference/operator/aggregation/last/#grp._S_last)
+
+
+<br><br>
 - $max	Returns the highest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/max/#grp._S_max)
+- Syntax:
+```javascript
+{ $max: [ <expression1>, <expression2> ... ]  }
+```
+- Example:
+```javascript
+/* our collection looks like this:
+[
+  { "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") },
+  { "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") },
+  { "_id" : 3, "item" : "xyz", "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") },
+  { "_id" : 4, "item" : "abc", "price" : 10, "quantity" : 10, "date" : ISODate("2014-02-15T08:00:00Z") },
+  { "_id" : 5, "item" : "xyz", "price" : 5, "quantity" : 10, "date" : ISODate("2014-02-15T09:05:00Z") },
+]
+*/
+
+// Grouping the documents by the item field, the following operation uses the $max accumulator to compute the maximum total amount and maximum quantity for each group of documents.
+const pipeline = [
+     {
+       $group:
+         {
+           _id: "$item",
+           maxTotalAmount: { $max: { $multiply: [ "$price", "$quantity" ] } },
+           maxQuantity: { $max: "$quantity" }
+         }
+     }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : "xyz", "maxTotalAmount" : 50, "maxQuantity" : 10 },
+  { "_id" : "jkl", "maxTotalAmount" : 20, "maxQuantity" : 1 },
+  { "_id" : "abc", "maxTotalAmount" : 100, "maxQuantity" : 10 },
+]
+*/
+```
+<br><br>
+
+
 - $mergeObjects	Returns a document created by combining the input documents for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/mergeObjects/#exp._S_mergeObjects)
 - $min	Returns the lowest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/min/#grp._S_min)
 - $push	Returns an array of expression values for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/push/#grp._S_push)
