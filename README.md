@@ -1915,9 +1915,10 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $sum	Returns a sum of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/sum/#grp._S_sum)
+- In easy words each match sum will get called. If you use **count: {$sum: 1}** then each new match counts gets +1
 - Syntax:
 ```javascript
-{ $sum: <expression> }
+{$sum: <expression>}
 ```
 - Example:
 ```javascript
