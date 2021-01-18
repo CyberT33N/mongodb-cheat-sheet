@@ -925,7 +925,22 @@ ____________________________________________________
 
 #### Arithmetic Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#arithmetic-expression-operators)
 - $abs	Returns the absolute value of a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/abs/#exp._S_abs)
+
+<br><br>
 - $add	Adds numbers to return the sum, or adds numbers and a date to return a new date. If adding numbers and a date, treats the numbers as milliseconds. Accepts any number of argument expressions, but at most, one expression can resolve to a date. (https://docs.mongodb.com/manual/reference/operator/aggregation/add/#exp._S_add)
+```javascript
+// add price + fee
+const pipeline = [{$project: {item: 1, total: {$add: [ "$price", "$fee" ]}}}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+```
+
+<br><br>
+
 - $ceil	Returns the smallest integer greater than or equal to the specified number. (https://docs.mongodb.com/manual/reference/operator/aggregation/ceil/#exp._S_ceil)
 - $divide	Returns the result of dividing the first number by the second. Accepts two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/divide/#exp._S_divide)
 - $exp	Raises e to the specified exponent. (https://docs.mongodb.com/manual/reference/operator/aggregation/exp/#exp._S_exp)
@@ -2063,23 +2078,6 @@ const r = await collection.aggregate(...pipeline).toArray({});
 <br><br>
 
 ## Operator
-
-
-
-## $add (https://docs.mongodb.com/manual/reference/operator/aggregation/add/)
-
-#### add numbers
-```javascript
-// add price + fee
-const pipeline = [{$project: {item: 1, total: {$add: [ "$price", "$fee" ]}}}];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-```
-
 
 
 
