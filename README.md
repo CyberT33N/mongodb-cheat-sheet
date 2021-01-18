@@ -998,7 +998,60 @@ const r = await collection.aggregate(pipeline).toArray({});
 - $collStats	Returns statistics regarding a collection or view. (https://docs.mongodb.com/manual/reference/operator/aggregation/collStats/#pipe._S_collStats)
 - $count	Returns a count of the number of documents at this stage of the aggregation pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/count/#pipe._S_count)
 - $facet	Processes multiple aggregation pipelines within a single stage on the same set of input documents. Enables the creation of multi-faceted aggregations capable of characterizing data across multiple dimensions, or facets, in a single stage. (https://docs.mongodb.com/manual/reference/operator/aggregation/facet/#pipe._S_facet)
+
+<br><br>
 - $geoNear	Returns an ordered stream of documents based on the proximity to a geospatial point. Incorporates the functionality of $match, $sort, and $limit for geospatial data. The output documents include an additional distance field and can include a location identifier field. (https://docs.mongodb.com/manual/reference/operator/aggregation/geoNear/#pipe._S_geoNear)
+- Syntax:
+```javascript
+{ $geoNear: { <geoNear options> } }
+```
+- Example:
+```javascript
+/*
+Consider a collection places that has a 2dsphere index. The following aggregation uses $geoNear to find documents with a location at most 2 meters from the center [ -73.99279 , 40.719296 ] and category equal to Parks.
+*/
+
+const pipeline = [
+   {
+     $geoNear: {
+        near: { type: "Point", coordinates: [ -73.99279 , 40.719296 ] },
+        distanceField: "dist.calculated",
+        maxDistance: 2,
+        query: { category: "Parks" },
+        includeLocs: "dist.location",
+        spherical: true
+     }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+{
+   "_id" : 8,
+   "name" : "Sara D. Roosevelt Park",
+   "category" : "Parks",
+   "location" : {
+      "type" : "Point",
+      "coordinates" : [ -73.9928, 40.7193 ]
+   },
+   "dist" : {
+      "calculated" : 0.9539931676365992,
+      "location" : {
+         "type" : "Point",
+         "coordinates" : [ -73.9928, 40.7193 ]
+      }
+   }
+}
+*/
+```
+<br><br>
+
+
 - $graphLookup	Performs a recursive search on a collection. To each output document, adds a new array field that contains the traversal results of the recursive search for that document. (https://docs.mongodb.com/manual/reference/operator/aggregation/graphLookup/#pipe._S_graphLookup)
 
 <br><br>
