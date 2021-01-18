@@ -1281,17 +1281,17 @@ ____________________________________________________
 <br><br>
 
 
-# countDocuments
+# count Documents
 - count all documents from collection
 ```javascript
-const myDB = client.db(MongoDB_DB_NAME);
-const movies = myDB.collection('movies');
-
 // method #1 - .countDocuments (https://docs.mongodb.com/manual/reference/method/db.collection.countDocuments/#db.collection.countDocuments)
 const numMovies = await movies.countDocuments({});
 
 // method #2 - .count (https://docs.mongodb.com/manual/reference/method/db.collection.count/)
 const numMovies = await movies.count({});
+
+// method #3 - using operator
+const numMovies = await movies.count({type: {$ne: 'Star'}});
 ```
 
 
