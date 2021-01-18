@@ -1262,9 +1262,61 @@ const r = await collection.aggregate(pipeline).toArray({});
 ]
 */
 ```
+
 <br><br>
 
 - $sort	Reorders the document stream by a specified sort key. Only the order changes; the documents remain unmodified. For each input document, outputs one document. (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/#pipe._S_sort)
+- Syntax:
+```javascript
+{ $sort: { <field1>: <sort order>, <field2>: <sort order> ... } }
+```
+- Options:
+```javascript
+1	| Sort ascending.
+-1 | Sort descending.
+{$meta: "textScore"} | Sort by the computed textScore metadata in descending order. See Text Score Metadata Sort for an example.
+```
+- Example
+```javascript
+/* // source collection:
+[
+   { "_id" : 1, "name" : "Central Park Cafe", "borough" : "Manhattan"},
+   { "_id" : 2, "name" : "Rock A Feller Bar and Grill", "borough" : "Queens"},
+   { "_id" : 3, "name" : "Empire State Pub", "borough" : "Brooklyn"},
+   { "_id" : 4, "name" : "Stan's Pizzaria", "borough" : "Manhattan"},
+   { "_id" : 5, "name" : "Jane's Deli", "borough" : "Brooklyn"},
+]
+*/
+
+// skip first 2 documents in natural order
+const pipeline = [
+     { $sort : { borough : 1 } }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+
+{ "_id" : 3, "name" : "Empire State Pub", "borough" : "Brooklyn" }
+{ "_id" : 5, "name" : "Jane's Deli", "borough" : "Brooklyn" }
+{ "_id" : 1, "name" : "Central Park Cafe", "borough" : "Manhattan" }
+{ "_id" : 4, "name" : "Stan's Pizzaria", "borough" : "Manhattan" }
+{ "_id" : 2, "name" : "Rock A Feller Bar and Grill", "borough" : "Queens" }
+
+{ "_id" : 5, "name" : "Jane's Deli", "borough" : "Brooklyn" }
+{ "_id" : 3, "name" : "Empire State Pub", "borough" : "Brooklyn" }
+{ "_id" : 4, "name" : "Stan's Pizzaria", "borough" : "Manhattan" }
+{ "_id" : 1, "name" : "Central Park Cafe", "borough" : "Manhattan" }
+{ "_id" : 2, "name" : "Rock A Feller Bar and Grill", "borough" : "Queens" }
+*/
+```
+<br><br>
+
+
 - $sortByCount	Groups incoming documents based on the value of a specified expression, then computes the count of documents in each distinct group. (https://docs.mongodb.com/manual/reference/operator/aggregation/sortByCount/#pipe._S_sortByCount)
 - $unionWith	Performs a union of two collections; i.e. combines pipeline results from two collections into a single result set. (https://docs.mongodb.com/manual/reference/operator/aggregation/unionWith/#pipe._S_unionWith)
 - $unset	Removes/excludes fields from documents. $unset is an alias for $project stage that removes fields.(https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#pipe._S_unset)
@@ -2903,24 +2955,6 @@ collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 // async
 const r = await collection.aggregate(pipeline).toArray({});
 ```
-
-<br><br>
-
-## sort ascending order (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/)
-```javascript
-// sort results by year
-const pipeline = [{ $sort: {year: 1}}];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-```
-
-
-
-
 
 
 
