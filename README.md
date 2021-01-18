@@ -1223,7 +1223,41 @@ const r = await collection.aggregate(pipeline).toArray({});
 - $replaceRoot	Replaces a document with the specified embedded document. The operation replaces all existing fields in the input document, including the _id field. Specify a document embedded in the input document to promote the embedded document to the top level. (https://docs.mongodb.com/manual/reference/operator/aggregation/replaceRoot/#pipe._S_replaceRoot)
 - $replaceWith is an alias for $replaceRoot stage. Replaces a document with the specified embedded document. The operation replaces all existing fields in the input document, including the _id field. Specify a document embedded in the input document to promote the embedded document to the top level.
  $replaceWith is an alias for $replaceRoot stage.
+ 
+ <br><br>
 - $sample	Randomly selects the specified number of documents from its input. (https://docs.mongodb.com/manual/reference/operator/aggregation/sample/#pipe._S_sample)
+```javascript
+/* // source collection
+[
+  { "_id" : 1, "name" : "dave123", "q1" : true, "q2" : true },
+  { "_id" : 2, "name" : "dave2", "q1" : false, "q2" : false  },
+  { "_id" : 3, "name" : "ahn", "q1" : true, "q2" : true  },
+  { "_id" : 4, "name" : "li", "q1" : true, "q2" : false  },
+  { "_id" : 5, "name" : "annT", "q1" : false, "q2" : true  },
+  { "_id" : 6, "name" : "li", "q1" : true, "q2" : true  },
+  { "_id" : 7, "name" : "ty", "q1" : false, "q2" : true  },
+]
+*/
+
+const pipeline = [{$sample: {size: 3}}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+  { "_id" : 3, "name" : "ahn", "q1" : true, "q2" : true  },
+  { "_id" : 4, "name" : "li", "q1" : true, "q2" : false  },
+  { "_id" : 7, "name" : "ty", "q1" : false, "q2" : true  },
+]
+*/
+```
+<br><br>
+
+
 - $set	Adds new fields to documents. Similar to $project, $set reshapes each document in the stream; specifically, by adding new fields to output documents that contain both the existing fields from the input documents and the newly added fields.
 - $set is an alias for $addFields stage. (https://docs.mongodb.com/manual/reference/operator/aggregation/set/#pipe._S_set)
 
