@@ -1164,6 +1164,18 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $group	Groups input documents by a specified identifier expression and applies the accumulator expression(s), if specified, to each group. Consumes all input documents and outputs one document per each distinct group. The output documents only contain the identifier field and, if specified, accumulated fields. (https://docs.mongodb.com/manual/reference/operator/aggregation/group/#pipe._S_group)
+- Syntax:
+```javascript
+{
+  $group:
+    {
+      _id: <expression>, // Group By Expression
+      <field1>: { <accumulator1> : <expression1> },
+      ...
+    }
+ }
+```
+- Example:
 ```javascript
 /* Our collection looks like this:
 { "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") }
@@ -1174,11 +1186,12 @@ const r = await collection.aggregate(pipeline).toArray({});
 */
 
 
-const pipeline = [{$group: {
-                 _id: "$item",
-                avgAmount: { $avg: { $multiply: [ "$price", "$quantity" ] } },
-                avgQuantity: { $avg: "$quantity" }
-              }}];
+const pipeline = [{
+                   $group: {
+                     _id: "$item",
+                     avgAmount: { $avg: { $multiply: [ "$price", "$quantity" ] } },
+                    avgQuantity: { $avg: "$quantity" }
+                 }}];
 
 // callback
 collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
