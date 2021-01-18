@@ -1617,7 +1617,56 @@ The operation returns the following results:
 - $first	Returns the first array element. Distinct from $first accumulator. (https://docs.mongodb.com/manual/reference/operator/aggregation/first-array-element/#exp._S_first)
 - $in	Returns a boolean indicating whether a specified value is in an array. (https://docs.mongodb.com/manual/reference/operator/aggregation/in/#exp._S_in)
 - $indexOfArray	Searches an array for an occurrence of a specified value and returns the array index of the first occurrence. If the substring is not found, returns -1. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexOfArray/#exp._S_indexOfArray)
+
+<br><br>
 - $isArray	Determines if the operand is an array. Returns a boolean. (https://docs.mongodb.com/manual/reference/operator/aggregation/isArray/#exp._S_isArray)
+- Syntax:
+```javascript
+{ $isArray: [ <expression> ] }
+```
+- Example:
+```javascript
+/* // Source collection:
+[
+  { "_id" : 1, instock: [ "chocolate" ], ordered: [ "butter", "apples" ] },
+  { "_id" : 2, instock: [ "apples", "pudding", "pie" ] },
+  { "_id" : 3, instock: [ "pears", "pecans"], ordered: [ "cherries" ] },
+  { "_id" : 4, instock: [ "ice cream" ], ordered: [ ] },
+]
+*/
+
+const pipeline = [
+   { $project:
+      { items:
+          { $cond:
+            {
+              if: { $and: [ { $isArray: "$instock" }, { $isArray: "$ordered" } ] },
+              then: { $concatArrays: [ "$instock", "$ordered" ] },
+              else: "One or more fields is not an array."
+            }
+          }
+      }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "_id" : 1, "items" : [ "chocolate", "butter", "apples" ] },
+  { "_id" : 2, "items" : "One or more fields is not an array." },
+  { "_id" : 3, "items" : [ "pears", "pecans", "cherries" ] },
+  { "_id" : 4, "items" : [ "ice cream" ] },
+]
+*/
+```
+<br><br>
+
+
 - $last	Returns the last array element. Distinct from $last accumulator. (https://docs.mongodb.com/manual/reference/operator/aggregation/last-array-element/#exp._S_last)
 
 <br><br>
