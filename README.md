@@ -925,6 +925,73 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 #### Aggregation Pipeline Stages
 - $addFields	Adds new fields to documents. Similar to $project, $addFields reshapes each document in the stream; specifically, by adding new fields to output documents that contain both the existing fields from the input documents and the newly added fields. (https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#pipe._S_addFields)
+- Syntax:
+```javascript
+{ $addFields: { <newField>: <expression>, ... } }
+```
+- Example:
+```javascript
+/* // Source collection:
+{
+  _id: 1,
+  student: "Maya",
+  homework: [ 10, 5, 10 ],
+  quiz: [ 10, 8 ],
+  extraCredit: 0
+}
+{
+  _id: 2,
+  student: "Ryan",
+  homework: [ 5, 6, 5 ],
+  quiz: [ 8, 8 ],
+  extraCredit: 8
+}
+*/
+
+const pipeline = [
+   {
+     $addFields: {
+       totalHomework: { $sum: "$homework" } ,
+       totalQuiz: { $sum: "$quiz" }
+     }
+   },
+   {
+     $addFields: { totalScore:
+       { $add: [ "$totalHomework", "$totalQuiz", "$extraCredit" ] } }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+{
+  "_id" : 1,
+  "student" : "Maya",
+  "homework" : [ 10, 5, 10 ],
+  "quiz" : [ 10, 8 ],
+  "extraCredit" : 0,
+  "totalHomework" : 25,
+  "totalQuiz" : 18,
+  "totalScore" : 43
+}
+{
+  "_id" : 2,
+  "student" : "Ryan",
+  "homework" : [ 5, 6, 5 ],
+  "quiz" : [ 8, 8 ],
+  "extraCredit" : 8,
+  "totalHomework" : 16,
+  "totalQuiz" : 16,
+  "totalScore" : 40
+}
+*/
+```
+<br><br>
+
 - $bucket	Categorizes incoming documents into groups, called buckets, based on a specified expression and bucket boundaries. (https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#pipe._S_bucket)
 - $bucketAuto	Categorizes incoming documents into a specific number of groups, called buckets, based on a specified expression. Bucket boundaries are automatically determined in an attempt to evenly distribute the documents into the specified number of buckets. (https://docs.mongodb.com/manual/reference/operator/aggregation/bucketAuto/#pipe._S_bucketAuto)
 - $collStats	Returns statistics regarding a collection or view. (https://docs.mongodb.com/manual/reference/operator/aggregation/collStats/#pipe._S_collStats)
