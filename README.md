@@ -792,7 +792,50 @@ ____________________________________________________
 - $eq	Matches values that are equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/eq/)
 - $gt	Matches values that are greater than a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/gt/)
 - $gte	Matches values that are greater than or equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/gte/)
-- $in	Matches any of the values specified in an array. (https://docs.mongodb.com/manual/reference/operator/aggregation/in/)
+
+<br><br>
+- $in	Matches any of the values specified in an array. Or in other words query array. (https://docs.mongodb.com/manual/reference/operator/aggregation/in/)
+- Syntax:
+```javascript
+{ $in: [ <expression>, <array expression> ] }
+```
+- Example:
+```javascript
+/* // Source collection:
+[
+  { "_id" : 1, "location" : "24th Street", "in_stock" : [ "apples", "oranges", "bananas" ] },
+  { "_id" : 2, "location" : "36th Street", "in_stock" : [ "bananas", "pears", "grapes" ] },
+  { "_id" : 3, "location" : "82nd Street", "in_stock" : [ "cantaloupes", "watermelons", "apples" ] },
+]
+*/
+
+const pipeline = [
+  {
+    $project: {
+      "store location" : "$location",
+      "has bananas" : {
+        $in: [ "bananas", "$in_stock" ]
+      }
+    }
+  }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "_id" : 1, "store location" : "24th Street", "has bananas" : true },
+  { "_id" : 2, "store location" : "36th Street", "has bananas" : true },
+  { "_id" : 3, "store location" : "82nd Street", "has bananas" : false },
+]
+*/
+```
+<br><br>
+
 - $lt	Matches values that are less than a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/lt/)
 - $lte	Matches values that are less than or equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/lte/)
 - $ne	Matches all values that are not equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/ne/)
@@ -2448,6 +2491,12 @@ const r = await collection.findOne(query).pretty();
 
 
 
+
+
+
+
+
+
 <br><br><br><br>
 
 
@@ -2643,19 +2692,6 @@ const displayCursor = collection.find(query).limit(moviesPerPage).skip(skipMovie
 <br><br>
 <br><br>
 
-
-#### query array
-```javascript
-const countries = ['nyc', 'paris'];
-const query = {countries: { $in: countries }};
-
-// callback
-collection.find(query).toArray(function(e, docs) { /* .. */ });
-
-// async
-const result = await collection.find(query).toArray({});
-```
-<br><br>
 
 #### find specific data and expect multiple results
 ```javascript
