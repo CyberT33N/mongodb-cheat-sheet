@@ -1226,6 +1226,14 @@ const r = await collection.aggregate(pipeline).toArray({});
  
  <br><br>
 - $sample	Randomly selects the specified number of documents from its input. (https://docs.mongodb.com/manual/reference/operator/aggregation/sample/#pipe._S_sample)
+- $sample uses one of two methods to obtain N random documents, depending on the size of the collection, the size of N, and $sample’s position in the pipeline. If all the following conditions are met, $sample uses a pseudo-random cursor to select documents:
+<br>$sample is the first stage of the pipeline
+<br>N is less than 5% of the total documents in the collection
+<br>The collection contains more than 100 documents
+- Syntax:
+```javascript
+{$sample: { size: <positive integer> }}
+```
 ```javascript
 /* // source collection
 [
