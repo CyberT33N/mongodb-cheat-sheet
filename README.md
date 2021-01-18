@@ -1753,6 +1753,45 @@ const numMovies = await movies.count({type: {$ne: 'Star'}});
 // method #4 - .itcount (https://docs.mongodb.com/manual/reference/method/cursor.itcount/)
 // itcount() is similar to cursor.count(), but actually executes the query on an existing iterator, exhausting its contents in the process.
 const numMovies = await movies.aggregate([...]).itcount();
+
+// method 4 - $count inside of aggregation pipeline
+const pipeline = [
+  {
+    '$match': {
+      'year': {
+        '$gte': 1980, 
+        '$lt': 1990
+      }
+    }
+  }, {
+    '$lookup': {
+      'from': 'comments', 
+      'let': {
+        'id': '$_id'
+      }, 
+      'pipeline': [
+        {
+          '$match': {
+            '$expr': {
+              '$eq': [
+                '$movie_id', '$$id'
+              ]
+            }
+          }
+        }, {
+          '$count': 'count'
+        }
+      ], 
+      'as': 'movie_comments'
+    }
+  }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
@@ -2701,50 +2740,6 @@ const r = await collection.aggregate(pipeline).toArray({});
 #### guides
 - https://www.youtube.com/watch?v=j7ccC2F1yc0
 
-<br><br><br><br>
-
-
-#### show the amount of matches - $count (https://docs.mongodb.com/manual/reference/operator/aggregation/count/)
-- Because we use a pipeline we will first match all the movie comments and then after this only response with the amount of matches as result
-```javascript
-const pipeline = [
-  {
-    '$match': {
-      'year': {
-        '$gte': 1980, 
-        '$lt': 1990
-      }
-    }
-  }, {
-    '$lookup': {
-      'from': 'comments', 
-      'let': {
-        'id': '$_id'
-      }, 
-      'pipeline': [
-        {
-          '$match': {
-            '$expr': {
-              '$eq': [
-                '$movie_id', '$$id'
-              ]
-            }
-          }
-        }, {
-          '$count': 'count'
-        }
-      ], 
-      'as': 'movie_comments'
-    }
-  }
-];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-```
 
 
 
