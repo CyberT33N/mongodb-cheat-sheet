@@ -934,7 +934,8 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 - $project	Reshapes each document in the stream, such as by adding new fields or removing existing fields. For each input document, outputs one document. See also $unset for removing existing fields. (https://docs.mongodb.com/manual/reference/operator/aggregation/project/#pipe._S_project)
 - You must manually specify each field which you want to return. Only **_id** field will be also returned! If you do not want this then use **{_id: 0}**
-- You can compare it with .map from javascript
+- You can compare it with .map from javascript.
+- Can be used as many time as you want within aggregation pipeline.
 ```javascript
 const pipeline = [{$project: {_id: 0, item: 1}}];
 
