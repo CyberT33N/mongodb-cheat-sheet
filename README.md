@@ -1180,7 +1180,44 @@ const r = await collection.aggregate(pipeline).toArray({});
 - $sample	Randomly selects the specified number of documents from its input. (https://docs.mongodb.com/manual/reference/operator/aggregation/sample/#pipe._S_sample)
 - $set	Adds new fields to documents. Similar to $project, $set reshapes each document in the stream; specifically, by adding new fields to output documents that contain both the existing fields from the input documents and the newly added fields.
 - $set is an alias for $addFields stage. (https://docs.mongodb.com/manual/reference/operator/aggregation/set/#pipe._S_set)
+
+<br><br>
 - $skip	Skips the first n documents where n is the specified skip number and passes the remaining documents unmodified to the pipeline. For each input document, outputs either zero documents (for the first n documents) or one document (if after the first n documents). (https://docs.mongodb.com/manual/reference/operator/aggregation/skip/#pipe._S_skip)
+- Syntax:
+```javascript
+{ $skip: <positive integer> }
+```
+- Example
+```javascript
+/* // source collection:
+[
+  {_id: '1', title: 'Fortnitev1'},
+  {_id: '2', title: 'Fortnitev2'},
+  {_id: '3', title: 'Fortnitev3'},
+  {_id: '4', title: 'Fortnitev4'},
+  {_id: '5', title: 'Fortnitev5'},
+]
+*/
+
+// skip first 2 documents in natural order
+const pipeline = [{$skip: 2}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+  {_id: '3', title: 'Fortnitev3'},
+  {_id: '4', title: 'Fortnitev4'},
+  {_id: '5', title: 'Fortnitev5'},
+]
+*/
+```
+<br><br>
+
 - $sort	Reorders the document stream by a specified sort key. Only the order changes; the documents remain unmodified. For each input document, outputs one document. (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/#pipe._S_sort)
 - $sortByCount	Groups incoming documents based on the value of a specified expression, then computes the count of documents in each distinct group. (https://docs.mongodb.com/manual/reference/operator/aggregation/sortByCount/#pipe._S_sortByCount)
 - $unionWith	Performs a union of two collections; i.e. combines pipeline results from two collections into a single result set. (https://docs.mongodb.com/manual/reference/operator/aggregation/unionWith/#pipe._S_unionWith)
@@ -2835,19 +2872,6 @@ collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
 const r = await collection.aggregate(pipeline).toArray({});
 ```
 
-<br><br>
-
-## skip results (https://docs.mongodb.com/manual/reference/operator/aggregation/skip/)
-```javascript
-// sort results by year
-const pipeline = [{$skip: 5}];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-```
 
 
 
