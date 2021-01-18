@@ -802,6 +802,23 @@ ____________________________________________________
 
 #### Logical Query Operators (https://docs.mongodb.com/manual/reference/operator/query-logical/)
 - $and	Joins query clauses with a logical AND returns all documents that match the conditions of both clauses. (https://docs.mongodb.com/manual/reference/operator/query/and/)
+```javascript
+/*
+This query will select all documents in the inventory collection where:
+- the price field value is not equal to 1.99 and
+- the price field exists.
+*/
+const query = {$and: [{price: {$ne: 1.99}}, {price: {$exists: true}}]};
+
+// callback
+collection.findOne(query, (e, docs) => { /* .. */ });
+
+// async
+const r = await collection.findOne(query)
+```
+
+<br><br>
+
 - $not	Inverts the effect of a query expression and returns documents that do not match the query expression. (https://docs.mongodb.com/manual/reference/operator/query/not/)
 - $nor	Joins query clauses with a logical NOR returns all documents that fail to match both clauses. (https://docs.mongodb.com/manual/reference/operator/query/nor/)
 - $or	Joins query clauses with a logical OR returns all documents that match the conditions of either clause. (https://docs.mongodb.com/manual/reference/operator/query/or/)
@@ -813,11 +830,10 @@ ____________________________________________________
 ```javascript
 const query = {"payload.discount": {$exists: true}};
 
-// callback.insertOne
+// callback
 collection.findOne(query, (e, docs) => { /* .. */ });
 
 // async
-// example #1
 const r = await collection.findOne(query)
 ```
 <br><br>
