@@ -1164,6 +1164,10 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $group	Groups input documents by a specified identifier expression and applies the accumulator expression(s), if specified, to each group. Consumes all input documents and outputs one document per each distinct group. The output documents only contain the identifier field and, if specified, accumulated fields. (https://docs.mongodb.com/manual/reference/operator/aggregation/group/#pipe._S_group)
+- _id is where to specify what incoming documents should be grouped on.
+- Can use all accumulator expressions within $group.
+- $group can be used multiple times within a pipeline.
+- It may be necessary to sanitize incoming data.
 - Syntax:
 ```javascript
 {
@@ -3175,6 +3179,21 @@ const r = await collection.aggregate(pipeline).toArray({});
 /* operation will return:
 [{_id:null, count:327}] // count will be the total amount of documents in our collection. Of course collection.count() or similiar stuff would achieve the same thing.
 */
+
+
+
+// ----- MORE PRODUCTION RELATED EXAMPLE ------
+// first we match all fields that contain specific url. If this field does not exist or is different it will be ignored. Then after this we can use {'_id': null} to group all documents and get the average value.
+const pipeline = [
+  {$match: {url: 'anyURL'}},
+  {$group: {'_id': null, 'averageData': {$avg: '$anyfield'}}},
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 <br><br>
