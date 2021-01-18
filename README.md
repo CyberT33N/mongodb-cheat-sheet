@@ -992,7 +992,37 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 
 - $ceil	Returns the smallest integer greater than or equal to the specified number. (https://docs.mongodb.com/manual/reference/operator/aggregation/ceil/#exp._S_ceil)
+
+<br><br>
 - $divide	Returns the result of dividing the first number by the second. Accepts two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/divide/#exp._S_divide)
+```javascript
+/* our collection looks like this:
+{ "_id" : 1, "item" : "abc", "price" : 10, "discount": 2, date: ISODate("2014-03-01T08:00:00Z") }
+{ "_id" : 2, "item" : "jkl", "price" : 20, "discount": 2, date: ISODate("2014-03-01T09:00:00Z") }
+{ "_id" : 3, "item" : "xyz", "price" : 5, "discount": 2, date: ISODate("2014-03-15T09:00:00Z") }
+*/
+
+// add price + fee
+const pipeline = [
+  {$project: {date: 1, item: 1, newPrice: {$divide: ["$price", "$discount"]}}}
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+The operation returns the following results:
+{ "_id" : 1, "item" : "abc", "date" : ISODate("2014-03-01T08:00:00Z"), "newPrice" : 5 }
+{ "_id" : 2, "item" : "jkl", "date" : ISODate("2014-03-01T09:00:00Z"), "newPrice" : 10 }
+{ "_id" : 3, "item" : "xyz", "date" : ISODate("2014-03-15T09:00:00Z"), "newPrice" : 2.5 }
+*/
+```
+<br><br>
+
+
 - $exp	Raises e to the specified exponent. (https://docs.mongodb.com/manual/reference/operator/aggregation/exp/#exp._S_exp)
 - $floor	Returns the largest integer less than or equal to the specified number. (https://docs.mongodb.com/manual/reference/operator/aggregation/floor/#exp._S_floor)
 - $ln	Calculates the natural log of a number. (https://docs.mongodb.com/manual/reference/operator/aggregation/ln/#exp._S_ln)
