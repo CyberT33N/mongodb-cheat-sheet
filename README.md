@@ -1577,6 +1577,10 @@ const numMovies = await movies.count({});
 
 // method #3 - using operator
 const numMovies = await movies.count({type: {$ne: 'Star'}});
+
+// method #4 - .itcount (https://docs.mongodb.com/manual/reference/method/cursor.itcount/)
+// itcount() is similar to cursor.count(), but actually executes the query on an existing iterator, exhausting its contents in the process.
+const numMovies = await movies.aggregate([...]).itcount();
 ```
 
 
