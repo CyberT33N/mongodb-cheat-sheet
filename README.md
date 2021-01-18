@@ -1078,7 +1078,7 @@ The operation returns the following results:
 { "_id" : 3, "item" : "xyz", "price" : 5, "quantity": 10, date: ISODate("2014-03-15T09:00:00Z") }
 */
 
-// add price + fee
+// multiply price with quantitiy
 const pipeline = [
      {$project: {date: 1, item: 1, total: {$multiply: [ "$price", "$quantity" ]}}}
    ];
@@ -1116,7 +1116,47 @@ The operation returns the following results:
 - $indexOfArray	Searches an array for an occurrence of a specified value and returns the array index of the first occurrence. If the substring is not found, returns -1. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexOfArray/#exp._S_indexOfArray)
 - $isArray	Determines if the operand is an array. Returns a boolean. (https://docs.mongodb.com/manual/reference/operator/aggregation/isArray/#exp._S_isArray)
 - $last	Returns the last array element. Distinct from $last accumulator. (https://docs.mongodb.com/manual/reference/operator/aggregation/last-array-element/#exp._S_last)
+
+<br><br>
 - $map	Applies a subexpression to each element of an array and returns the array of resulting values in order. Accepts named parameters. (https://docs.mongodb.com/manual/reference/operator/aggregation/map/#exp._S_map)
+```javascript
+/* our collection looks like this:
+  { _id: 1, quizzes: [ 5, 6, 7 ] },
+  { _id: 2, quizzes: [ ] },
+  { _id: 3, quizzes: [ 3, 8, 9 ] }
+*/
+
+// The following aggregation operation uses $map with the $add expression to increment each element in the quizzes array by 2.
+const pipeline = [
+      { $project:
+         { adjustedGrades:
+            {
+              $map:
+                 {
+                   input: "$quizzes",
+                   as: "grade",
+                   in: { $add: [ "$$grade", 2 ] }
+                 }
+            }
+         }
+      }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+The operation returns the following results:
+  { "_id" : 1, "adjustedGrades" : [ 7, 8, 9 ] }
+  { "_id" : 2, "adjustedGrades" : [ ] }
+  { "_id" : 3, "adjustedGrades" : [ 5, 10, 11 ] }
+*/
+```
+<br><br>
+
 - $objectToArray	Converts a document to an array of documents representing key-value pairs. (https://docs.mongodb.com/manual/reference/operator/aggregation/objectToArray/#exp._S_objectToArray)
 - $range	Outputs an array containing a sequence of integers according to user-defined inputs. (https://docs.mongodb.com/manual/reference/operator/aggregation/range/#exp._S_range)
 - $reduce	Applies an expression to each element in an array and combines them into a single value. (https://docs.mongodb.com/manual/reference/operator/aggregation/reduce/#exp._S_reduce)
