@@ -875,7 +875,40 @@ ____________________________________________________
 - $facet	Processes multiple aggregation pipelines within a single stage on the same set of input documents. Enables the creation of multi-faceted aggregations capable of characterizing data across multiple dimensions, or facets, in a single stage. (https://docs.mongodb.com/manual/reference/operator/aggregation/facet/#pipe._S_facet)
 - $geoNear	Returns an ordered stream of documents based on the proximity to a geospatial point. Incorporates the functionality of $match, $sort, and $limit for geospatial data. The output documents include an additional distance field and can include a location identifier field. (https://docs.mongodb.com/manual/reference/operator/aggregation/geoNear/#pipe._S_geoNear)
 - $graphLookup	Performs a recursive search on a collection. To each output document, adds a new array field that contains the traversal results of the recursive search for that document. (https://docs.mongodb.com/manual/reference/operator/aggregation/graphLookup/#pipe._S_graphLookup)
+
+<br><br>
 - $group	Groups input documents by a specified identifier expression and applies the accumulator expression(s), if specified, to each group. Consumes all input documents and outputs one document per each distinct group. The output documents only contain the identifier field and, if specified, accumulated fields. (https://docs.mongodb.com/manual/reference/operator/aggregation/group/#pipe._S_group)
+```javascript
+/* Our collection looks like this:
+{ "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") }
+{ "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") }
+{ "_id" : 3, "item" : "xyz", "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") }
+{ "_id" : 4, "item" : "abc", "price" : 10, "quantity" : 10, "date" : ISODate("2014-02-15T08:00:00Z") }
+{ "_id" : 5, "item" : "xyz", "price" : 5, "quantity" : 10, "date" : ISODate("2014-02-15T09:12:00Z") }
+*/
+
+
+const pipeline = [{$group: {
+                 _id: "$item",
+                avgAmount: { $avg: { $multiply: [ "$price", "$quantity" ] } },
+                avgQuantity: { $avg: "$quantity" }
+              }}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+{ "_id" : "xyz", "avgAmount" : 37.5, "avgQuantity" : 7.5 }
+{ "_id" : "jkl", "avgAmount" : 20, "avgQuantity" : 1 }
+{ "_id" : "abc", "avgAmount" : 60, "avgQuantity" : 6 }
+*/
+```
+<br><br>
+
+
 - $indexStats	Returns statistics regarding the use of each index for the collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexStats/#pipe._S_indexStats)
 - $limit	Passes the first n documents unmodified to the pipeline where n is the specified limit. For each input document, outputs either one document (for the first n documents) or zero documents (after the first n documents). (https://docs.mongodb.com/manual/reference/operator/aggregation/limit/#pipe._S_limit)
 - $listSessions	Lists all sessions that have been active long enough to propagate to the system.sessions collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/listSessions/#pipe._S_listSessions)
@@ -2132,34 +2165,8 @@ const r = await collection.aggregate(...pipeline).toArray({});
 
 
 ## $group (https://docs.mongodb.com/manual/reference/operator/aggregation/group/)
-```javascript
-/* Our collection looks like this:
-{ "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") }
-{ "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") }
-{ "_id" : 3, "item" : "xyz", "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") }
-{ "_id" : 4, "item" : "abc", "price" : 10, "quantity" : 10, "date" : ISODate("2014-02-15T08:00:00Z") }
-{ "_id" : 5, "item" : "xyz", "price" : 5, "quantity" : 10, "date" : ISODate("2014-02-15T09:12:00Z") }
-*/
 
-
-const pipeline = [{$group: {
-                 _id: "$item",
-                avgAmount: { $avg: { $multiply: [ "$price", "$quantity" ] } },
-                avgQuantity: { $avg: "$quantity" }
-              }}];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-
-/* operation will return:
-{ "_id" : "xyz", "avgAmount" : 37.5, "avgQuantity" : 7.5 }
-{ "_id" : "jkl", "avgAmount" : 20, "avgQuantity" : 1 }
-{ "_id" : "abc", "avgAmount" : 60, "avgQuantity" : 6 }
-*/
-```
+<br><br>
 
 
 #### count amount of field with the same value
