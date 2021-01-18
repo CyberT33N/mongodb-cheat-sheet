@@ -925,6 +925,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 #### Aggregation Pipeline Stages
 - $addFields	Adds new fields to documents. Similar to $project, $addFields reshapes each document in the stream; specifically, by adding new fields to output documents that contain both the existing fields from the input documents and the newly added fields. (https://docs.mongodb.com/manual/reference/operator/aggregation/addFields/#pipe._S_addFields)
+- It is similiar to projection but $addFields only allows you to modify the incoming pipeline documents. The nicest difference is that with projection your manually have to define all fields that you want to include to the results. With very big objects this can be a pain. Instead you can use $addFields to quickly add new fields and still recieve all other fields in your result.
 - Syntax:
 ```javascript
 { $addFields: { <newField>: <expression>, ... } }
