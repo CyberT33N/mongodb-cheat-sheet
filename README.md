@@ -1266,7 +1266,9 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 
 - $sort	Reorders the document stream by a specified sort key. Only the order changes; the documents remain unmodified. For each input document, outputs one document. (https://docs.mongodb.com/manual/reference/operator/aggregation/sort/#pipe._S_sort)
-- You can sort on multiple fields. The sort priority will be in order of your sort queries
+- You can sort on multiple fields. The sort priority will be in order of your sort queries.
+- Can take advantage of indexes if used earlier in the pipeline.
+- By default $sort will only use 100MB of RAM. To increase the limit use allowDiskUse.
 - Syntax:
 ```javascript
 { $sort: { <field1>: <sort order>, <field2>: <sort order> ... } }
