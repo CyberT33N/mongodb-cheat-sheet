@@ -1719,6 +1719,16 @@ The operation returns the following results:
 
 <br><br>
 - $reduce	Applies an expression to each element in an array and combines them into a single value. (https://docs.mongodb.com/manual/reference/operator/aggregation/reduce/#exp._S_reduce)
+- **$$this** refers to the current element in the array
+- **$$value** refers to the accumulator value
+- Options:
+```javascript
+/*
+- input | array | Can be any valid expression that resolves to an array. For more information on expressions, see Expressions.
+- initialValue | expression | The initial cumulative value set before in is applied to the first element of the input array.
+- in | 	expression | A valid expression that $reduce applies to each element in the input array in left-to-right order. Wrap the input value with $reverseArray to yield the equivalent of applying the combining expression from right-to-left.
+*/
+```
 - Syntax:
 ```javascript
 {
