@@ -996,7 +996,53 @@ const r = await collection.aggregate(pipeline).toArray({});
 - $bucket	Categorizes incoming documents into groups, called buckets, based on a specified expression and bucket boundaries. (https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#pipe._S_bucket)
 - $bucketAuto	Categorizes incoming documents into a specific number of groups, called buckets, based on a specified expression. Bucket boundaries are automatically determined in an attempt to evenly distribute the documents into the specified number of buckets. (https://docs.mongodb.com/manual/reference/operator/aggregation/bucketAuto/#pipe._S_bucketAuto)
 - $collStats	Returns statistics regarding a collection or view. (https://docs.mongodb.com/manual/reference/operator/aggregation/collStats/#pipe._S_collStats)
+
+<br><br>
 - $count	Returns a count of the number of documents at this stage of the aggregation pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/count/#pipe._S_count)
+- Syntax:
+```javascript
+{ $count: <string> }
+```
+- Example
+```javascript
+/* // source collection:
+[
+  { "_id" : 1, "subject" : "History", "score" : 88 },
+  { "_id" : 2, "subject" : "History", "score" : 92 },
+  { "_id" : 3, "subject" : "History", "score" : 97 },
+  { "_id" : 4, "subject" : "History", "score" : 71 },
+  { "_id" : 5, "subject" : "History", "score" : 79 },
+  { "_id" : 6, "subject" : "History", "score" : 83 },
+]
+*/
+
+// skip first 2 documents in natural order
+const pipeline = [
+    {
+      $match: {
+        score: {
+          $gt: 80
+        }
+      }
+    },
+    {
+      $count: "passing_scores"
+    }
+  ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+{ "passing_scores" : 4 }
+*/
+```
+<br><br>
+
+
 - $facet	Processes multiple aggregation pipelines within a single stage on the same set of input documents. Enables the creation of multi-faceted aggregations capable of characterizing data across multiple dimensions, or facets, in a single stage. (https://docs.mongodb.com/manual/reference/operator/aggregation/facet/#pipe._S_facet)
 
 <br><br>
