@@ -1107,7 +1107,36 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 - $indexStats	Returns statistics regarding the use of each index for the collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexStats/#pipe._S_indexStats)
+
+<br><br>
 - $limit	Passes the first n documents unmodified to the pipeline where n is the specified limit. For each input document, outputs either one document (for the first n documents) or zero documents (after the first n documents). (https://docs.mongodb.com/manual/reference/operator/aggregation/limit/#pipe._S_limit)
+```javascript
+/* // Our collection looks like this:
+[
+  { "_id" : 1, "used" : 0, "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") },
+  { "_id" : 2, "used" : 0, "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") },
+  { "_id" : 3, "used" : 0, "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") },
+];
+*/
+
+const pipeline = [{$match: { used: 0 }}, {$limit: 2}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+  { "_id" : 1, "used" : 0, "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") },
+  { "_id" : 2, "used" : 0, "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") },
+];
+*/
+```
+<br><br>
+
+
 - $listSessions	Lists all sessions that have been active long enough to propagate to the system.sessions collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/listSessions/#pipe._S_listSessions)
 - $lookup	Performs a left outer join to another collection in the same database to filter in documents from the “joined” collection for processing. (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#pipe._S_lookup)
 
