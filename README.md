@@ -2158,6 +2158,59 @@ const r = await collection.aggregate(...pipeline).toArray({});
 
 ## Operator
 
+<br><br>
+
+
+## $project (https://docs.mongodb.com/manual/reference/operator/aggregation/project/)
+- The logic is same to **projection** but **$project** got way more options.
+
+<br><br>
+
+## create new field based of value
+```javascript
+/*
+{
+  '_id': '12345678',
+  'used': 0,
+  'title': 'Fortnite',
+  'date': [
+     'year': 2015
+   ]
+}
+*/
+
+const pipeline = [
+  {$match: {used: 0}},
+  {$project: {title: 1, _id: 0, year: '$date.year'}},
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+{
+  'title': 'Fortnite',
+  'year': 2015,
+}
+*/
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
