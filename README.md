@@ -3158,6 +3158,27 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 
+#### choose all documents
+- We can use **'_id': null** or **'_id': ''**
+```javascript
+const pipeline = [{'$group': {
+                   '_id': null,
+                   'count': {'$sum': 1}
+                 }}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[{_id:null, count:327}] // count will be the total amount of documents in our collection. Of course collection.count() or similiar stuff would achieve the same thing.
+*/
+```
+
+<br><br>
+
 
 #### count amount of field with the same value
 - In this case we also sort the result descending and then limit the result to 20
