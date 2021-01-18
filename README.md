@@ -835,6 +835,9 @@ const r = await collection.findOne(query)
 
 <br><br>
 - $regex	Selects documents where values match a specified regular expression. (https://docs.mongodb.com/manual/reference/operator/query/regex/)
+- **input**	- An expression that resolves to an array.
+- **as** - Optional. A name for the variable that represents each individual element of the input array. If no name is specified, the variable name defaults to this.
+- **in** - An expression that is applied to each element of the input array. The expression references each element individually with the variable name specified in as.
 ```javascript
 /* Our collection looks like this:
   {"_id": 1, "item": "word with spaces"}
