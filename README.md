@@ -2187,6 +2187,44 @@ const r = await collection.aggregate(pipeline).toArray({});
   { "_id" : "abc", "maxTotalAmount" : 100, "maxQuantity" : 10 },
 ]
 */
+
+
+
+
+
+
+
+
+
+
+// ------ EXAMPLE #2 ------
+/* our collection looks like this:
+[
+  { "_id": 1, "quizzes": [ 10, 6, 7 ], "labs": [ 5, 8 ], "final": 80, "midterm": 75 },
+  { "_id": 2, "quizzes": [ 9, 10 ], "labs": [ 8, 8 ], "final": 95, "midterm": 80 },
+  { "_id": 3, "quizzes": [ 4, 5, 5 ], "labs": [ 6, 5 ], "final": 78, "midterm": 70 },
+]
+*/
+
+// The following example uses the $max in the $project stage to calculate the maximum quiz scores, the maximum lab scores, and the maximum of the final and the midterm:
+const pipeline = [
+   { $project: { quizMax: { $max: "$quizzes"}, labMax: { $max: "$labs" }, examMax: { $max: [ "$final", "$midterm" ] } } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : 1, "quizMax" : 10, "labMax" : 8, "examMax" : 80 },
+  { "_id" : 2, "quizMax" : 10, "labMax" : 8, "examMax" : 95 },
+  { "_id" : 3, "quizMax" : 5, "labMax" : 6, "examMax" : 78 },
+]
+*/
 ```
 <br><br>
 
