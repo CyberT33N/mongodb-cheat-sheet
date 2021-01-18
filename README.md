@@ -2540,7 +2540,52 @@ count:327
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
+<br><br>
+
+
+## check if array is empty
+```javascript
+/* // source collection
+[
+  {_id: '123', year: [2015, 2016]},
+  {_id: '123', year: []},
+]
+*/
+
+const pipeline = [{$match: {{year: {$size: 1}}}}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* result:
+[
+  {_id: '123', year: [2015, 2016]},
+]
+*/
+```
+
 <br><br>
 
 
