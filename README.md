@@ -1164,7 +1164,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $group	Groups input documents by a specified identifier expression and applies the accumulator expression(s), if specified, to each group. Consumes all input documents and outputs one document per each distinct group. The output documents only contain the identifier field and, if specified, accumulated fields. (https://docs.mongodb.com/manual/reference/operator/aggregation/group/#pipe._S_group)
-- _id is where to specify what incoming documents should be grouped on.
+- _id is where to specify what incoming documents should be grouped on. **When you got multiple _id with the same value then most operators inside of your group stage will work/combine/compare the collections with the same _id!.**
 - Can use all accumulator expressions within $group.
 - $group can be used multiple times within a pipeline.
 - It may be necessary to sanitize incoming data.
@@ -2142,6 +2142,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $avg	Returns an average of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg)
+- In easy words when you use $avg inside of $group and you got multiple documents with the same _id then it will count all of those together and then get the average value. In $project where we just got a unique ID it will work default.
 - $avg is available in the following stages:
 <br>$group
 <br>$project
@@ -2248,7 +2249,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $max	Returns the highest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/max/#grp._S_max)
-- In easy words. When you use max on inside of $group with an array and you got duplicated _id then $max will compare both elements and get the max total amount. Same logic is when you just use a string instead. If you use $project you got a unique _id so it will not work like this but the logic is the same. It will take the highest element from an array.
+- In easy words. When you use $max inside of $group where multiple documents has the same _id then $max will compare all elements and get the max total amount. If you use $project you got a unique _id so it will only process the current collection.
 - $max is available in the following stages:
 <br>$group
 <br>$project
@@ -2347,6 +2348,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $min	Returns the lowest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/min/#grp._S_min)
+- In easy words. When you use $min inside of $group where multiple documents has the same _id then $min will compare all elements and get the min total amount. If you use $project you got a unique _id so it will only process the current collection.
 - Syntax:
 ```javascript
 { $min: <expression> }
