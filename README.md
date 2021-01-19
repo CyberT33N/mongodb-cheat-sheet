@@ -1464,6 +1464,130 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - $graphLookup	Performs a recursive search on a collection. To each output document, adds a new array field that contains the traversal results of the recursive search for that document. (https://docs.mongodb.com/manual/reference/operator/aggregation/graphLookup/#pipe._S_graphLookup)
+- The $graphLookup search process is summarized below:
+<br> 1. Input documents flow into the $graphLookup stage of an aggregation operation.
+<br> 2. $graphLookup targets the search to the collection designated by the from parameter (see below for full list of search parameters).
+<br> 3. For each input document, the search begins with the value designated by startWith.
+<br> 4. $graphLookup matches the startWith value against the field designated by connectToField in other documents in the from collection.
+<br> 5. For each matching document, $graphLookup takes the value of the connectFromField and checks every document in the from collection for a matching connectToField value. For each match, $graphLookup adds the matching document in the from collection to an array field named by the as parameter. This step continues recursively until no more matching documents are found, or until the operation reaches a recursion depth specified by the maxDepth parameter. $graphLookup then appends the array field to the input document. $graphLookup returns results after completing its search on all input documents.
+- Syntax:
+```javascript
+/*
+{
+   $graphLookup: {
+      from: <collection>,
+      startWith: <expression>,
+      connectFromField: <string>,
+      connectToField: <string>,
+      as: <string>,
+      maxDepth: <number>,
+      depthField: <string>,
+      restrictSearchWithMatch: <document>
+   }
+}
+*/
+```
+- Options:
+```javascript
+/*
+- from | Target collection for the $graphLookup operation to search, recursively matching the connectFromField to the connectToField. The from collection cannot be sharded and must be in the same database as any other collections used in the operation. For information, see Sharded Collections.
+- startWith | 	Expression that specifies the value of the connectFromField with which to start the recursive search. Optionally, startWith may be array of values, each of which is individually followed through the traversal process.
+- connectFromField | Field name whose value $graphLookup uses to recursively match against the connectToField of other documents in the collection. If the value is an array, each element is individually followed through the traversal process.
+- connectToField | Field name in other documents against which to match the value of the field specified by the connectFromField parameter.
+- as | Name of the array field added to each output document. Contains the documents traversed in the $graphLookup stage to reach the document.
+- maxDepth | Optional. Non-negative integral number specifying the maximum recursion depth.
+- depthField | Optional. Name of the field to add to each traversed document in the search path. The value of this field is the recursion depth for the document, represented as a NumberLong. Recursion depth value starts at zero, so the first lookup corresponds to zero depth.
+- restrictSearchWithMatch | Optional. A document specifying additional conditions for the recursive search. The syntax is identical to query filter syntax.
+*/
+```
+- Example:
+```javascript
+/* source collection:
+[
+  { "_id" : 1, "name" : "Dev" },
+  { "_id" : 2, "name" : "Eliot", "reportsTo" : "Dev" },
+  { "_id" : 3, "name" : "Ron", "reportsTo" : "Eliot" },
+  { "_id" : 4, "name" : "Andrew", "reportsTo" : "Eliot" },
+  { "_id" : 5, "name" : "Asya", "reportsTo" : "Ron" },
+  { "_id" : 6, "name" : "Dan", "reportsTo" : "Andrew" },
+]
+*/
+
+
+const pipeline = [
+   {
+      $graphLookup: {
+         from: "employees",
+         startWith: "$reportsTo",
+         connectFromField: "reportsTo",
+         connectToField: "name",
+         as: "reportingHierarchy"
+      }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+{
+   "_id" : 1,
+   "name" : "Dev",
+   "reportingHierarchy" : [ ]
+},
+{
+   "_id" : 2,
+   "name" : "Eliot",
+   "reportsTo" : "Dev",
+   "reportingHierarchy" : [
+      { "_id" : 1, "name" : "Dev" }
+   ]
+},
+{
+   "_id" : 3,
+   "name" : "Ron",
+   "reportsTo" : "Eliot",
+   "reportingHierarchy" : [
+      { "_id" : 1, "name" : "Dev" },
+      { "_id" : 2, "name" : "Eliot", "reportsTo" : "Dev" }
+   ]
+},
+{
+   "_id" : 4,
+   "name" : "Andrew",
+   "reportsTo" : "Eliot",
+   "reportingHierarchy" : [
+      { "_id" : 1, "name" : "Dev" },
+      { "_id" : 2, "name" : "Eliot", "reportsTo" : "Dev" }
+   ]
+},
+{
+   "_id" : 5,
+   "name" : "Asya",
+   "reportsTo" : "Ron",
+   "reportingHierarchy" : [
+      { "_id" : 1, "name" : "Dev" },
+      { "_id" : 2, "name" : "Eliot", "reportsTo" : "Dev" },
+      { "_id" : 3, "name" : "Ron", "reportsTo" : "Eliot" }
+   ]
+},
+{
+   "_id" : 6,
+   "name" : "Dan",
+   "reportsTo" : "Andrew",
+   "reportingHierarchy" : [
+      { "_id" : 1, "name" : "Dev" },
+      { "_id" : 2, "name" : "Eliot", "reportsTo" : "Dev" },
+      { "_id" : 4, "name" : "Andrew", "reportsTo" : "Eliot" }
+   ]
+}
+]
+*/
+```
 
 
 
