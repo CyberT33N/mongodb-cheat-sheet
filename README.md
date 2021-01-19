@@ -5680,6 +5680,109 @@ The operation returns the following results:
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+#### $match (https://docs.mongodb.com/manual/reference/operator/aggregation/match/)
+
+<br><br>
+
+#### match multiple values
+```javascript
+/* // source collection
+[
+  {
+    '_id': '12345678',
+    'used': 0,
+    'name': 'John',
+    'date': [
+       'year': 2015
+     ]
+  },
+  {
+    '_id': '12345678',
+    'used': 0,
+    'name': 'Smith',
+    'date': [
+       'year': 2015
+     ]
+  },
+  {
+    '_id': '12345678',
+    'used': 0,
+    'name': 'Lena',
+    'date': [
+       'year': 2015
+     ]
+  }
+]
+*/
+
+const pipeline = [{
+    $match: {
+        name: {
+            $in: ['John', 'Smith']
+        }
+    }
+}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result
+[
+  {
+    '_id': '12345678',
+    'used': 0,
+    'name': 'John',
+    'date': [
+       'year': 2015
+     ]
+  },
+  {
+    '_id': '12345678',
+    'used': 0,
+    'name': 'Smith',
+    'date': [
+       'year': 2015
+     ]
+  }
+]
+*/
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 #### $project (https://docs.mongodb.com/manual/reference/operator/aggregation/project/)
