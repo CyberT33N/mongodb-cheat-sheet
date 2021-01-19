@@ -1246,9 +1246,514 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 - $listSessions	Lists all sessions that have been active long enough to propagate to the system.sessions collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/listSessions/#pipe._S_listSessions)
-- $lookup	Performs a left outer join to another collection in the same database to filter in documents from the “joined” collection for processing. (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#pipe._S_lookup)
+
 
 <br><br>
+- $lookup	Performs a left outer join to another collection in the same database to filter in documents from the “joined” collection for processing. (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#pipe._S_lookup)
+- Guides:
+<br>https://www.youtube.com/watch?v=j7ccC2F1yc0
+<br><br>
+- **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
+<br>
+- **let** (Specifies variables to use in the pipeline field stages. Use the variable expressions to access the fields from the documents input to the $lookup stage.
+- In other words the pipleline only has access to the current collection where we run the lookup. To get access from the source collection where we run the join we use let to define the fields where we want access) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-let
+<br>
+- **pipeline** (Specifies the pipeline to run on the joined collection. The pipeline determines the resulting documents from the joined collection. To return all documents, specify an empty pipeline [].) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-pipeline
+<br>
+- **as** (Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the from collection. If the specified name already exists in the input document, the existing field is overwritten.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-as
+<br><br>
+- Syntax:
+```javascript
+// ---- Equality Match ----
+{
+   $lookup:
+     {
+       from: <collection to join>,
+       localField: <field from the input documents>,
+       foreignField: <field from the documents of the "from" collection>,
+       as: <output array field>
+     }
+}
+
+/* The operation would correspond to the following pseudo-SQL statement:
+SELECT *, <output array field>
+FROM collection
+WHERE <output array field> IN (SELECT *
+                               FROM <collection to join>
+                               WHERE <foreignField>= <collection.localField>);
+*/
+
+
+
+
+
+
+
+// ---- Join Conditions and Uncorrelated Sub-queries ----
+{
+   $lookup:
+     {
+       from: <collection to join>,
+       let: { <var_1>: <expression>, …, <var_n>: <expression> },
+       pipeline: [ <pipeline to execute on the collection to join> ],
+       as: <output array field>
+     }
+}
+
+/*
+SELECT *, <output array field>
+FROM collection
+WHERE <output array field> IN (SELECT <documents as determined from the pipeline>
+                               FROM <collection to join>
+                               WHERE <pipeline> );
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- Consideration ----
+{
+  $lookup:
+    {
+       from: <collection to join>,
+       let: { <var_1>: <expression>, …, <var_n>: <expression> },
+       pipeline: [ <pipeline to execute on the joined collection> ],  // Cannot include $out or $merge
+       as: <output array field>
+    }
+}
+```
+
+
+```javascript
+// ------ EXAMPLE #1 -------
+/* // orders collections
+[
+   { "_id" : 1, "item" : "almonds", "price" : 12, "quantity" : 2 },
+   { "_id" : 2, "item" : "pecans", "price" : 20, "quantity" : 1 },
+   { "_id" : 3  }
+]
+*/
+
+
+/* // inventory collection
+[
+   { "_id" : 1, "sku" : "almonds", "description": "product 1", "instock" : 120 },
+   { "_id" : 2, "sku" : "bread", "description": "product 2", "instock" : 80 },
+   { "_id" : 3, "sku" : "cashews", "description": "product 3", "instock" : 60 },
+   { "_id" : 4, "sku" : "pecans", "description": "product 4", "instock" : 70 },
+   { "_id" : 5, "sku": null, "description": "Incomplete" },
+   { "_id" : 6 }
+]
+*/
+
+The following aggregation operation on the orders collection joins the documents from orders with the documents from the inventory collection using the fields item from the orders collection and the sku field from the inventory collection:
+const pipeline = [
+   {
+     $lookup:
+       {
+         from: "inventory",
+         localField: "item",
+         foreignField: "sku",
+         as: "inventory_docs"
+       }
+  }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+{
+   "_id" : 1,
+   "item" : "almonds",
+   "price" : 12,
+   "quantity" : 2,
+   "inventory_docs" : [
+      { "_id" : 1, "sku" : "almonds", "description" : "product 1", "instock" : 120 }
+   ]
+}
+{
+   "_id" : 2,
+   "item" : "pecans",
+   "price" : 20,
+   "quantity" : 1,
+   "inventory_docs" : [
+      { "_id" : 4, "sku" : "pecans", "description" : "product 4", "instock" : 70 }
+   ]
+}
+{
+   "_id" : 3,
+   "inventory_docs" : [
+      { "_id" : 5, "sku" : null, "description" : "Incomplete" },
+      { "_id" : 6 }
+   ]
+}
+*/
+
+/* // The operation would correspond to the following pseudo-SQL statement:
+SELECT *, inventory_docs
+FROM orders
+WHERE inventory_docs IN (SELECT *
+FROM inventory
+WHERE sku= orders.item);
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------ EXAMPLE #2 - Use $lookup with an Array -------
+/* // classes collection
+[
+   { _id: 1, title: "Reading is ...", enrollmentlist: [ "giraffe2", "pandabear", "artie" ], days: ["M", "W", "F"] },
+   { _id: 2, title: "But Writing ...", enrollmentlist: [ "giraffe1", "artie" ], days: ["T", "F"] }
+]
+*/
+
+
+/* // members collections
+[
+   { _id: 1, name: "artie", joined: new Date("2016-05-01"), status: "A" },
+   { _id: 2, name: "giraffe", joined: new Date("2017-05-01"), status: "D" },
+   { _id: 3, name: "giraffe1", joined: new Date("2017-10-01"), status: "A" },
+   { _id: 4, name: "panda", joined: new Date("2018-10-11"), status: "A" },
+   { _id: 5, name: "pandabear", joined: new Date("2018-12-01"), status: "A" },
+   { _id: 6, name: "giraffe2", joined: new Date("2018-12-01"), status: "D" }
+]
+*/
+
+// The following aggregation operation joins documents in the classes collection with the members collection, matching on the members field to the name field:
+const pipeline = [
+   {
+      $lookup:
+         {
+            from: "members",
+            localField: "enrollmentlist",
+            foreignField: "name",
+            as: "enrollee_info"
+        }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+{
+   "_id" : 1,
+   "title" : "Reading is ...",
+   "enrollmentlist" : [ "giraffe2", "pandabear", "artie" ],
+   "days" : [ "M", "W", "F" ],
+   "enrollee_info" : [
+      { "_id" : 1, "name" : "artie", "joined" : ISODate("2016-05-01T00:00:00Z"), "status" : "A" },
+      { "_id" : 5, "name" : "pandabear", "joined" : ISODate("2018-12-01T00:00:00Z"), "status" : "A" },
+      { "_id" : 6, "name" : "giraffe2", "joined" : ISODate("2018-12-01T00:00:00Z"), "status" : "D" }
+   ]
+}
+{
+   "_id" : 2,
+   "title" : "But Writing ...",
+   "enrollmentlist" : [ "giraffe1", "artie" ],
+   "days" : [ "T", "F" ],
+   "enrollee_info" : [
+      { "_id" : 1, "name" : "artie", "joined" : ISODate("2016-05-01T00:00:00Z"), "status" : "A" },
+      { "_id" : 3, "name" : "giraffe1", "joined" : ISODate("2017-10-01T00:00:00Z"), "status" : "A" }
+   ]
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------ EXAMPLE #3 - Use $lookup with $mergeObjects -------
+/* // orders collection
+[
+   { "_id" : 1, "item" : "almonds", "price" : 12, "quantity" : 2 },
+   { "_id" : 2, "item" : "pecans", "price" : 20, "quantity" : 1 }
+]
+*/
+
+
+/* // items collections
+[
+  { "_id" : 1, "item" : "almonds", description: "almond clusters", "instock" : 120 },
+  { "_id" : 2, "item" : "bread", description: "raisin and nut bread", "instock" : 80 },
+  { "_id" : 3, "item" : "pecans", description: "candied pecans", "instock" : 60 }
+]
+*/
+
+// The following operation first uses the $lookup stage to join the two collections by the item fields and then uses $mergeObjects in the $replaceRoot to merge the joined documents from items and orders:
+const pipeline = [
+   {
+      $lookup: {
+         from: "items",
+         localField: "item",    // field in the orders collection
+         foreignField: "item",  // field in the items collection
+         as: "fromItems"
+      }
+   },
+   {
+      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$fromItems", 0 ] }, "$$ROOT" ] } }
+   },
+   { $project: { fromItems: 0 } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+{ "_id" : 1, "item" : "almonds", "description" : "almond clusters", "instock" : 120, "price" : 12, "quantity" : 2 }
+{ "_id" : 2, "item" : "pecans", "description" : "candied pecans", "instock" : 60, "price" : 20, "quantity" : 1 }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------ EXAMPLE #4 - Specify Multiple Join Conditions with $lookup -------
+/* // orders collection
+[
+  { "_id" : 1, "item" : "almonds", "price" : 12, "ordered" : 2 },
+  { "_id" : 2, "item" : "pecans", "price" : 20, "ordered" : 1 },
+  { "_id" : 3, "item" : "cookies", "price" : 10, "ordered" : 60 }
+]
+*/
+
+
+/* // warehouses collections
+[
+  { "_id" : 1, "stock_item" : "almonds", warehouse: "A", "instock" : 120 },
+  { "_id" : 2, "stock_item" : "pecans", warehouse: "A", "instock" : 80 },
+  { "_id" : 3, "stock_item" : "almonds", warehouse: "B", "instock" : 60 },
+  { "_id" : 4, "stock_item" : "cookies", warehouse: "B", "instock" : 40 },
+  { "_id" : 5, "stock_item" : "cookies", warehouse: "A", "instock" : 80 }
+]
+*/
+
+// The following operation joins the orders collection with the warehouse collection by the item and whether the quantity in stock is sufficient to cover the ordered quantity:
+const pipeline = [
+   {
+      $lookup:
+         {
+           from: "warehouses",
+           let: { order_item: "$item", order_qty: "$ordered" },
+           pipeline: [
+              { $match:
+                 { $expr:
+                    { $and:
+                       [
+                         { $eq: [ "$stock_item",  "$$order_item" ] },
+                         { $gte: [ "$instock", "$$order_qty" ] }
+                       ]
+                    }
+                 }
+              },
+              { $project: { stock_item: 0, _id: 0 } }
+           ],
+           as: "stockdata"
+         }
+    }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+  { "_id" : 1, "item" : "almonds", "price" : 12, "ordered" : 2, "stockdata" : [ { "warehouse" : "A", "instock" : 120 }, { "warehouse" : "B", "instock" : 60 } ] },
+  { "_id" : 2, "item" : "pecans", "price" : 20, "ordered" : 1, "stockdata" : [ { "warehouse" : "A", "instock" : 80 } ] },
+  { "_id" : 3, "item" : "cookies", "price" : 10, "ordered" : 60, "stockdata" : [ { "warehouse" : "A", "instock" : 80 } ] },
+]
+*/
+
+
+/* // The operation corresponds to the following pseudo-SQL statement:
+SELECT *, stockdata
+FROM orders
+WHERE stockdata IN ( SELECT warehouse, instock
+                     FROM warehouses
+                     WHERE stock_item = orders.item
+                     AND instock >= orders.ordered );
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------ EXAMPLE #5 - Uncorrelated Subquery -------
+/* // absenses collection
+[
+   { "_id" : 1, "student" : "Ann Aardvark", sickdays: [ new Date ("2018-05-01"),new Date ("2018-08-23") ] },
+   { "_id" : 2, "student" : "Zoe Zebra", sickdays: [ new Date ("2018-02-01"),new Date ("2018-05-23") ] },
+]
+*/
+
+
+/* // holidays collections
+[
+   { "_id" : 1, year: 2018, name: "New Years", date: new Date("2018-01-01") },
+   { "_id" : 2, year: 2018, name: "Pi Day", date: new Date("2018-03-14") },
+   { "_id" : 3, year: 2018, name: "Ice Cream Day", date: new Date("2018-07-15") },
+   { "_id" : 4, year: 2017, name: "New Years", date: new Date("2017-01-01") },
+   { "_id" : 5, year: 2017, name: "Ice Cream Day", date: new Date("2017-07-16") }
+]
+*/
+
+// The following operation joins the orders collection with the warehouse collection by the item and whether the quantity in stock is sufficient to cover the ordered quantity:
+const pipeline = [
+   {
+      $lookup:
+         {
+           from: "holidays",
+           pipeline: [
+              { $match: { year: 2018 } },
+              { $project: { _id: 0, date: { name: "$name", date: "$date" } } },
+              { $replaceRoot: { newRoot: "$date" } }
+           ],
+           as: "holidays"
+         }
+    }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+  { "_id" : 1, "student" : "Ann Aardvark", "sickdays" : [ ISODate("2018-05-01T00:00:00Z"), ISODate("2018-08-23T00:00:00Z") ], "holidays" : [ { "name" : "New Years", "date" : ISODate("2018-01-01T00:00:00Z") }, { "name" : "Pi Day", "date" : ISODate("2018-03-14T00:00:00Z") }, { "name" : "Ice Cream Day", "date" : ISODate("2018-07-15T00:00:00Z") } ] },
+  { "_id" : 2, "student" : "Zoe Zebra", "sickdays" : [ ISODate("2018-02-01T00:00:00Z"), ISODate("2018-05-23T00:00:00Z") ], "holidays" : [ { "name" : "New Years", "date" : ISODate("2018-01-01T00:00:00Z") }, { "name" : "Pi Day", "date" : ISODate("2018-03-14T00:00:00Z") }, { "name" : "Ice Cream Day", "date" : ISODate("2018-07-15T00:00:00Z") } ] },
+]
+*/
+
+
+/* // The operation corresponds to the following pseudo-SQL statement:
+SELECT *, holidays
+FROM absences
+WHERE holidays IN (SELECT name, date
+                    FROM holidays
+                    WHERE year = 2018);
+*/
+
+```
+<br><br>
+
 
 - $match	Filters the document stream to allow only matching documents to pass unmodified into the next pipeline stage. For each input document, outputs either one document (a match) or zero documents (no match). (https://docs.mongodb.com/manual/reference/operator/aggregation/match/#pipe._S_match)
 - $match uses standard MongoDB Query Operators.
@@ -4056,77 +4561,6 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 #### $lookup (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/)
 - Allows us to apply aggregation pipelines before the data is joined
-
-<br><br>
-
-
-- **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
-
-<br>
-
-- **let** (Specifies variables to use in the pipeline field stages. Use the variable expressions to access the fields from the documents input to the $lookup stage.
-- In other words the pipleline only has access to the current collection where we run the lookup. To get access from the source collection where we run the join we use let to define the fields where we want access) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-let
-
-<br>
-
-- **pipeline** (Specifies the pipeline to run on the joined collection. The pipeline determines the resulting documents from the joined collection. To return all documents, specify an empty pipeline [].) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-pipeline
-
-<br>
-
-- **as** (Specifies the name of the new array field to add to the input documents. The new array field contains the matching documents from the from collection. If the specified name already exists in the input document, the existing field is overwritten.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-as
-
-
-```javascript
-const pipeline = [
-  {
-    '$match': {
-      'year': {
-        '$gte': 1980, 
-        '$lt': 1990
-      }
-    }
-  }, {
-    '$lookup': {
-      'from': 'comments', 
-      'let': {
-        'id': '$_id'
-      }, 
-      'pipeline': [
-        {
-          '$match': {
-            '$expr': {
-              '$eq': [
-                '$movie_id', '$$id'
-              ]
-            }
-          }
-        }
-      ], 
-      'as': 'movie_comments'
-    }
-  }
-];
-
-// callback
-collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
-
-// async
-const r = await collection.aggregate(pipeline).toArray({});
-```
-
-
-<br><br>
-
-
-#### guides
-- https://www.youtube.com/watch?v=j7ccC2F1yc0
-
-
-
-
-
-
-
 
 
 <br><br>
