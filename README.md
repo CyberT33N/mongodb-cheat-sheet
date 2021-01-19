@@ -1506,6 +1506,71 @@ The operation returns the following results:
   { "_id" : 1, "item" : "ABC1", "sizes" : "L" },
 ]
 */
+
+
+
+
+
+// ---- EXAMPLE #2 includeArrayIndex - In easy words with include the index position from the array element which was splitted by $unwind ----
+// The following $unwind operation uses the includeArrayIndex option to include the array index in the output.
+const pipeline = [
+  {
+    $unwind:
+      {
+        path: "$sizes",
+        includeArrayIndex: "arrayIndex"
+      }
+   }];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+The operation returns the following results:
+[
+  { "_id" : 1, "item" : "ABC", "price" : NumberDecimal("80"), "sizes" : "S", "arrayIndex" : NumberLong(0) },
+  { "_id" : 1, "item" : "ABC", "price" : NumberDecimal("80"), "sizes" : "M", "arrayIndex" : NumberLong(1) },
+  { "_id" : 1, "item" : "ABC", "price" : NumberDecimal("80"), "sizes" : "L", "arrayIndex" : NumberLong(2) },
+  { "_id" : 3, "item" : "IJK", "price" : NumberDecimal("160"), "sizes" : "M", "arrayIndex" : null },
+]
+*/
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #3 preserveNullAndEmptyArrays ----
+
+// The following $unwind operation uses the preserveNullAndEmptyArrays option to include documents whose sizes field is null, missing, or an empty array.
+const pipeline = [
+   { $unwind: { path: "$sizes", preserveNullAndEmptyArrays: true } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+The output includes those documents where the sizes field is null, missing, or an empty array:
+[
+  { "_id" : 1, "item" : "ABC", "price" : NumberDecimal("80"), "sizes" : "S" },
+  { "_id" : 1, "item" : "ABC", "price" : NumberDecimal("80"), "sizes" : "M" },
+  { "_id" : 1, "item" : "ABC", "price" : NumberDecimal("80"), "sizes" : "L" },
+  { "_id" : 2, "item" : "EFG", "price" : NumberDecimal("120") },
+  { "_id" : 3, "item" : "IJK", "price" : NumberDecimal("160"), "sizes" : "M" },
+  { "_id" : 4, "item" : "LMN", "price" : NumberDecimal("10") },
+  { "_id" : 5, "item" : "XYZ", "price" : NumberDecimal("5.75"), "sizes" : null },
+]
+*/
 ```
 <br><br>
 
