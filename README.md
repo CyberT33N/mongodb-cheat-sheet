@@ -3101,11 +3101,6 @@ ____________________________________________________
 - $cmp	Returns 0 if the two values are equivalent, 1 if the first value is greater than the second, and -1 if the first value is less than the second. (https://docs.mongodb.com/manual/reference/operator/aggregation/cmp/#exp._S_cmp)
 
 
-<br><br>
-____________________________________________________
-<br><br>
-- $eq	Returns true if the values are equivalent. (https://docs.mongodb.com/manual/reference/operator/aggregation/eq/#exp._S_eq)
-
 
 <br><br>
 ____________________________________________________
