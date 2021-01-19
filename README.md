@@ -1248,10 +1248,14 @@ const r = await collection.aggregate(pipeline).toArray({});
 - $listSessions	Lists all sessions that have been active long enough to propagate to the system.sessions collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/listSessions/#pipe._S_listSessions)
 
 
+
+
 <br><br>
 - $lookup	Performs a left outer join to another collection in the same database to filter in documents from the “joined” collection for processing. (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#pipe._S_lookup)
 - Guides:
-<br>https://www.youtube.com/watch?v=j7ccC2F1yc0
+<br> https://www.youtube.com/watch?v=j7ccC2F1yc0
+- In easy words it will join collections together that you can work cross collection.
+
 <br><br>
 - **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded.) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
 <br>
