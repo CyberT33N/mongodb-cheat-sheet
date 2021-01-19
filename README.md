@@ -1469,6 +1469,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 - $unwind	Deconstructs an array field from the input documents to output a document for each element. Each output document replaces the array with an element value. For each input document, outputs n documents where n is the number of array elements and can be zero for an empty array. (https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/#pipe._S_unwind)
 - In easy words it takes each element of an array and create new documents with single fields for each of the array elements.
+- **Using $unwind onlarge collections with big documents may lead to performance issues.**
 - Syntax:
 ```javascript
 { $unwind: <field path> }
