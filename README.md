@@ -2145,6 +2145,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $max	Returns the highest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/max/#grp._S_max)
+- In easy words. When you use max on inside of $group with an array and you got duplicated _id then $max will compare both elements and get the max total amount. Same logic is when you just use a string instead. If you use $project you got a unique _id so it will not work like this but the logic is the same. It will take the highest element from an array.
 - $max is available in the following stages:
 <br>$group
 <br>$project
