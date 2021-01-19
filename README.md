@@ -1250,6 +1250,9 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 
+
+<br><br>
+____________________________________________________
 <br><br>
 - $lookup	Performs a left outer join to another collection in the same database to filter in documents from the “joined” collection for processing. (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#pipe._S_lookup)
 - Guides:
