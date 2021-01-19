@@ -2434,12 +2434,112 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 
 
-- $push	Returns an array of expression values for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/push/#grp._S_push)
-- $stdDevPop	Returns the population standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevPop/#grp._S_stdDevPop)
-- $stdDevSamp	Returns the sample standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevSamp/#grp._S_stdDevSamp)
+- **$push**	Returns an array of expression values for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/push/#grp._S_push)
 
 <br><br>
-- $sum	Returns a sum of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/sum/#grp._S_sum)
+- **$stdDevPop**	Returns the population standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevPop/#grp._S_stdDevPop)
+- $stdDevPop is available in the in the following stages:
+<br>$group
+<br>$project
+<br>$addFields (Available starting in MongoDB 3.4)
+<br>$set (Available starting in MongoDB 4.2)
+<br>$replaceRoot (Available starting in MongoDB 3.4)
+<br>$replaceWith (Available starting in MongoDB 4.2)
+<br>$match stage that includes an $expr expression
+<br><br>
+- Syntax:
+```javascript
+{ $stdDevPop: <expression> }
+
+// or
+
+{ $stdDevPop: [ <expression1>, <expression2> ... ]  }
+```
+- Example:
+```javascript
+/* our collection looks like this:
+[
+  { "_id" : 1, "name" : "dave123", "quiz" : 1, "score" : 85 },
+  { "_id" : 2, "name" : "dave2", "quiz" : 1, "score" : 90 },
+  { "_id" : 3, "name" : "ahn", "quiz" : 1, "score" : 71 },
+  { "_id" : 4, "name" : "li", "quiz" : 2, "score" : 96 },
+  { "_id" : 5, "name" : "annT", "quiz" : 2, "score" : 77 },
+  { "_id" : 6, "name" : "ty", "quiz" : 2, "score" : 82 },
+]
+*/
+
+// The following example calculates the standard deviation of each quiz:
+const pipeline = [
+   { $group: { _id: "$quiz", stdDev: { $stdDevPop: "$score" } } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : 2, "stdDev" : 8.04155872120988 },
+  { "_id" : 1, "stdDev" : 8.04155872120988 },
+]
+*/
+
+
+
+
+
+
+// ----- EXAMPLE #2 $project ---------
+/* our collection looks like this:
+[
+ {
+      "_id" : 1,
+      "scores" : [
+         { "name" : "dave123", "score" : 85 },
+         { "name" : "dave2", "score" : 90 },
+         { "name" : "ahn", "score" : 71 }
+      ]
+   },
+   {
+      "_id" : 2,
+      "scores" : [
+         { "name" : "li", "quiz" : 2, "score" : 96 },
+         { "name" : "annT", "score" : 77 },
+         { "name" : "ty", "score" : 82 }
+      ]
+   }
+]
+*/
+
+// The following example calculates the standard deviation of each quiz:
+const pipeline = [
+   { $project: { stdDev: { $stdDevPop: "$scores.score" } } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : 1, "stdDev" : 8.04155872120988 },
+  { "_id" : 2, "stdDev" : 8.04155872120988 },
+]
+*/
+```
+<br><br>
+
+
+- **$stdDevSamp**	Returns the sample standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevSamp/#grp._S_stdDevSamp)
+
+<br><br>
+- **$sum**	Returns a sum of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/sum/#grp._S_sum)
 - In easy words each match sum will get called. If you use **count: {$sum: 1}** then each new match counts gets +1
 - Syntax:
 ```javascript
