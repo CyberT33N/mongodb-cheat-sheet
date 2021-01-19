@@ -2145,6 +2145,15 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 - $max	Returns the highest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/max/#grp._S_max)
+- $max is available in the following stages:
+<br>$group
+<br>$project
+<br>$addFields (Available starting in MongoDB 3.4)
+<br>$set (Available starting in MongoDB 4.2)
+<br>$replaceRoot (Available starting in MongoDB 3.4)
+<br>$replaceWith (Available starting in MongoDB 4.2)
+<br>$match stage that includes an $expr expression
+<br><br>
 - Syntax:
 ```javascript
 { $max: [ <expression1>, <expression2> ... ]  }
