@@ -1470,6 +1470,8 @@ ____________________________________________________
 <br> Understand $graphLookup (https://www.youtube.com/watch?v=weJ4eyIKabM)
 <br> Graph Operations Example (https://www.youtube.com/watch?v=zcH6in9H3ME)
 <br> maxDepth and depthField (https://www.youtube.com/watch?v=-Oms-ijrizw)
+<br> Cross Collection Lookup (https://www.youtube.com/watch?v=Eiu1jXt6g04)
+<br> General Considerations (https://www.youtube.com/watch?v=522TDFDfKKU)
 
 <br><br>
 - The $graphLookup search process is summarized below:
@@ -1478,6 +1480,11 @@ ____________________________________________________
 <br> 3. For each input document, the search begins with the value designated by startWith.
 <br> 4. $graphLookup matches the startWith value against the field designated by connectToField in other documents in the from collection.
 <br> 5. For each matching document, $graphLookup takes the value of the connectFromField and checks every document in the from collection for a matching connectToField value. For each match, $graphLookup adds the matching document in the from collection to an array field named by the as parameter. This step continues recursively until no more matching documents are found, or until the operation reaches a recursion depth specified by the maxDepth parameter. $graphLookup then appends the array field to the input document. $graphLookup returns results after completing its search on all input documents.
+
+<br><br>
+- **It is recommended to use $allowDiskUse to prevent problems with your memory.**
+
+<br><br>
 - Syntax:
 ```javascript
 /*
@@ -1508,11 +1515,11 @@ ____________________________________________________
 
 - as | Name of the array field added to each output document. Contains the documents traversed in the $graphLookup stage to reach the document.
 
-- maxDepth | Optional. Non-negative integral number specifying the maximum recursion depth.
+- maxDepth | Optional. This will tell how many layers we want to go down inside of our tree. To only get the root layer set it to 0. If you do cross collection lookup then maxDepth 0 will not be the root and it starts with 1 instead.
 
-- depthField | Optional. Name of the field to add to each traversed document in the search path. The value of this field is the recursion depth for the document, represented as a NumberLong. Recursion depth value starts at zero, so the first lookup corresponds to zero depth.
+- depthField | Optional. Shows how many layers we were go downinside of our tree to reach this object.
 
-- restrictSearchWithMatch | Optional. A document specifying additional conditions for the recursive search. The syntax is identical to query filter syntax.
+- restrictSearchWithMatch | Optional. A document specifying additional conditions for the recursive search. The syntax is identical to query filter syntax. In other words you can say that you want to ignore specific results.
 */
 ```
 - Example:
@@ -2019,7 +2026,7 @@ ____________________________________________________
 - In easy words it will join collections together that you can work cross collection.
 
 <br><br>
-- **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded (https://en.wikipedia.org/wiki/Shard_(database_architecture). **We can not choose collections from different databases**) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
+- **from** (Specifies the collection in the same database to perform the join with. The from collection cannot be sharded (https://docs.mongodb.com/manual/sharding/). **We can not choose collections from different databases**) - https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#lookup-join-from
 
 <br><br>
 
