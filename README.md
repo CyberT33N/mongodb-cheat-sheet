@@ -1467,7 +1467,9 @@ ____________________________________________________
 - In easy words it will displays a nested tree of parents and child elements that were definied together
  - Works from Root to Bottom and Bottom to Root.
 - Guides:
-<br> https://www.youtube.com/watch?v=weJ4eyIKabM
+<br> Understand $graphLookup (https://www.youtube.com/watch?v=weJ4eyIKabM)
+<br> Graph Operations Example (https://www.youtube.com/watch?v=zcH6in9H3ME)
+<br> maxDepth and depthField (https://www.youtube.com/watch?v=-Oms-ijrizw)
 
 <br><br>
 - The $graphLookup search process is summarized below:
@@ -1497,12 +1499,19 @@ ____________________________________________________
 ```javascript
 /*
 - from | Target collection for the $graphLookup operation to search, recursively matching the connectFromField to the connectToField. The from collection cannot be sharded and must be in the same database as any other collections used in the operation. For information, see Sharded Collections.
+
 - startWith | 	Expression that specifies the value of the connectFromField with which to start the recursive search. Optionally, startWith may be array of values, each of which is individually followed through the traversal process.
+
 - connectFromField | Field name whose value $graphLookup uses to recursively match against the connectToField of other documents in the collection. If the value is an array, each element is individually followed through the traversal process.
+
 - connectToField | Field name in other documents against which to match the value of the field specified by the connectFromField parameter.
+
 - as | Name of the array field added to each output document. Contains the documents traversed in the $graphLookup stage to reach the document.
+
 - maxDepth | Optional. Non-negative integral number specifying the maximum recursion depth.
+
 - depthField | Optional. Name of the field to add to each traversed document in the search path. The value of this field is the recursion depth for the document, represented as a NumberLong. Recursion depth value starts at zero, so the first lookup corresponds to zero depth.
+
 - restrictSearchWithMatch | Optional. A document specifying additional conditions for the recursive search. The syntax is identical to query filter syntax.
 */
 ```
