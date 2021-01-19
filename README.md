@@ -1168,6 +1168,8 @@ const r = await collection.aggregate(pipeline).toArray({});
 - Can use all accumulator expressions within $group.
 - $group can be used multiple times within a pipeline.
 - It may be necessary to sanitize incoming data.
+- **_id does not match arrays with different order even when element values are the same**
+<br><br>
 - Syntax:
 ```javascript
 {
