@@ -2240,7 +2240,95 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 - $mergeObjects	Returns a document created by combining the input documents for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/mergeObjects/#exp._S_mergeObjects)
+
+
+<br><br>
 - $min	Returns the lowest expression value for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/min/#grp._S_min)
+- Syntax:
+```javascript
+{ $min: <expression> }
+```
+- Example:
+```javascript
+/* our collection looks like this:
+[
+  { "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") },
+  { "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") },
+  { "_id" : 3, "item" : "xyz", "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") },
+  { "_id" : 4, "item" : "abc", "price" : 10, "quantity" : 10, "date" : ISODate("2014-02-15T08:00:00Z") },
+  { "_id" : 5, "item" : "xyz", "price" : 5, "quantity" : 10, "date" : ISODate("2014-02-15T09:05:00Z") },
+]
+*/
+
+// Grouping the documents by the item field, the following operation uses the $min accumulator to compute the minimum amount and minimum quantity for each grouping.
+const pipeline = [
+     {
+       $group:
+         {
+           _id: "$item",
+           minQuantity: { $min: "$quantity" }
+         }
+     }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : "xyz", "minQuantity" : 5 },
+  { "_id" : "jkl", "minQuantity" : 1 },
+  { "_id" : "abc", "minQuantity" : 2 },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+// ----- EXAMPLE #2 -------
+/* our collection looks like this:
+[
+  { "_id": 1, "quizzes": [ 10, 6, 7 ], "labs": [ 5, 8 ], "final": 80, "midterm": 75 },
+  { "_id": 2, "quizzes": [ 9, 10 ], "labs": [ 8, 8 ], "final": 95, "midterm": 80 },
+  { "_id": 3, "quizzes": [ 4, 5, 5 ], "labs": [ 6, 5 ], "final": 78, "midterm": 70 },
+]
+*/
+
+// Grouping the documents by the item field, the following operation uses the $min accumulator to compute the minimum amount and minimum quantity for each grouping.
+const pipeline = [
+   { $project: { quizMin: { $min: "$quizzes"}, labMin: { $min: "$labs" }, examMin: { $min: [ "$final", "$midterm" ] } } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : 1, "quizMin" : 6, "labMin" : 5, "examMin" : 75 },
+  { "_id" : 2, "quizMin" : 9, "labMin" : 8, "examMin" : 80 },
+  { "_id" : 3, "quizMin" : 4, "labMin" : 5, "examMin" : 70 },
+]
+*/
+
+```
+<br><br>
+
+
 - $push	Returns an array of expression values for each group. (https://docs.mongodb.com/manual/reference/operator/aggregation/push/#grp._S_push)
 - $stdDevPop	Returns the population standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevPop/#grp._S_stdDevPop)
 - $stdDevSamp	Returns the sample standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevSamp/#grp._S_stdDevSamp)
@@ -2297,7 +2385,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 
-<br><br>
+<br><br><br><br>
 
 #### Accumulators (in Other Stages)
 - $avg	Returns an average of the specified expression or list of expressions for each document. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg)
