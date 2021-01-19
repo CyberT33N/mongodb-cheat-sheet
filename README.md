@@ -1464,6 +1464,8 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - $graphLookup	Performs a recursive search on a collection. To each output document, adds a new array field that contains the traversal results of the recursive search for that document. (https://docs.mongodb.com/manual/reference/operator/aggregation/graphLookup/#pipe._S_graphLookup)
+- In easy words it will displays a nested tree of parents and child elements that were definied together
+ - Works from Root to Bottom and Bottom to Root.
 - Guides:
 <br> https://www.youtube.com/watch?v=weJ4eyIKabM
 
@@ -1506,6 +1508,8 @@ ____________________________________________________
 ```
 - Example:
 ```javascript
+// ---- EXAMPLE #1 - Within a Single Collection ----
+
 /* source collection:
 [
   { "_id" : 1, "name" : "Dev" },
@@ -1517,7 +1521,7 @@ ____________________________________________________
 ]
 */
 
-
+// The following $graphLookup operation recursively matches on the reportsTo and name fields in the employees collection, returning the reporting hierarchy for each person:
 const pipeline = [
    {
       $graphLookup: {
@@ -1587,6 +1591,314 @@ const r = await collection.aggregate(pipeline).toArray({});
       { "_id" : 1, "name" : "Dev" },
       { "_id" : 2, "name" : "Eliot", "reportsTo" : "Dev" },
       { "_id" : 4, "name" : "Andrew", "reportsTo" : "Eliot" }
+   ]
+}
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #2 - Across Multiple Collections ----
+
+/* airports collection:
+[
+  { "_id" : 0, "airport" : "JFK", "connects" : [ "BOS", "ORD" ] },
+  { "_id" : 1, "airport" : "BOS", "connects" : [ "JFK", "PWM" ] },
+  { "_id" : 2, "airport" : "ORD", "connects" : [ "JFK" ] },
+  { "_id" : 3, "airport" : "PWM", "connects" : [ "BOS", "LHR" ] },
+  { "_id" : 4, "airport" : "LHR", "connects" : [ "PWM" ] },
+]
+*/
+
+/* travelers collection:
+[
+  { "_id" : 1, "name" : "Dev", "nearestAirport" : "JFK" },
+  { "_id" : 2, "name" : "Eliot", "nearestAirport" : "JFK" },
+  { "_id" : 3, "name" : "Jeff", "nearestAirport" : "BOS" },
+]
+*/
+
+// For each document in the travelers collection, the following aggregation operation looks up the nearestAirport value in the airports collection and recursively matches the connects field to the airport field. The operation specifies a maximum recursion depth of 2.
+const pipeline = [
+   {
+      $graphLookup: {
+         from: "employees",
+         startWith: "$reportsTo",
+         connectFromField: "reportsTo",
+         connectToField: "name",
+         as: "reportingHierarchy"
+      }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+{
+   "_id" : 1,
+   "name" : "Dev",
+   "nearestAirport" : "JFK",
+   "destinations" : [
+      { "_id" : 3,
+        "airport" : "PWM",
+        "connects" : [ "BOS", "LHR" ],
+        "numConnections" : NumberLong(2) },
+      { "_id" : 2,
+        "airport" : "ORD",
+        "connects" : [ "JFK" ],
+        "numConnections" : NumberLong(1) },
+      { "_id" : 1,
+        "airport" : "BOS",
+        "connects" : [ "JFK", "PWM" ],
+        "numConnections" : NumberLong(1) },
+      { "_id" : 0,
+        "airport" : "JFK",
+        "connects" : [ "BOS", "ORD" ],
+        "numConnections" : NumberLong(0) }
+   ]
+},
+{
+   "_id" : 2,
+   "name" : "Eliot",
+   "nearestAirport" : "JFK",
+   "destinations" : [
+      { "_id" : 3,
+        "airport" : "PWM",
+        "connects" : [ "BOS", "LHR" ],
+        "numConnections" : NumberLong(2) },
+      { "_id" : 2,
+        "airport" : "ORD",
+        "connects" : [ "JFK" ],
+        "numConnections" : NumberLong(1) },
+      { "_id" : 1,
+        "airport" : "BOS",
+        "connects" : [ "JFK", "PWM" ],
+        "numConnections" : NumberLong(1) },
+      { "_id" : 0,
+        "airport" : "JFK",
+        "connects" : [ "BOS", "ORD" ],
+        "numConnections" : NumberLong(0) } ]
+},
+{
+   "_id" : 3,
+   "name" : "Jeff",
+   "nearestAirport" : "BOS",
+   "destinations" : [
+      { "_id" : 2,
+        "airport" : "ORD",
+        "connects" : [ "JFK" ],
+        "numConnections" : NumberLong(2) },
+      { "_id" : 3,
+        "airport" : "PWM",
+        "connects" : [ "BOS", "LHR" ],
+        "numConnections" : NumberLong(1) },
+      { "_id" : 4,
+        "airport" : "LHR",
+        "connects" : [ "PWM" ],
+        "numConnections" : NumberLong(2) },
+      { "_id" : 0,
+        "airport" : "JFK",
+        "connects" : [ "BOS", "ORD" ],
+        "numConnections" : NumberLong(1) },
+      { "_id" : 1,
+        "airport" : "BOS",
+        "connects" : [ "JFK", "PWM" ],
+        "numConnections" : NumberLong(0) }
+   ]
+}
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #3 - With a Query Filter ----
+
+/* source collection:
+[
+{
+  "_id" : 1,
+  "name" : "Tanya Jordan",
+  "friends" : [ "Shirley Soto", "Terry Hawkins", "Carole Hale" ],
+  "hobbies" : [ "tennis", "unicycling", "golf" ]
+},
+{
+  "_id" : 2,
+  "name" : "Carole Hale",
+  "friends" : [ "Joseph Dennis", "Tanya Jordan", "Terry Hawkins" ],
+  "hobbies" : [ "archery", "golf", "woodworking" ]
+},
+{
+  "_id" : 3,
+  "name" : "Terry Hawkins",
+  "friends" : [ "Tanya Jordan", "Carole Hale", "Angelo Ward" ],
+  "hobbies" : [ "knitting", "frisbee" ]
+},
+{
+  "_id" : 4,
+  "name" : "Joseph Dennis",
+  "friends" : [ "Angelo Ward", "Carole Hale" ],
+  "hobbies" : [ "tennis", "golf", "topiary" ]
+},
+{
+  "_id" : 5,
+  "name" : "Angelo Ward",
+  "friends" : [ "Terry Hawkins", "Shirley Soto", "Joseph Dennis" ],
+  "hobbies" : [ "travel", "ceramics", "golf" ]
+},
+{
+   "_id" : 6,
+   "name" : "Shirley Soto",
+   "friends" : [ "Angelo Ward", "Tanya Jordan", "Carole Hale" ],
+   "hobbies" : [ "frisbee", "set theory" ]
+ },
+]
+*/
+
+
+/*
+The following aggregation operation uses three stages:
+- $match matches on documents with a name field containing the string "Tanya Jordan". Returns one output document.
+- $graphLookup connects the output document’s friends field with the name field of other documents in the collection to traverse Tanya Jordan's network of connections. This stage uses the restrictSearchWithMatch parameter to find only documents in which the hobbies array contains golf. Returns one output document.
+- $project shapes the output document. The names listed in connections who play golf are taken from the name field of the documents listed in the input document’s golfers array.
+*/
+const pipeline = [
+  { $match: { "name": "Tanya Jordan" } },
+  { $graphLookup: {
+      from: "people",
+      startWith: "$friends",
+      connectFromField: "friends",
+      connectToField: "name",
+      as: "golfers",
+      restrictSearchWithMatch: { "hobbies" : "golf" }
+    }
+  },
+  { $project: {
+      "name": 1,
+      "friends": 1,
+      "connections who play golf": "$golfers.name"
+    }
+  }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+{
+   "_id" : 1,
+   "name" : "Tanya Jordan",
+   "friends" : [
+      "Shirley Soto",
+      "Terry Hawkins",
+      "Carole Hale"
+   ],
+   "connections who play golf" : [
+      "Joseph Dennis",
+      "Tanya Jordan",
+      "Angelo Ward",
+      "Carole Hale"
    ]
 }
 ]
