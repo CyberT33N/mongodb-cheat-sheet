@@ -978,6 +978,20 @@ ____________________________________________________
 ____________________________________________________
 <br><br>
 - $or	Joins query clauses with a logical OR returns all documents that match the conditions of either clause. (https://docs.mongodb.com/manual/reference/operator/query/or/)
+- Syntax:
+```javascript
+{$or: [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ]}
+```
+- Example:
+```javascript
+const query = {$or: [{quantity: {$lt: 20}}, {price: 10}]};
+
+// callback
+collection.find(query).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.find(query).toArray({});
+```
 
 
 
