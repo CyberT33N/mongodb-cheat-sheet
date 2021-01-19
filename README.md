@@ -1483,6 +1483,7 @@ ____________________________________________________
 
 <br><br>
 - **It is recommended to use $allowDiskUse to prevent problems with your memory.**
+- **from collection can not be sharded.**
 
 <br><br>
 - Syntax:
