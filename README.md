@@ -2138,7 +2138,110 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 - $accumulator	Returns the result of a user-defined accumulator function. (https://docs.mongodb.com/manual/reference/operator/aggregation/accumulator/#grp._S_accumulator)
 - $addToSet	Returns an array of unique expression values for each group. Order of the array elements is undefined. (https://docs.mongodb.com/manual/reference/operator/aggregation/addToSet/#grp._S_addToSet)
+
+
+<br><br>
 - $avg	Returns an average of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/avg/#grp._S_avg)
+- $avg is available in the following stages:
+<br>$group
+<br>$project
+<br>$addFields (Available starting in MongoDB 3.4)
+<br>$set (Available starting in MongoDB 4.2)
+<br>$replaceRoot (Available starting in MongoDB 3.4)
+<br>$replaceWith (Available starting in MongoDB 4.2)
+<br>$match stage that includes an $expr expression
+
+<br><br>
+- Syntax:
+```javascript
+{ $avg: <expression> }
+
+// or
+
+{ $avg: [ <expression1>, <expression2> ... ]  }
+```
+- Example:
+```javascript
+/* our collection looks like this:
+[
+  { "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") },
+  { "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") },
+  { "_id" : 3, "item" : "xyz", "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") },
+  { "_id" : 4, "item" : "abc", "price" : 10, "quantity" : 10, "date" : ISODate("2014-02-15T08:00:00Z") },
+  { "_id" : 5, "item" : "xyz", "price" : 5, "quantity" : 10, "date" : ISODate("2014-02-15T09:12:00Z") },
+]
+*/
+
+// Grouping the documents by the item field, the following operation uses the $max accumulator to compute the maximum total amount and maximum quantity for each group of documents.
+const pipeline = [
+     {
+       $group:
+         {
+           _id: "$item",
+           avgAmount: { $avg: { $multiply: [ "$price", "$quantity" ] } },
+           avgQuantity: { $avg: "$quantity" }
+         }
+     }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : "xyz", "avgAmount" : 37.5, "avgQuantity" : 7.5 },
+  { "_id" : "jkl", "avgAmount" : 20, "avgQuantity" : 1 },
+  { "_id" : "abc", "avgAmount" : 60, "avgQuantity" : 6 },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+// ------ EXAMPLE #2 $project --------
+/* our collection looks like this:
+[
+  { "_id": 1, "quizzes": [ 10, 6, 7 ], "labs": [ 5, 8 ], "final": 80, "midterm": 75 },
+  { "_id": 2, "quizzes": [ 9, 10 ], "labs": [ 8, 8 ], "final": 95, "midterm": 80 },
+  { "_id": 3, "quizzes": [ 4, 5, 5 ], "labs": [ 6, 5 ], "final": 78, "midterm": 70 },
+]
+*/
+
+// Grouping the documents by the item field, the following operation uses the $max accumulator to compute the maximum total amount and maximum quantity for each group of documents.
+const pipeline = [
+   { $project: { quizAvg: { $avg: "$quizzes"}, labAvg: { $avg: "$labs" }, examAvg: { $avg: [ "$final", "$midterm" ] } } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : 1, "quizAvg" : 7.666666666666667, "labAvg" : 6.5, "examAvg" : 77.5 },
+  { "_id" : 2, "quizAvg" : 9.5, "labAvg" : 8, "examAvg" : 87.5 },
+  { "_id" : 3, "quizAvg" : 4.666666666666667, "labAvg" : 5.5, "examAvg" : 74 },
+]
+*/
+```
+<br><br>
+
+
+
 - $first	Returns a value from the first document for each group. Order is only defined if the documents are in a defined order. Distinct from the $first array operator. (https://docs.mongodb.com/manual/reference/operator/aggregation/first/#grp._S_first)
 - $last	Returns a value from the last document for each group. Order is only defined if the documents are in a defined order. Distinct from the $last array operator. (https://docs.mongodb.com/manual/reference/operator/aggregation/last/#grp._S_last)
 
