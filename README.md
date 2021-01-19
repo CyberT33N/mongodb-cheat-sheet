@@ -1508,6 +1508,7 @@ ____________________________________________________
 - $lookup	Performs a left outer join to another collection in the same database to filter in documents from the “joined” collection for processing. (https://docs.mongodb.com/manual/reference/operator/aggregation/lookup/#pipe._S_lookup)
 - Guides:
 <br> https://www.youtube.com/watch?v=j7ccC2F1yc0
+<br> https://www.youtube.com/watch?v=s1KD_Qt7vY4
 - In easy words it will join collections together that you can work cross collection.
 
 <br><br>
