@@ -1464,6 +1464,10 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - $graphLookup	Performs a recursive search on a collection. To each output document, adds a new array field that contains the traversal results of the recursive search for that document. (https://docs.mongodb.com/manual/reference/operator/aggregation/graphLookup/#pipe._S_graphLookup)
+- Guides:
+<br> https://www.youtube.com/watch?v=weJ4eyIKabM
+
+<br><br>
 - The $graphLookup search process is summarized below:
 <br> 1. Input documents flow into the $graphLookup stage of an aggregation operation.
 <br> 2. $graphLookup targets the search to the collection designated by the from parameter (see below for full list of search parameters).
