@@ -1462,13 +1462,70 @@ const r = await collection.aggregate(pipeline).toArray({});
 - $sortByCount	Groups incoming documents based on the value of a specified expression, then computes the count of documents in each distinct group. (https://docs.mongodb.com/manual/reference/operator/aggregation/sortByCount/#pipe._S_sortByCount)
 - $unionWith	Performs a union of two collections; i.e. combines pipeline results from two collections into a single result set. (https://docs.mongodb.com/manual/reference/operator/aggregation/unionWith/#pipe._S_unionWith)
 - $unset	Removes/excludes fields from documents. $unset is an alias for $project stage that removes fields.(https://docs.mongodb.com/manual/reference/operator/aggregation/unset/#pipe._S_unset)
-- $unwind	Deconstructs an array field from the input documents to output a document for each element. Each output document replaces the array with an element value. For each input document, outputs n documents where n is the number of array elements and can be zero for an empty array. (https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/#pipe._S_unwind)
-
-
-
 
 
 <br><br>
+- $unwind	Deconstructs an array field from the input documents to output a document for each element. Each output document replaces the array with an element value. For each input document, outputs n documents where n is the number of array elements and can be zero for an empty array. (https://docs.mongodb.com/manual/reference/operator/aggregation/unwind/#pipe._S_unwind)
+- In easy words it takes each element of an array and create new documents with single fields for each of the array elements.
+- Syntax:
+```javascript
+{ $unwind: <field path> }
+
+// another example
+{
+  $unwind:
+    {
+      path: <field path>,
+      includeArrayIndex: <string>,
+      preserveNullAndEmptyArrays: <boolean>
+    }
+}
+```
+- Example
+```javascript
+/* our collection looks like this:
+{ "_id" : 1, "item" : "ABC1", sizes: [ "S", "M", "L"] }
+*/
+
+// multiply price with quantitiy
+const pipeline = [{$unwind : "$sizes"}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+The operation returns the following results:
+[
+  { "_id" : 1, "item" : "ABC1", "sizes" : "S" },
+  { "_id" : 1, "item" : "ABC1", "sizes" : "M" },
+  { "_id" : 1, "item" : "ABC1", "sizes" : "L" },
+]
+*/
+```
+<br><br>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br>
 
 
 
