@@ -2537,7 +2537,55 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 
 
+
 - **$stdDevSamp**	Returns the sample standard deviation of the input values. (https://docs.mongodb.com/manual/reference/operator/aggregation/stdDevSamp/#grp._S_stdDevSamp)
+- $stdDevSamp is available in the in the following stages:
+<br>$group
+<br>$project
+<br>$addFields (Available starting in MongoDB 3.4)
+<br>$set (Available starting in MongoDB 4.2)
+<br>$replaceRoot (Available starting in MongoDB 3.4)
+<br>$replaceWith (Available starting in MongoDB 4.2)
+<br>$match stage that includes an $expr expression
+<br><br>
+- Syntax:
+```javascript
+{ $stdDevSamp: <expression> }
+
+// or
+
+{ $stdDevSamp: [ <expression1>, <expression2> ... ]  }
+```
+```javascript
+/* // source collection
+[
+  {_id: 0, username: "user0", age: 20},
+  {_id: 1, username: "user1", age: 42},
+  {_id: 2, username: "user2", age: 28},
+  // ...
+]
+*/
+
+const pipeline = [
+      { $sample: { size: 100 } },
+      { $group: { _id: null, ageStdDev: { $stdDevSamp: "$age" } } }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+  { "_id" : null, "ageStdDev" : 7.811258386185771 }
+]
+*/
+```
+
+
+
 
 <br><br>
 - **$sum**	Returns a sum of numerical values. Ignores non-numeric values. (https://docs.mongodb.com/manual/reference/operator/aggregation/sum/#grp._S_sum)
