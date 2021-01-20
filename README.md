@@ -1088,10 +1088,138 @@ const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
+
 <br><br>
 ____________________________________________________
 <br><br>
-- $text	Performs text search. (https://docs.mongodb.com/manual/reference/operator/query/text/)
+- **$text**	- Performs a text search on the content of the fields indexed with a text index. (https://docs.mongodb.com/manual/reference/operator/query/text/)
+- Syntax:
+```javascript
+{
+  $text:
+    {
+      $search: <string>,
+      $language: <string>,
+      $caseSensitive: <boolean>,
+      $diacriticSensitive: <boolean>
+    }
+}
+```
+- Options:
+```javascript
+/*
+- $search | string | A string of terms that MongoDB parses and uses to query the text index. MongoDB performs a logical OR search of the terms unless specified as a phrase. See Behavior for more information on the field.
+
+- $language | string | Optional. The language that determines the list of stop words for the search and the rules for the stemmer and tokenizer. If not specified, the search uses the default language of the index. For supported languages, see Text Search Languages.
+
+- $caseSensitive | boolean | Optional. A boolean flag to enable or disable case sensitive search. Defaults to false; i.e. the search defers to the case insensitivity of the text index.
+
+- $diacriticSensitive | boolean | Optional. A boolean flag to enable or disable diacritic sensitive search against version 3 text indexes. Defaults to false; i.e. the search defers to the diacritic insensitivity of the text index.
+*/
+```
+- Example:
+```javascript
+/* // source collection
+[
+     { _id: 1, subject: "coffee", author: "xyz", views: 50 },
+     { _id: 2, subject: "Coffee Shopping", author: "efg", views: 5 },
+     { _id: 3, subject: "Baking a cake", author: "abc", views: 90  },
+     { _id: 4, subject: "baking", author: "xyz", views: 100 },
+     { _id: 5, subject: "Café Con Leche", author: "abc", views: 200 },
+     { _id: 6, subject: "Сырники", author: "jkl", views: 80 },
+     { _id: 7, subject: "coffee and cream", author: "efg", views: 10 },
+     { _id: 8, subject: "Cafe con Leche", author: "xyz", views: 10 }
+]
+*/
+
+// The following query specifies a $search string of coffee:
+const query = {$text: {$search: "coffee"}};
+
+// callback
+collection.find(query).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.find(query).toArray({});
+
+/* operation will return:
+[
+  { "_id" : 2, "subject" : "Coffee Shopping", "author" : "efg", "views" : 5 },
+  { "_id" : 7, "subject" : "coffee and cream", "author" : "efg", "views" : 10 },
+  { "_id" : 1, "subject" : "coffee", "author" : "xyz", "views" : 50 },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #2 - Match Any of the Search Terms ----
+
+// The following query specifies a $search string of three terms delimited by space, "bake coffee cake":
+collection.find( { $text: { $search: "bake coffee cake" } } )
+
+/*  // result:
+[
+  { "_id" : 2, "subject" : "Coffee Shopping", "author" : "efg", "views" : 5 },
+  { "_id" : 7, "subject" : "coffee and cream", "author" : "efg", "views" : 10 },
+  { "_id" : 1, "subject" : "coffee", "author" : "xyz", "views" : 50 },
+  { "_id" : 3, "subject" : "Baking a cake", "author" : "abc", "views" : 90 },
+  { "_id" : 4, "subject" : "baking", "author" : "xyz", "views" : 100 },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #3 - Search for a Phrase ----
+
+// The following query searches for the phrase coffee shop:
+collection.find( { $text: { $search: "\"coffee shop\"" } } )
+
+/*  // result:
+{ "_id" : 2, "subject" : "Coffee Shopping", "author" : "efg", "views" : 5 }
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #4 - Exclude Documents That Contain a Term ----
+
+// The following query searches for the phrase coffee shop:
+collection.find( { $text: { $search: "coffee -shop" } } )
+
+/*  // result:
+[
+  { "_id" : 7, "subject" : "coffee and cream", "author" : "efg", "views" : 10 },
+  { "_id" : 1, "subject" : "coffee", "author" : "xyz", "views" : 50 },
+]
+*/
+```
+
 
 
 <br><br>
