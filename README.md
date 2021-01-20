@@ -5610,6 +5610,86 @@ const r = await collection.findOne(query).allowDiskUse();
 
 
 
+
+
+
+
+
+
+
+
+
+<br><br>
+____________________________________________________
+____________________________________________________
+<br><br>
+
+
+
+
+#### .createIndex() (https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/)
+- allowDiskUse() allows MongoDB to use temporary files on disk to store data exceeding the 100 megabyte system memory limit while processing a blocking sort operation. If MongoDB requires using more than 100 megabytes of system memory for the blocking sort operation, MongoDB returns an error unless the query specifies cursor.allowDiskUse().
+
+<br><br>
+- Syntax:
+```javascript
+db.collection.createIndex(keys, options, commitQuorum)
+```
+- Options:
+```javascript
+/*
+- keys | document | A document that contains the field and value pairs where the field is the index key and the value describes the type of index for that field. For an ascending index on a field, specify a value of 1; for descending index, specify a value of -1. Starting in 3.6, you cannot specify * as the index name.
+
+- otions | document | Optional. A document that contains a set of options that controls the creation of the index.
+
+- commitQuorum	| integer or string | Optional. The minimum number of data-bearing voting replica set members (i.e. commit quorum), including the primary, that must report a successful index build before the primary marks the indexes as ready. A “voting” member is any replica set member where members[n].votes is greater than 0.
+*/
+```
+Example:
+```javascript
+// For example, the collection myColl has an index on a string field category with the collation locale "fr".
+const ar = [{category: 1}, {collation: {locale: "fr"}}];
+
+// callback
+collection.createIndex(...ar).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.createIndex(...ar).toArray({});
+
+
+// The following query operation, which specifies the same collation as the index, can use the index:
+collection.find({category: "cafe"}).collation({locale: "fr"});
+
+// However, the following query operation, which by default uses the “simple” binary collator, cannot use the index:
+collection.find({category: "cafe"});
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 ____________________________________________________
