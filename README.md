@@ -5628,11 +5628,18 @@ ____________________________________________________
 
 
 #### .createIndex() (https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/)
-<br><br>
 - Syntax:
 ```javascript
-db.collection.createIndex(keys, options, commitQuorum)
+collection.createIndex({comments: "text"});
 ```
+
+<br><br>
+- text index (https://docs.mongodb.com/manual/core/index-text/#index-feature-text)
+- Syntax:
+```javascript
+collection.createIndex(keys, options, commitQuorum)
+```
+
 - Options:
 ```javascript
 /*
