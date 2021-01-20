@@ -5628,8 +5628,6 @@ ____________________________________________________
 
 
 #### .createIndex() (https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/)
-- allowDiskUse() allows MongoDB to use temporary files on disk to store data exceeding the 100 megabyte system memory limit while processing a blocking sort operation. If MongoDB requires using more than 100 megabytes of system memory for the blocking sort operation, MongoDB returns an error unless the query specifies cursor.allowDiskUse().
-
 <br><br>
 - Syntax:
 ```javascript
