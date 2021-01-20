@@ -5763,9 +5763,21 @@ collection.createIndex({comments: "text"});
 
 <br><br>
 - text index (https://docs.mongodb.com/manual/core/index-text/#index-feature-text)
-- Syntax:
+- When you create a text index you can later to search operations on them. You can also text index multiple fields
 ```javascript
-collection.createIndex(keys, options, commitQuorum)
+collection.createIndex({subject: "text", comments: "text"});
+
+collection.find( { $text: { $search: "bake coffee cake" } } )
+
+/* // result:
+[
+  { "_id" : 2, "subject" : "Coffee Shopping", "author" : "efg", "views" : 5 },
+  { "_id" : 7, "subject" : "coffee and cream", "author" : "efg", "views" : 10 },
+  { "_id" : 1, "subject" : "coffee", "author" : "xyz", "views" : 50 },
+  { "_id" : 3, "subject" : "Baking a cake", "author" : "abc", "views" : 90 },
+  { "_id" : 4, "subject" : "baking", "author" : "xyz", "views" : 100 },
+]
+*/
 ```
 
 - Options:
