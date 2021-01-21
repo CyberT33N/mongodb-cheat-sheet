@@ -1120,7 +1120,37 @@ const r = await collection.findOne(query)
 ____________________________________________________
 <br><br>
 - $type	Selects documents if a field is of the specified type. (https://docs.mongodb.com/manual/reference/operator/query/type/)
+- Syntax:
+```javascript
+{ field: { $type: <BSON type> } }
 
+// or 
+
+{ field: { $type: [ <BSON type1> , <BSON type2>, ... ] } }
+```
+- Example:
+```javascript
+/* // Source collection:
+[
+      { "_id" : 1, name : "Alice King" , classAverage : 87.333333333333333 },
+      { "_id" : 2, name : "Bob Jenkins", classAverage : "83.52" },
+      { "_id" : 3, name : "Cathy Hart", classAverage: "94.06" },
+      { "_id" : 4, name : "Drew Williams" , classAverage : NumberInt("93") }
+   ]
+*/
+
+
+db.grades.find( { "classAverage" : { $type : [ 2 , 1 ] } } );
+db.grades.find( { "classAverage" : { $type : [ "string" , "double" ] } } );
+
+/* operation will return:
+[
+  { "_id" : 1, "name" : "Alice King", "classAverage" : 87.33333333333333 },
+  { "_id" : 2, "name" : "Bob Jenkins", "classAverage" : "83.52" },
+  { "_id" : 3, "name" : "Cathy Hart", "classAverage" : "94.06" },
+]
+*/
+```
 
 
 
