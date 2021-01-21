@@ -3994,10 +3994,45 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 
+
+
 <br><br>
 ____________________________________________________
 <br><br>
 - $replaceRoot	Replaces a document with the specified embedded document. The operation replaces all existing fields in the input document, including the _id field. Specify a document embedded in the input document to promote the embedded document to the top level. (https://docs.mongodb.com/manual/reference/operator/aggregation/replaceRoot/#pipe._S_replaceRoot)
+- Syntax:
+```javascript
+{$sample: { size: <positive integer> }}
+```
+```javascript
+/* // source collection
+[
+  { "_id" : 1, "name" : "Arlene", "age" : 34, "pets" : { "dogs" : 2, "cats" : 1 } },
+  { "_id" : 2, "name" : "Sam", "age" : 41, "pets" : { "cats" : 1, "fish" : 3 } },
+  { "_id" : 3, "name" : "Maria", "age" : 25 },
+]
+*/
+
+// The following operation uses the $replaceRoot stage to replace each input document with the result of a $mergeObjects operation. The $mergeObjects expression merges the specified default document with the pets document.
+const pipeline = [
+   { $replaceRoot: { newRoot: { $mergeObjects:  [ { dogs: 0, cats: 0, birds: 0, fish: 0 }, "$pets" ] }} }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+  { "dogs" : 2, "cats" : 1, "birds" : 0, "fish" : 0 },
+  { "dogs" : 0, "cats" : 1, "birds" : 0, "fish" : 3 },
+  { "dogs" : 0, "cats" : 0, "birds" : 0, "fish" : 0 },
+]
+*/
+```
+
 
 
 <br><br>
