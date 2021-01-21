@@ -6229,12 +6229,6 @@ ____________________________________________________
 <br><br>
 ____________________________________________________
 <br><br>
-- $substr	Deprecated. Use $substrBytes or $substrCP. (https://docs.mongodb.com/manual/reference/operator/aggregation/substr/#exp._S_substr)
-
-
-<br><br>
-____________________________________________________
-<br><br>
 - $substrBytes	Returns the substring of a string. Starts with the character at the specified UTF-8 byte index (zero-based) in the string and continues for the specified number of bytes. (https://docs.mongodb.com/manual/reference/operator/aggregation/substrBytes/#exp._S_substrBytes)
 
 
