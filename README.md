@@ -1578,14 +1578,20 @@ ____________________________________________________
 ```javascript
 - groupBy | expression | An expression to group documents by. To specify a field path, prefix the field name with a dollar sign $ and enclose it in quotes.
 
+
 - boundaries | array | An array of values based on the groupBy expression that specify the boundaries for each bucket. Each adjacent pair of values acts as the inclusive lower boundary and the exclusive upper boundary for the bucket. You must specify at least two boundaries.
 - In easy words you can specify the range of fields
 - All array values must have the same type or you get an error.
+- Must specifiy atleast 2 values
+
 
 - default	| literal	| Optional. A literal that specifies the _id of an additional bucket that contains all documents whose groupBy expression result does not fall into a bucket specified by boundaries.
 - In easy words if your boundaries does not match a field you can use default to prevent errors. (https://youtu.be/jGDLtd0zyro?t=244)
 
+
 - output | document | Optional. A document that specifies the fields to include in the output documents in addition to the _id field. To specify the field to include, you must use accumulator expressions.
+- without output count will be inserted by default. If output ist set then count will be removed.
+
 ```
 - Example:
 ```javascript
@@ -1891,11 +1897,15 @@ ____________________________________________________
 ```javascript
 groupBy	| expression | An expression to group documents by. To specify a field path, prefix the field name with a dollar sign $ and enclose it in quotes.
 
+
 buckets	| integer	| A positive 32-bit integer that specifies the number of buckets into which input documents are grouped.
+
 
 output | document	| Optional. A document that specifies the fields to include in the output documents in addition to the _id field. To specify the field to include, you must use accumulator expressions:
 
+
 granularity	| string	| Optional. A string that specifies the preferred number series to use to ensure that the calculated boundary edges end on preferred round numbers or their powers of 10.
+- requires the expression to groupBy to resolve a numeric value
 ```
 - Example
 ```javascript
