@@ -1541,6 +1541,291 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - $bucket	Categorizes incoming documents into groups, called buckets, based on a specified expression and bucket boundaries. (https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#pipe._S_bucket)
+- Syntax:
+```javascript
+{
+  $bucket: {
+      groupBy: <expression>,
+      boundaries: [ <lowerbound1>, <lowerbound2>, ... ],
+      default: <literal>,
+      output: {
+         <output1>: { <$accumulator expression> },
+         ...
+         <outputN>: { <$accumulator expression> }
+      }
+   }
+}
+```
+- Options:
+```javascript
+- groupBy | expression | An expression to group documents by. To specify a field path, prefix the field name with a dollar sign $ and enclose it in quotes.
+
+- boundaries | array | An array of values based on the groupBy expression that specify the boundaries for each bucket. Each adjacent pair of values acts as the inclusive lower boundary and the exclusive upper boundary for the bucket. You must specify at least two boundaries.
+
+- default	| literal	| Optional. A literal that specifies the _id of an additional bucket that contains all documents whose groupBy expression result does not fall into a bucket specified by boundaries.
+
+- output | document | Optional. A document that specifies the fields to include in the output documents in addition to the _id field. To specify the field to include, you must use accumulator expressions.
+```
+- Example:
+```javascript
+/* // Source collection:
+[
+{ "_id" : 1, "last_name" : "Bernard", "first_name" : "Emil", "year_born" : 1868, "year_died" : 1941, "nationality" : "France" },
+  { "_id" : 2, "last_name" : "Rippl-Ronai", "first_name" : "Joszef", "year_born" : 1861, "year_died" : 1927, "nationality" : "Hungary" },
+  { "_id" : 3, "last_name" : "Ostroumova", "first_name" : "Anna", "year_born" : 1871, "year_died" : 1955, "nationality" : "Russia" },
+  { "_id" : 4, "last_name" : "Van Gogh", "first_name" : "Vincent", "year_born" : 1853, "year_died" : 1890, "nationality" : "Holland" },
+  { "_id" : 5, "last_name" : "Maurer", "first_name" : "Alfred", "year_born" : 1868, "year_died" : 1932, "nationality" : "USA" },
+  { "_id" : 6, "last_name" : "Munch", "first_name" : "Edvard", "year_born" : 1863, "year_died" : 1944, "nationality" : "Norway" },
+  { "_id" : 7, "last_name" : "Redon", "first_name" : "Odilon", "year_born" : 1840, "year_died" : 1916, "nationality" : "France" },
+  { "_id" : 8, "last_name" : "Diriks", "first_name" : "Edvard", "year_born" : 1855, "year_died" : 1930, "nationality" : "Norway" },
+]
+*/
+
+// The following operation groups the documents into buckets according to the year_born field and filters based on the count of documents in the buckets:
+const pipeline = [
+  // First Stage
+  {
+    $bucket: {
+      groupBy: "$year_born",                        // Field to group by
+      boundaries: [ 1840, 1850, 1860, 1870, 1880 ], // Boundaries for the buckets
+      default: "Other",                             // Bucket id for documents which do not fall into a bucket
+      output: {                                     // Output for each bucket
+        "count": { $sum: 1 },
+        "artists" :
+          {
+            $push: {
+              "name": { $concat: [ "$first_name", " ", "$last_name"] },
+              "year_born": "$year_born"
+            }
+          }
+      }
+    }
+  },
+  // Second Stage
+  {
+    $match: { count: {$gt: 3} }
+  }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* First Stage:
+The $bucket stage groups the documents into buckets by the year_born field. The buckets have the following boundaries:
+
+- [1840, 1850) with inclusive lowerbound 1840 and exclusive upper bound 1850.
+- [1850, 1860) with inclusive lowerbound 1850 and exclusive upper bound 1860.
+- [1860, 1870) with inclusive lowerbound 1860 and exclusive upper bound 1870.
+- [1870, 1880) with inclusive lowerbound 1870 and exclusive upper bound 1880.
+- If a document did not contain the year_born field or its year_born field was outside the ranges above, it would be placed in the default bucket with the _id value "Other".
+
+
+This stage passes the following documents to the next stage:
+{ "_id" : 1840, "count" : 1, "artists" : [ { "name" : "Odilon Redon", "year_born" : 1840 } ] }
+
+{ "_id" : 1850, "count" : 2, "artists" : [ { "name" : "Vincent Van Gogh", "year_born" : 1853 },
+                                           { "name" : "Edvard Diriks", "year_born" : 1855 } ] }
+
+{ "_id" : 1860, "count" : 4, "artists" : [ { "name" : "Emil Bernard", "year_born" : 1868 },
+                                           { "name" : "Joszef Rippl-Ronai", "year_born" : 1861 },
+                                           { "name" : "Alfred Maurer", "year_born" : 1868 },
+                                           { "name" : "Edvard Munch", "year_born" : 1863 } ] }
+
+{ "_id" : 1870, "count" : 1, "artists" : [ { "name" : "Anna Ostroumova", "year_born" : 1871 } ] }
+*/
+
+
+
+/* Second Stage:
+The $match stage filters the output from the previous stage to only return buckets which contain more than 3 documents.
+The operation returns the following document:
+{ "_id" : 1860, "count" : 4, "artists" :
+  [
+    { "name" : "Emil Bernard", "year_born" : 1868 },
+    { "name" : "Joszef Rippl-Ronai", "year_born" : 1861 },
+    { "name" : "Alfred Maurer", "year_born" : 1868 },
+    { "name" : "Edvard Munch", "year_born" : 1863 }
+  ]
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #2 - Use $bucket with $facet to Bucket by Multiple Fields ----
+
+/* // Source collection:
+[
+  { "_id" : 1, "title" : "The Pillars of Society", "artist" : "Grosz", "year" : 1926,
+      "price" : NumberDecimal("199.99") },
+  { "_id" : 2, "title" : "Melancholy III", "artist" : "Munch", "year" : 1902,
+      "price" : NumberDecimal("280.00") },
+  { "_id" : 3, "title" : "Dancer", "artist" : "Miro", "year" : 1925,
+      "price" : NumberDecimal("76.04") },
+  { "_id" : 4, "title" : "The Great Wave off Kanagawa", "artist" : "Hokusai",
+      "price" : NumberDecimal("167.30") },
+  { "_id" : 5, "title" : "The Persistence of Memory", "artist" : "Dali", "year" : 1931,
+      "price" : NumberDecimal("483.00") },
+  { "_id" : 6, "title" : "Composition VII", "artist" : "Kandinsky", "year" : 1913,
+      "price" : NumberDecimal("385.00") },
+  { "_id" : 7, "title" : "The Scream", "artist" : "Munch", "year" : 1893
+      /* No price*/ },
+  { "_id" : 8, "title" : "Blue Flower", "artist" : "O'Keefe", "year" : 1918,
+      "price" : NumberDecimal("118.42") }
+]
+*/
+
+
+// You can use the $facet stage to perform multiple $bucket aggregations in a single stage.
+const pipeline = [
+  {
+    $facet: {                               // Top-level $facet stage
+      "price": [                            // Output field 1
+        {
+          $bucket: {
+              groupBy: "$price",            // Field to group by
+              boundaries: [ 0, 200, 400 ],  // Boundaries for the buckets
+              default: "Other",             // Bucket id for documents which do not fall into a bucket
+              output: {                     // Output for each bucket
+                "count": { $sum: 1 },
+                "artwork" : { $push: { "title": "$title", "price": "$price" } },
+                "averagePrice": { $avg: "$price" }
+              }
+          }
+        }
+      ],
+      "year": [                                      // Output field 2
+        {
+          $bucket: {
+            groupBy: "$year",                        // Field to group by
+            boundaries: [ 1890, 1910, 1920, 1940 ],  // Boundaries for the buckets
+            default: "Unknown",                      // Bucket id for documents which do not fall into a bucket
+            output: {                                // Output for each bucket
+              "count": { $sum: 1 },
+              "artwork": { $push: { "title": "$title", "year": "$year" } }
+            }
+          }
+        }
+      ]
+    }
+  }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // result:
+[
+{
+  "price" : [ // Output of first facet
+    {
+      "_id" : 0,
+      "count" : 4,
+      "artwork" : [
+        { "title" : "The Pillars of Society", "price" : NumberDecimal("199.99") },
+        { "title" : "Dancer", "price" : NumberDecimal("76.04") },
+        { "title" : "The Great Wave off Kanagawa", "price" : NumberDecimal("167.30") },
+        { "title" : "Blue Flower", "price" : NumberDecimal("118.42") }
+      ],
+      "averagePrice" : NumberDecimal("140.4375")
+    },
+    {
+      "_id" : 200,
+      "count" : 2,
+      "artwork" : [
+        { "title" : "Melancholy III", "price" : NumberDecimal("280.00") },
+        { "title" : "Composition VII", "price" : NumberDecimal("385.00") }
+      ],
+      "averagePrice" : NumberDecimal("332.50")
+    },
+    {
+      // Includes documents without prices and prices greater than 400
+      "_id" : "Other",
+      "count" : 2,
+      "artwork" : [
+        { "title" : "The Persistence of Memory", "price" : NumberDecimal("483.00") },
+        { "title" : "The Scream" }
+      ],
+      "averagePrice" : NumberDecimal("483.00")
+    }
+  ],
+  "year" : [ // Output of second facet
+    {
+      "_id" : 1890,
+      "count" : 2,
+      "artwork" : [
+        { "title" : "Melancholy III", "year" : 1902 },
+        { "title" : "The Scream", "year" : 1893 }
+      ]
+    },
+    {
+      "_id" : 1910,
+      "count" : 2,
+      "artwork" : [
+        { "title" : "Composition VII", "year" : 1913 },
+        { "title" : "Blue Flower", "year" : 1918 }
+      ]
+    },
+    {
+      "_id" : 1920,
+      "count" : 3,
+      "artwork" : [
+        { "title" : "The Pillars of Society", "year" : 1926 },
+        { "title" : "Dancer", "year" : 1925 },
+        { "title" : "The Persistence of Memory", "year" : 1931 }
+      ]
+    },
+    {
+      // Includes documents without a year
+      "_id" : "Unknown",
+      "count" : 1,
+      "artwork" : [
+        { "title" : "The Great Wave off Kanagawa" }
+      ]
+    }
+  ]
+}
+]
+*/
+```
+
 
 
 <br><br>
