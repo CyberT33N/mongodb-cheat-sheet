@@ -5111,10 +5111,54 @@ ____________________________________________________
 - $accumulator	Returns the result of a user-defined accumulator function. (https://docs.mongodb.com/manual/reference/operator/aggregation/accumulator/#grp._S_accumulator)
 
 
+
 <br><br>
 ____________________________________________________
 <br><br>
 - $addToSet	Returns an array of unique expression values for each group. Order of the array elements is undefined. (https://docs.mongodb.com/manual/reference/operator/aggregation/addToSet/#grp._S_addToSet)
+- Syntax:
+```javascript
+{ $addToSet: <expression> }
+```
+- Example:
+```javascript
+/* our collection looks like this:
+[
+  { "_id" : 1, "item" : "abc", "price" : 10, "quantity" : 2, "date" : ISODate("2014-01-01T08:00:00Z") },
+  { "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "date" : ISODate("2014-02-03T09:00:00Z") },
+  { "_id" : 3, "item" : "xyz", "price" : 5, "quantity" : 5, "date" : ISODate("2014-02-03T09:05:00Z") },
+  { "_id" : 4, "item" : "abc", "price" : 10, "quantity" : 10, "date" : ISODate("2014-02-15T08:00:00Z") },
+  { "_id" : 5, "item" : "xyz", "price" : 5, "quantity" : 10, "date" : ISODate("2014-02-15T09:12:00Z") },
+]
+*/
+
+// The following aggregation operation uses $map with the $add expression to increment each element in the quizzes array by 2.
+const pipeline = [
+     {
+       $group:
+         {
+           _id: { day: { $dayOfYear: "$date"}, year: { $year: "$date" } },
+           itemsSold: { $addToSet: "$item" }
+         }
+     }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// The operation returns the following results:
+[
+  { "_id" : { "day" : 46, "year" : 2014 }, "itemsSold" : [ "xyz", "abc" ] },
+  { "_id" : { "day" : 34, "year" : 2014 }, "itemsSold" : [ "xyz", "jkl" ] },
+  { "_id" : { "day" : 1, "year" : 2014 }, "itemsSold" : [ "abc" ] },
+]
+*/
+```
+
 
 
 <br><br>
