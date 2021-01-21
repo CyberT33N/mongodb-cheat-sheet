@@ -6226,6 +6226,41 @@ ____________________________________________________
 
 #### String Expression Operators (https://docs.mongodb.com/manual/reference/operator/aggregation/#string-expression-operators)
 - $concat	Concatenates any number of strings. (https://docs.mongodb.com/manual/reference/operator/aggregation/concat/#exp._S_concat)
+- Syntax:
+```javascript
+{ $concat: [ <expression1>, <expression2>, ... ] }
+```
+- Example:
+```javascript
+/* source collection:
+[
+  { "_id" : 1, "item" : "ABC1", quarter: "13Q1", "description" : "product 1" },
+  { "_id" : 2, "item" : "ABC2", quarter: "13Q4", "description" : "product 2" },
+  { "_id" : 3, "item" : "XYZ1", quarter: "14Q2", "description" : null },
+]
+*/
+
+// The following operation uses the $concat operator to concatenate the item field and the description field with a ” - ” delimiter.
+const pipeline = [
+      { $project: { itemDescription: { $concat: [ "$item", " - ", "$description" ] } } }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// result:
+[
+  { "_id" : 1, "itemDescription" : "ABC1 - product 1" },
+  { "_id" : 2, "itemDescription" : "ABC2 - product 2" },
+  { "_id" : 3, "itemDescription" : null },
+]
+*/
+```
+
 
 
 <br><br>
