@@ -1573,6 +1573,22 @@ ____________________________________________________
 ```
 - Example:
 ```javascript
+// ---- example1 ----
+https://youtu.be/jGDLtd0zyro?t=82
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- example2 ----
 /* // Source collection:
 [
 { "_id" : 1, "last_name" : "Bernard", "first_name" : "Emil", "year_born" : 1868, "year_died" : 1941, "nationality" : "France" },
@@ -1691,7 +1707,7 @@ The operation returns the following document:
 
 
 
-// ---- EXAMPLE #2 - Use $bucket with $facet to Bucket by Multiple Fields ----
+// ---- EXAMPLE #3 - Use $bucket with $facet to Bucket by Multiple Fields ----
 
 /* // Source collection:
 [
