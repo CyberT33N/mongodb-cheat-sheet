@@ -8029,6 +8029,96 @@ const r = await collection.aggregate(...pipeline).toArray({});
 
 
 
+<br><br>
+<br><br>
+
+## Performance
+- https://www.youtube.com/watch?v=BlPqPoyWk1k
+
+<br><br>
+#### General Rules
+- Try first to create indexes (.createIndex()). If this is not enough use allowDiskUse. allowDiskUse is way slower than using RAM. Notice that allowDiskUse does not work $graphLookup
+- $match the indexes
+- Put $sort stages to the top as soon as you can
+- Put $limit stages to the top as soon as you can. Also try to put it over $sort
+
+<br><br>
+#### Good 2 Know
+- Results are limited to 16MB. If you get over this size you should use $limit and $project
+- Stages are limited to . The best to stay under this limit is by using index. If you still over the limit you can use allowDiskUse to bypass this limit.
+
+<br><br>
+#### "Realtime" Processing
+- Provide data for applications and should return as fast as possible to not disturb the user experience.
+- Query performance is more important.
+
+
+<br><br>
+#### Batch Processing
+- Provide data for analytics as example for a cron job and can take more time if needed.
+- Query performance is less important.
+
+
+<br><br>
+#### Index Usage
+- If any aggregation stage does not support index then the following stages will also not support it.
+
+
+<br><br>
+#### Determine how aggregation queries are executed (**{explain: true}**)
+```javascript
+/* // source collection:
+[
+  { "_id" : 1, "title" : "The Pillars of Society", "artist" : "Grosz", "year" : 1926, "tags" : [ "painting", "satire", "Expressionism", "caricature" ] },
+  { "_id" : 2, "title" : "Melancholy III", "artist" : "Munch", "year" : 1902, "tags" : [ "woodcut", "Expressionism" ] },
+  { "_id" : 3, "title" : "Dancer", "artist" : "Miro", "year" : 1925, "tags" : [ "oil", "Surrealism", "painting" ] },
+  { "_id" : 4, "title" : "The Great Wave off Kanagawa", "artist" : "Hokusai", "tags" : [ "woodblock", "ukiyo-e" ] },
+  { "_id" : 5, "title" : "The Persistence of Memory", "artist" : "Dali", "year" : 1931, "tags" : [ "Surrealism", "painting", "oil" ] },
+  { "_id" : 6, "title" : "Composition VII", "artist" : "Kandinsky", "year" : 1913, "tags" : [ "oil", "painting", "abstract" ] },
+  { "_id" : 7, "title" : "The Scream", "artist" : "Munch", "year" : 1893, "tags" : [ "Expressionism", "painting", "oil" ] },
+  { "_id" : 8, "title" : "Blue Flower", "artist" : "O'Keefe", "year" : 1918, "tags" : [ "abstract", "painting" ] },
+]
+*/
+
+// The following operation unwinds the tags array and uses the $sortByCount stage to count the number of documents associated with each tag:
+const pipeline = [
+[{$unwind: "$tags"},  {$sortByCount: "$tags"}],
+{explain: true}.
+];
+
+// callback
+collection.aggregate(...pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(...pipeline).toArray({});
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -8078,10 +8168,6 @@ The operation returns the following results:
 
 
 
-
-<br><br>
-
-#### $match (https://docs.mongodb.com/manual/reference/operator/aggregation/match/)
 
 <br><br>
 
@@ -8170,11 +8256,6 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 
-
-<br><br>
-
-#### $project (https://docs.mongodb.com/manual/reference/operator/aggregation/project/)
-- The logic is same to **projection** but **$project** got way more options.
 
 <br><br>
 
