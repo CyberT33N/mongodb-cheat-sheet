@@ -4940,6 +4940,10 @@ ____________________________________________________
 ____________________________________________________
 <br><br>
 - $divide	Returns the result of dividing the first number by the second. Accepts two argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/divide/#exp._S_divide)
+- Syntax:
+```javascript
+{ $divide: [ <expression1>, <expression2> ] }
+```
 ```javascript
 /* our collection looks like this:
 { "_id" : 1, "item" : "abc", "price" : 10, "discount": 2, date: ISODate("2014-03-01T08:00:00Z") }
