@@ -1541,6 +1541,11 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - $bucket	Categorizes incoming documents into groups, called buckets, based on a specified expression and bucket boundaries. (https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#pipe._S_bucket)
+
+- Guides:
+<br> https://www.youtube.com/watch?v=jGDLtd0zyro
+
+<br><br>
 - Syntax:
 ```javascript
 {
@@ -8048,10 +8053,5 @@ const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
-
-<br><br>
-
-## Manual Buckets
-- https://www.youtube.com/watch?v=jGDLtd0zyro
 
 
