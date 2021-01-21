@@ -4003,9 +4003,363 @@ ____________________________________________________
 <br><br>
 ____________________________________________________
 <br><br>
-- $replaceWith is an alias for $replaceRoot stage. Replaces a document with the specified embedded document. The operation replaces all existing fields in the input document, including the _id field. Specify a document embedded in the input document to promote the embedded document to the top level.
- $replaceWith is an alias for $replaceRoot stage.
+- $replaceWith is an alias for $replaceRoot stage. Replaces a document with the specified embedded document. The operation replaces all existing fields in the input document, including the _id field. Specify a document embedded in the input document to promote the embedded document to the top level. $replaceWith is an alias for $replaceRoot stage. (https://docs.mongodb.com/manual/reference/operator/aggregation/replaceWith/)
  
+<br><br>
+- Syntax:
+```javascript
+{ $replaceWith: <replacementDocument> }
+```
+- Example:
+```javascript
+// ---- EXAMPLE #1 - $replaceWith an Embedded Document Field ----
+
+/* source collection:
+[
+   { "_id" : 1, "name" : "Arlene", "age" : 34, "pets" : { "dogs" : 2, "cats" : 1 } },
+   { "_id" : 2, "name" : "Sam", "age" : 41, "pets" : { "cats" : 1, "fish" : 3 } },
+   { "_id" : 3, "name" : "Maria", "age" : 25 }
+]
+*/
+
+// The following operation uses the $replaceWith stage to replace each input document with the result of a $mergeObjects operation. The $mergeObjects expression merges the specified default document with the pets document.
+const pipeline = [
+   { $replaceWith: { $mergeObjects:  [ { dogs: 0, cats: 0, birds: 0, fish: 0 }, "$pets" ] } }
+];
+
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "dogs" : 2, "cats" : 1, "birds" : 0, "fish" : 0 },
+  { "dogs" : 0, "cats" : 1, "birds" : 0, "fish" : 3 },
+  { "dogs" : 0, "cats" : 0, "birds" : 0, "fish" : 0 },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #2 - $replaceWith a Document Nested in an Array ----
+
+/* source collection:
+[
+   {
+      "_id" : 1,
+      "grades" : [
+         { "test": 1, "grade" : 80, "mean" : 75, "std" : 6 },
+         { "test": 2, "grade" : 85, "mean" : 90, "std" : 4 },
+         { "test": 3, "grade" : 95, "mean" : 85, "std" : 6 }
+      ]
+   },
+   {
+      "_id" : 2,
+      "grades" : [
+         { "test": 1, "grade" : 90, "mean" : 75, "std" : 6 },
+         { "test": 2, "grade" : 87, "mean" : 90, "std" : 3 },
+         { "test": 3, "grade" : 91, "mean" : 85, "std" : 4 }
+      ]
+   }
+]
+*/
+
+// The following operation uses the $replaceWith stage to replace each input document with the result of a $mergeObjects operation. The $mergeObjects expression merges the specified default document with the pets document.
+const pipeline = [
+   { $unwind: "$grades" },
+   { $match: { "grades.grade" : { $gte: 90 } } },
+   { $replaceWith: "$grades" }
+];
+
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "test" : 3, "grade" : 95, "mean" : 85, "std" : 6 },
+  { "test" : 1, "grade" : 90, "mean" : 75, "std" : 6 },
+  { "test" : 3, "grade" : 91, "mean" : 85, "std" : 4 },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #3 - $replaceWith a Newly Created Document ----
+
+/* source collection:
+[
+   { "_id" : 1, "item" : "butter", "price" : 10, "quantity": 2, date: ISODate("2019-03-01T08:00:00Z"), status: "C" },
+   { "_id" : 2, "item" : "cream", "price" : 20, "quantity": 1, date: ISODate("2019-03-01T09:00:00Z"), status: "A" },
+   { "_id" : 3, "item" : "jam", "price" : 5, "quantity": 10, date: ISODate("2019-03-15T09:00:00Z"), status: "C" },
+   { "_id" : 4, "item" : "muffins", "price" : 5, "quantity": 10, date: ISODate("2019-03-15T09:00:00Z"), status: "C" }
+]
+*/
+
+// The following operation uses the $replaceWith stage to replace each input document with the result of a $mergeObjects operation. The $mergeObjects expression merges the specified default document with the pets document.
+const pipeline = [
+   { $match: { status: "C" } },
+   { $replaceWith: { _id: "$_id", item: "$item", amount: { $multiply: [ "$price", "$quantity"]}, status: "Complete", asofDate: "$$NOW" } }
+];
+
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "_id" : 1, "item" : "butter", "amount" : 20, "status" : "Complete", "asofDate" : ISODate("2019-06-03T22:47:54.812Z") },
+  { "_id" : 3, "item" : "jam", "amount" : 50, "status" : "Complete", "asofDate" : ISODate("2019-06-03T22:47:54.812Z") },
+  { "_id" : 4, "item" : "muffins", "amount" : 50, "status" : "Complete", "asofDate" : ISODate("2019-06-03T22:47:54.812Z") },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #3 (b) - $replaceWith a Newly Created Document ----
+
+/* source collection:
+[
+   { _id: 1, quarter: "2019Q1", region: "A", qty: 400 },
+   { _id: 2, quarter: "2019Q1", region: "B", qty: 550 },
+   { _id: 3, quarter: "2019Q1", region: "C", qty: 1000 },
+   { _id: 4, quarter: "2019Q2", region: "A", qty: 660 },
+   { _id: 5, quarter: "2019Q2", region: "B", qty: 500 },
+   { _id: 6, quarter: "2019Q2", region: "C", qty: 1200 }
+]
+*/
+
+// The following operation uses the $replaceWith stage to replace each input document with the result of a $mergeObjects operation. The $mergeObjects expression merges the specified default document with the pets document.
+const pipeline = [
+   { $addFields: { obj:  { k: "$region", v: "$qty" } } },
+   { $group: { _id: "$quarter", items: { $push: "$obj" } } },
+   { $project: { items2: { $concatArrays: [ [ { "k": "_id", "v": "$_id" } ], "$items" ] } } },
+   { $replaceWith: { $arrayToObject: "$items2" } }
+];
+
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "_id" : "2019Q1", "A" : 400, "B" : 550, "C" : 1000 }
+  { "_id" : "2019Q2", "A" : 660, "B" : 500, "C" : 1200 }
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #4 - $replaceWith a New Document Created from $$ROOT and a Default Document ----
+
+/* source collection:
+[
+   { "_id" : 1, name: "Fred", email: "fred@example.net" },
+   { "_id" : 2, name: "Frank N. Stine", cell: "012-345-9999" },
+   { "_id" : 3, name: "Gren Dell", cell: "987-654-3210", email: "beo@example.net" }
+]
+*/
+
+// The following operation uses the $replaceWith stage to replace each input document with the result of a $mergeObjects operation. The $mergeObjects expression merges the specified default document with the pets document.
+const pipeline = [
+   { $replaceWith: { $mergeObjects: [ { _id: "", name: "", email: "", cell: "", home: "" }, "$$ROOT" ] } }
+];
+
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "_id" : 1, "name" : "Fred", "email" : "fred@example.net", "cell" : "", "home" : "" },
+  { "_id" : 2, "name" : "Frank N. Stine", "email" : "", "cell" : "012-345-9999", "home" : "" },
+  { "_id" : 3, "name" : "Gren Dell", "email" : "beo@example.net", "cell" : "", "home" : "987-654-3210" },
+]
+*/
+```
+
+
 
 
 <br><br>
