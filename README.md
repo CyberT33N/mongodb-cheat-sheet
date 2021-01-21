@@ -1386,11 +1386,23 @@ ____________________________________________________
 - $elemMatch	Selects documents if element in the array field matches all the specified $elemMatch conditions. (https://docs.mongodb.com/manual/reference/operator/query/elemMatch/)
 
 
+
+
 <br><br>
 ____________________________________________________
 <br><br>
 - $size	Selects documents if the array field is a specified size. (https://docs.mongodb.com/manual/reference/operator/query/size/)
+- The $size operator matches any array with the number of elements specified by the argument. For example:
+- Example:
+```javascript
+const query = {field: {$size: 2}};
 
+// callback
+collection.find(query).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.find(query).toArray({});
+```
 
 
 
