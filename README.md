@@ -923,11 +923,11 @@ ____________________________________________________
 ```javascript
 /* // Source collection:
 [
-  { "_id" : 1, "item" : "abc1", description: "product 1", qte: 300 },
-  { "_id" : 2, "item" : "abc2", description: "product 2", qte: 200 },
-  { "_id" : 3, "item" : "xyz1", description: "product 3", qte: 249 },
-  { "_id" : 4, "item" : "VWZ1", description: "product 4", qte: 300 },
-  { "_id" : 5, "item" : "VWZ2", description: "product 5", qte: 180 },
+  { "_id" : 1, "item" : "abc1", description: "product 1", qty: 300 },
+  { "_id" : 2, "item" : "abc2", description: "product 2", qty: 200 },
+  { "_id" : 3, "item" : "xyz1", description: "product 3", qty: 250 },
+  { "_id" : 4, "item" : "VWZ1", description: "product 4", qty: 300 },
+  { "_id" : 5, "item" : "VWZ2", description: "product 5", qty: 180 },
 ]
 */
 
@@ -938,7 +938,7 @@ const pipeline = [
           {
             item: 1,
             qty: 1,
-            qtyNe250: { $ne: [ "$qte", 250 ] },
+            qtyNe250: { $ne: [ "$qty", 250 ] },
             _id: 0
           }
      }
@@ -952,11 +952,11 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 /* operation will return:
 [
-  { "item" : "abc1", "qte" : 300, "qteNe250" : true },
-  { "item" : "abc2", "qte" : 200, "qteNe250" : true },
-  { "item" : "xyz1", "qte" : 249, "qteNe250" : false },
-  { "item" : "VWZ1", "qte" : 300, "qteNe250" : true },
-  { "item" : "VWZ2", "qte" : 180, "qteNe250" : false },
+  { "item" : "abc1", "qty" : 300, "qtyNe250" : true },
+  { "item" : "abc2", "qty" : 200, "qtyNe250" : true },
+  { "item" : "xyz1", "qty" : 250, "qtyNe250" : false },
+  { "item" : "VWZ1", "qty" : 300, "qtyNe250" : true },
+  { "item" : "VWZ2", "qty" : 180, "qtyNe250" : true },
 ]
 */
 ```
