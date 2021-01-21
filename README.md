@@ -1542,6 +1542,7 @@ ____________________________________________________
 <br><br>
 - $bucket	Categorizes incoming documents into groups, called buckets, based on a specified expression and bucket boundaries. (https://docs.mongodb.com/manual/reference/operator/aggregation/bucket/#pipe._S_bucket)
 
+<br><br>
 - Guides:
 <br> https://www.youtube.com/watch?v=jGDLtd0zyro
 
@@ -1566,8 +1567,11 @@ ____________________________________________________
 - groupBy | expression | An expression to group documents by. To specify a field path, prefix the field name with a dollar sign $ and enclose it in quotes.
 
 - boundaries | array | An array of values based on the groupBy expression that specify the boundaries for each bucket. Each adjacent pair of values acts as the inclusive lower boundary and the exclusive upper boundary for the bucket. You must specify at least two boundaries.
+- In easy words you can specify the range of fields
+- All array values must have the same type or you get an error.
 
 - default	| literal	| Optional. A literal that specifies the _id of an additional bucket that contains all documents whose groupBy expression result does not fall into a bucket specified by boundaries.
+- In easy words if your boundaries does not match a field you can use default to prevent errors. (https://youtu.be/jGDLtd0zyro?t=244)
 
 - output | document | Optional. A document that specifies the fields to include in the output documents in addition to the _id field. To specify the field to include, you must use accumulator expressions.
 ```
