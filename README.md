@@ -5497,7 +5497,65 @@ ____________________________________________________
 ____________________________________________________
 <br><br>
 - $zip	Merge two arrays together. (https://docs.mongodb.com/manual/reference/operator/aggregation/zip/#exp._S_zip)
+- Syntax:
+```javascript
+{
+    $zip: {
+        inputs: [ <array expression1>,  ... ],
+        useLongestLength: <boolean>,
+        defaults:  <array expression>
+    }
+}
+```
+- Options:
+```javascript
+/*
+inputs | An array of expressions that resolve to arrays. The elements of these input arrays combine to form the arrays of the output array
 
+useLongestLength | A boolean which specifies whether the length of the longest array determines the number of arrays in the output array.
+
+defaults | An array of default element values to use if the input arrays have different lengths. You must specify useLongestLength: true along with this field, or else $zip will return an error.
+*/
+```
+- Example:
+```javascript
+/* // source collection:
+[
+  { matrix: [[1, 2], [2, 3], [3, 4]] },
+  { matrix: [[8, 7], [7, 6], [5, 4]] },
+]
+*/
+
+
+// To compute the transpose of each 3x2 matrix in this collection, you can use the following aggregation operation:
+const pipeline = [{
+  $project: {
+    _id: false,
+    transposed: {
+      $zip: {
+        inputs: [
+          { $arrayElemAt: [ "$matrix", 0 ] },
+          { $arrayElemAt: [ "$matrix", 1 ] },
+          { $arrayElemAt: [ "$matrix", 2 ] },
+        ]
+      }
+    }
+  }
+}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* result:
+[
+  { "transposed" : [ [ 1, 2, 3 ], [ 2, 3, 4 ] ] },
+  { "transposed" : [ [ 8, 7, 5 ], [ 7, 6, 4 ] ] },
+]
+*/
+```
 
 
 
