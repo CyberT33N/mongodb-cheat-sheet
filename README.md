@@ -2946,10 +2946,15 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 ____________________________________________________
 <br><br>
-- $sortByCount	Groups incoming documents based on the value of a specified expression, then computes the count of documents in each distinct group. (https://docs.mongodb.com/manual/reference/operator/aggregation/sortByCount/#pipe._S_sortByCount)
+- **$sortByCount** - Groups incoming documents based on the value of a specified expression, then computes the count of documents in each distinct group. (https://docs.mongodb.com/manual/reference/operator/aggregation/sortByCount/#pipe._S_sortByCount)
 - Syntax:
 ```javascript
 { $sortByCount:  <expression> }
+```
+- The $sortByCount stage is equivalent to the following $group + $sort sequence:
+```javascript
+{ $group: { _id: <expression>, count: { $sum: 1 } } },
+{ $sort: { count: -1 } }
 ```
 - Example
 ```javascript
