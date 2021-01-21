@@ -2982,6 +2982,9 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - $indexStats	Returns statistics regarding the use of each index for the collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexStats/#pipe._S_indexStats)
+- $indexStats must be the first stage in a pipeline and may not be used within a $facet.
+
+<br><br>
 - Syntax:
 ```javascript
 { $indexStats: { } }
