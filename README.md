@@ -7639,3 +7639,134 @@ try{
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+# Facets
+
+<br><br>
+
+## Single Facet Query
+- https://www.youtube.com/watch?v=NMyDE4oWwpg
+```javascript
+
+// example #1
+const pipeline = [
+  {"$match": { "$text": {"$search": "network"}}},
+  {"$sortByCount": "$offices.city"}
+];
+
+// example #2
+const pipeline = [
+  {"$unwind": "$offices"},
+  {"$project": { "_id": "$name", "hq": "$offices.city"}},
+  {"$sortByCount": "$hq"},
+  {"$sort": {"_id":-1}},
+  {"$limit": 100}
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+```
+
+
+
+<br><br>
+
+## Manual Buckets
+- https://www.youtube.com/watch?v=jGDLtd0zyro
+
+
