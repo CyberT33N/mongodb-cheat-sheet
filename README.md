@@ -2974,11 +2974,108 @@ const r = await collection.aggregate(pipeline).toArray({});
 { "_id" : "abc", "avgAmount" : 60, "avgQuantity" : 6 }
 */
 ```
+
+
+
+
 <br><br>
-
-
+____________________________________________________
+<br><br>
 - $indexStats	Returns statistics regarding the use of each index for the collection. (https://docs.mongodb.com/manual/reference/operator/aggregation/indexStats/#pipe._S_indexStats)
+- Syntax:
+```javascript
+{ $indexStats: { } }
+```
+- Example:
+```javascript
+/* // source collection:
+[
+  { "_id" : 1, "item" : "abc", "price" : 12, "quantity" : 2, "type": "apparel" },
+  { "_id" : 2, "item" : "jkl", "price" : 20, "quantity" : 1, "type": "electronics" },
+  { "_id" : 3, "item" : "abc", "price" : 10, "quantity" : 5, "type": "apparel" },
+]
+*/
 
+// Create the following two indexes on the collection:
+db.orders.createIndex( { item: 1, quantity: 1 } )
+db.orders.createIndex( { type: 1, item: 1 } )
+
+// Run some queries against the collection:
+db.orders.find( { type: "apparel"} )
+db.orders.find( { item: "abc" } ).sort( { quantity: 1 } )
+
+// To view statistics on the index use on the orders collection, run the following aggregation operation:
+db.orders.aggregate( [ { $indexStats: { } } ] )
+
+/* // result:
+{
+   "name" : "item_1_quantity_1",
+   "key" : { "item" : 1, "quantity" : 1 },
+   "host" : "examplehost.local:27018",
+   "accesses" : {
+      "ops" : NumberLong(1),
+      "since" : ISODate("2020-02-10T21:11:23.059Z")
+   },
+   "shard" : "shardA",      // Available starting in MongoDB 4.2.4 if run on sharded cluster
+   "spec" : {               // Available starting in MongoDB 4.2.4
+      "v" : 2,
+      "key" : { "item" : 1, "quantity" : 1 },
+      "name" : "item_1_quantity_1"
+   }
+}
+{
+   "name" : "item_1_price_1",
+   "key" : { "item" : 1, "price" : 1 },
+   "host" : "examplehost.local:27018",
+   "accesses" : {
+      "ops" : NumberLong(1),
+      "since" : ISODate("2020-02-10T21:11:23.233Z")
+   },
+   "shard" : "shardA",      // Available starting in MongoDB 4.2.4 if run on sharded cluster
+   "spec" : {               // Available starting in MongoDB 4.2.4
+      "v" : 2,
+      "key" : { "item" : 1, "price" : 1 },
+      "name" : "item_1_price_1"
+   }
+}
+{
+   "name" : "item_1",
+   "key" : { "item" : 1 },
+
+   "host" : "examplehost.local:27018",
+   "accesses" : {
+      "ops" : NumberLong(0),
+      "since" : ISODate("2020-02-10T21:11:22.947Z")
+   },
+   "shard" : "shardA",      // Available starting in MongoDB 4.2.4 if run on sharded cluster
+   "spec" : {               // Available starting in MongoDB 4.2.4
+      "v" : 2,
+      "key" : { "item" : 1 },
+      "name" : "item_1"
+   }
+}
+{
+   "name" : "_id_",
+   "key" : { "_id" : 1 },
+   "host" : "examplehost.local:27018",
+   "accesses" : {
+      "ops" : NumberLong(0),
+      "since" : ISODate("2020-02-10T21:11:18.298Z")
+   },
+   "shard" : "shardA",      // Available starting in MongoDB 4.2.4 if run on sharded cluster
+   "spec" : {               // Available starting in MongoDB 4.2.4
+      "v" : 2,
+      "key" : { "_id" : 1 },
+      "name" : "_id_"
+   }
+}
+*/
+```
+
+
+
+<br><br>
+____________________________________________________
 <br><br>
 - $limit	Passes the first n documents unmodified to the pipeline where n is the specified limit. For each input document, outputs either one document (for the first n documents) or zero documents (after the first n documents). (https://docs.mongodb.com/manual/reference/operator/aggregation/limit/#pipe._S_limit)
 ```javascript
