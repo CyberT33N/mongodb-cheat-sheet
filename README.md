@@ -914,13 +914,60 @@ ____________________________________________________
 <br><br>
 ____________________________________________________
 <br><br>
-- $ne	Matches all values that are not equal to a specified value. (https://docs.mongodb.com/manual/reference/operator/aggregation/ne/)
+- $ne	Compares two values and returns: true when the values are not equivalent. false when the values are equivalent. (https://docs.mongodb.com/manual/reference/operator/aggregation/ne/)
 - Syntax:
 ```javascript
 { $ne: [ <expression1>, <expression2> ] }
 ```
 - Example:
 ```javascript
+// ---- EXAMPLE #1 ---------
+/* // Source collection:
+[
+  { "_id" : 1, "item" : "abc1", description: "product 1", qty: 300 },
+  { "_id" : 2, "item" : "abc2", description: "product 2" },
+  { "_id" : 3, "item" : "xyz1", description: "product 3", qty: 250 },
+]
+*/
+
+// The following operation uses the $ne operator to determine if qty does not equal 250:
+const pipeline = [
+     {
+       $project:
+          {
+            item: 1,
+            qty: 1,
+            exist: { $ne: ''},
+            _id: 0
+          }
+     }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+  { "item" : "abc1", "qty" : 300, "exist" : true },
+  { "item" : "abc2", "qty" : 200, "exist" : false },
+  { "item" : "xyz1", "qty" : 250, "exist" : true },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #2 ---------
 /* // Source collection:
 [
   { "_id" : 1, "item" : "abc1", description: "product 1", qty: 300 },
