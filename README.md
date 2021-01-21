@@ -6329,10 +6329,56 @@ ____________________________________________________
 - $rtrim	Removes whitespace or the specified characters from the end of a string. (https://docs.mongodb.com/manual/reference/operator/aggregation/rtrim/#exp._S_rtrim)
 
 
+
+
+
 <br><br>
 ____________________________________________________
 <br><br>
 - $split	Splits a string into substrings based on a delimiter. Returns an array of substrings. If the delimiter is not found within the string, returns an array containing the original string. (https://docs.mongodb.com/manual/reference/operator/aggregation/split/#exp._S_split)
+- Syntax:
+```javascript
+{ $split: [ <string expression>, <delimiter> ] }
+```
+- Example:
+```javascript
+/* source collection:
+[
+  { "_id" : 1, "city" : "Berkeley, CA", "qty" : 648 },
+  { "_id" : 2, "city" : "Bend, OR", "qty" : 491 },
+  { "_id" : 3, "city" : "Kensington, CA", "qty" : 233 },
+  { "_id" : 4, "city" : "Eugene, OR", "qty" : 842 },
+  { "_id" : 5, "city" : "Reno, NV", "qty" : 655 },
+  { "_id" : 6, "city" : "Portland, OR", "qty" : 408 },
+  { "_id" : 7, "city" : "Sacramento, CA", "qty" : 574 },
+]
+*/
+
+// The following operation uses the $concat operator to concatenate the item field and the description field with a ” - ” delimiter.
+const pipeline = [
+  { $project : { city_state : { $split: ["$city", ", "] }, qty : 1 } },
+  { $unwind : "$city_state" },
+  { $match : { city_state : /[A-Z]{2}/ } },
+  { $group : { _id: { "state" : "$city_state" }, total_qty : { "$sum" : "$qty" } } },
+  { $sort : { total_qty : -1 } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/*
+// result:
+[
+  { "_id" : { "state" : "OR" }, "total_qty" : 1741 },
+  { "_id" : { "state" : "CA" }, "total_qty" : 1455 },
+  { "_id" : { "state" : "NV" }, "total_qty" : 655 },
+]
+*/
+```
+
 
 
 <br><br>
