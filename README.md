@@ -3570,7 +3570,139 @@ ____________________________________________________
 ____________________________________________________
 <br><br>
 - $out	Writes the resulting documents of the aggregation pipeline to a collection. To use the $out stage, it must be the last stage in the pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/out/#pipe._S_out)
+- Syntax:
+```javascript
+{ $out: { db: "<output-db>", coll: "<output-collection>" } }
+```
+- Options:
+```javascript
+db	| The output database name.
+- For a replica set or a standalone, if the output database does not exist, $out also creates the database.
+- For a sharded cluster, the specified output database must already exist.
 
+coll | The output collection name.
+```
+- Example:
+```javascript
+// ---- EXAMPLE #1 - Output to Same Database ----
+
+/* Our collection looks like this:
+[
+   { "_id" : 8751, "title" : "The Banquet", "author" : "Dante", "copies" : 2 },
+   { "_id" : 8752, "title" : "Divine Comedy", "author" : "Dante", "copies" : 1 },
+   { "_id" : 8645, "title" : "Eclogues", "author" : "Dante", "copies" : 2 },
+   { "_id" : 7000, "title" : "The Odyssey", "author" : "Homer", "copies" : 10 },
+   { "_id" : 7020, "title" : "Iliad", "author" : "Homer", "copies" : 10 }
+]
+*/
+
+// The following aggregation operation pivots the data in the books collection in the test database to have titles grouped by authors and then writes the results to the authors collection, also in the test database.
+const pipeline = [
+    { $group : { _id : "$author", books: { $push: "$title" } } },
+    { $out : "authors" }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* // The $group stage groups by the authors and uses $push to add the titles to a books array field:
+{ "_id" : "Dante", "books" : [ "The Banquet", "Divine Comedy", "Eclogues" ] }
+{ "_id" : "Homer", "books" : [ "The Odyssey", "Iliad" ] }
+
+
+Second Stage ($out):
+The $out stage outputs the documents to the authors collection in the test database.
+To view the documents in the output collection, run the following operation:
+
+db.getSiblingDB("test").authors.find()
+*/
+
+/* // result:
+[
+  { "_id" : "Homer", "books" : [ "The Odyssey", "Iliad" ] },
+  { "_id" : "Dante", "books" : [ "The Banquet", "Divine Comedy", "Eclogues" ] },
+]
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #2 - Output to Same Database ----
+
+/* Our collection looks like this:
+[
+   { "_id" : 8751, "title" : "The Banquet", "author" : "Dante", "copies" : 2 },
+   { "_id" : 8752, "title" : "Divine Comedy", "author" : "Dante", "copies" : 1 },
+   { "_id" : 8645, "title" : "Eclogues", "author" : "Dante", "copies" : 2 },
+   { "_id" : 7000, "title" : "The Odyssey", "author" : "Homer", "copies" : 10 },
+   { "_id" : 7020, "title" : "Iliad", "author" : "Homer", "copies" : 10 }
+]
+*/
+
+// The following aggregation operation pivots the data in the books collection to have titles grouped by authors and then writes the results to the authors collection in the reporting database:
+const pipeline = [
+    { $group : { _id : "$author", books: { $push: "$title" } } },
+    { $out : { db: "reporting", coll: "authors" } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* 
+
+First Stage ($group):
+The $group stage groups by the authors and uses $push to add the titles to a books array field:
+
+{ "_id" : "Dante", "books" : [ "The Banquet", "Divine Comedy", "Eclogues" ] }
+{ "_id" : "Homer", "books" : [ "The Odyssey", "Iliad" ] }
+
+
+Second Stage ($out):
+The $out stage outputs the documents to the authors collection in the reporting database.
+To view the documents in the output collection, run the following operation:
+
+db.getSiblingDB("reporting").authors.find()
+*/
+
+/* // result:
+[
+  { "_id" : "Homer", "books" : [ "The Odyssey", "Iliad" ] },
+  { "_id" : "Dante", "books" : [ "The Banquet", "Divine Comedy", "Eclogues" ] },
+]
+*/
+```
 
 <br><br>
 ____________________________________________________
@@ -3606,6 +3738,9 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - $redact	Reshapes each document in the stream by restricting the content for each document based on information stored in the documents themselves. Incorporates the functionality of $project and $match. Can be used to implement field level redaction. For each input document, outputs either one or zero documents. (https://docs.mongodb.com/manual/reference/operator/aggregation/redact/#pipe._S_redact)
+- In easy words you can search nested objects for the same fields and check for a specific value.
+
+<br><br>
 - Syntax:
 ```javascript
 { $redact: <expression> }
