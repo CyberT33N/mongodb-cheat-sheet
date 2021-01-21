@@ -1093,6 +1093,7 @@ const r = await collection.aggregate(pipeline).toArray({});
 ____________________________________________________
 <br><br>
 - **$text**	- Performs a text search on the content of the fields indexed with a text index. (https://docs.mongodb.com/manual/reference/operator/query/text/)
+- In easy words when you use **.createIndex()** and create a **text index** on specific field you can use **$text** to search data on those fields.
 - Syntax:
 ```javascript
 {
