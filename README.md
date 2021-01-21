@@ -5011,10 +5011,84 @@ ____________________________________________________
 - $concatArrays	Concatenates arrays to return the concatenated array. (https://docs.mongodb.com/manual/reference/operator/aggregation/concatArrays/#exp._S_concatArrays)
 
 
+
+
 <br><br>
 ____________________________________________________
 <br><br>
 - $filter	Selects a subset of the array to return an array with only the elements that match the filter condition. (https://docs.mongodb.com/manual/reference/operator/aggregation/filter/#exp._S_filter)
+- Syntax:
+```javascript
+{ $filter: { input: <array>, as: <string>, cond: <expression> } }
+```
+- Example:
+```javascript
+/* // Source collection:
+[
+{
+   _id: 0,
+   items: [
+     { item_id: 43, quantity: 2, price: 10 },
+     { item_id: 2, quantity: 1, price: 240 }
+   ]
+},
+{
+   _id: 1,
+   items: [
+     { item_id: 23, quantity: 3, price: 110 },
+     { item_id: 103, quantity: 4, price: 5 },
+     { item_id: 38, quantity: 1, price: 300 }
+   ]
+},
+{
+    _id: 2,
+    items: [
+       { item_id: 4, quantity: 1, price: 23 }
+    ]
+}
+]
+*/
+
+const pipeline = [
+   {
+      $project: {
+         items: {
+            $filter: {
+               input: "$items",
+               as: "item",
+               cond: { $gte: [ "$$item.price", 100 ] }
+            }
+         }
+      }
+   }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+[
+{
+   "_id" : 0,
+   "items" : [
+      { "item_id" : 2, "quantity" : 1, "price" : 240 }
+   ]
+},
+{
+   "_id" : 1,
+   "items" : [
+      { "item_id" : 23, "quantity" : 3, "price" : 110 },
+      { "item_id" : 38, "quantity" : 1, "price" : 300 }
+   ]
+},
+{ "_id" : 2, "items" : [ ] }
+]
+*/
+```
+
 
 
 <br><br>
@@ -8041,6 +8115,8 @@ const r = await collection.aggregate(...pipeline).toArray({});
 - $match the indexes
 - Put $sort stages to the top as soon as you can
 - Put $limit stages to the top as soon as you can. Also try to put it over $sort
+- Put $limit before $skip
+- When you use $group try to project all fields there instead of using later a $project stage.
 
 <br><br>
 #### Good 2 Know
