@@ -3600,10 +3600,196 @@ const r = await collection.aggregate(pipeline).toArray({});
 ```
 
 
+
+
 <br><br>
 ____________________________________________________
 <br><br>
 - $redact	Reshapes each document in the stream by restricting the content for each document based on information stored in the documents themselves. Incorporates the functionality of $project and $match. Can be used to implement field level redaction. For each input document, outputs either one or zero documents. (https://docs.mongodb.com/manual/reference/operator/aggregation/redact/#pipe._S_redact)
+- Syntax:
+```javascript
+{ $redact: <expression> }
+```
+- System Variable:
+```javascript
+/*
+$$DESCEND	$redact returns the fields at the current document level, excluding embedded documents. To include embedded documents and embedded documents within arrays, apply the $cond expression to the embedded documents to determine access for these embedded documents.
+
+$$PRUNE	$redact excludes all fields at this current document/embedded document level, without further inspection of any of the excluded fields. This applies even if the excluded field contains embedded documents that may have different access levels.
+
+$$KEEP	$redact returns or keeps all fields at this current document/embedded document level, without further inspection of the fields at this level. This applies even if the included field contains embedded documents that may have different access levels.
+*/
+```
+- Example:
+```javascript
+// ---- EXAMPLE #1  - Evaluate Access at Every Document Level ----
+
+/* Our collection looks like this:
+{
+  _id: 1,
+  title: "123 Department Report",
+  tags: [ "G", "STLW" ],
+  year: 2014,
+  subsections: [
+    {
+      subtitle: "Section 1: Overview",
+      tags: [ "SI", "G" ],
+      content:  "Section 1: This is the content of section 1."
+    },
+    {
+      subtitle: "Section 2: Analysis",
+      tags: [ "STLW" ],
+      content: "Section 2: This is the content of section 2."
+    },
+    {
+      subtitle: "Section 3: Budgeting",
+      tags: [ "TK" ],
+      content: {
+        text: "Section 3: This is the content of section3.",
+        tags: [ "HCS" ]
+      }
+    }
+  ]
+}
+*/
+
+// A user has access to view information with either the tag "STLW" or "G". To run a query on all documents with year 2014 for this user, include a $redact stage as in the following:
+const userAccess = [ "STLW", "G" ];
+const pipeline = [
+     { $match: { year: 2014 } },
+     { $redact: {
+        $cond: {
+           if: { $gt: [ { $size: { $setIntersection: [ "$tags", userAccess ] } }, 0 ] },
+           then: "$$DESCEND",
+           else: "$$PRUNE"
+         }
+       }
+     }
+   ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+{
+  "_id" : 1,
+  "title" : "123 Department Report",
+  "tags" : [ "G", "STLW" ],
+  "year" : 2014,
+  "subsections" : [
+    {
+      "subtitle" : "Section 1: Overview",
+      "tags" : [ "SI", "G" ],
+      "content" : "Section 1: This is the content of section 1."
+    },
+    {
+      "subtitle" : "Section 2: Analysis",
+      "tags" : [ "STLW" ],
+      "content" : "Section 2: This is the content of section 2."
+    }
+  ]
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---- EXAMPLE #2  - Exclude All Fields at a Given Level ----
+
+/* Our collection looks like this:
+{
+  _id: 1,
+  level: 1,
+  acct_id: "xyz123",
+  cc: {
+    level: 5,
+    type: "yy",
+    num: 000000000000,
+    exp_date: ISODate("2015-11-01T00:00:00.000Z"),
+    billing_addr: {
+      level: 5,
+      addr1: "123 ABC Street",
+      city: "Some City"
+    },
+    shipping_addr: [
+      {
+        level: 3,
+        addr1: "987 XYZ Ave",
+        city: "Some City"
+      },
+      {
+        level: 3,
+        addr1: "PO Box 0123",
+        city: "Some City"
+      }
+    ]
+  },
+  status: "A"
+}
+*/
+
+// To run a query on all documents with status A and exclude all fields contained in a document/embedded document at level 5, include a $redact stage that specifies the system variable "$$PRUNE" in the then field:
+const pipeline = [
+    { $match: { status: "A" } },
+    {
+      $redact: {
+        $cond: {
+          if: { $eq: [ "$level", 5 ] },
+          then: "$$PRUNE",
+          else: "$$DESCEND"
+        }
+      }
+    }
+  ];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) { /* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* operation will return:
+{
+  "_id" : 1,
+  "level" : 1,
+  "acct_id" : "xyz123",
+  "status" : "A"
+}
+*/
+```
+
 
 
 <br><br>
