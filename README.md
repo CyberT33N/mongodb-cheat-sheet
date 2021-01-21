@@ -5042,6 +5042,10 @@ ____________________________________________________
 ____________________________________________________
 <br><br>
 - $multiply	Multiplies numbers to return the product. Accepts any number of argument expressions. (https://docs.mongodb.com/manual/reference/operator/aggregation/multiply/#exp._S_multiply)
+- Syntax:
+```javascript
+{ $multiply: [ <expression1>, <expression2>, ... ] }
+```
 ```javascript
 /* our collection looks like this:
 { "_id" : 1, "item" : "abc", "price" : 10, "quantity": 2, date: ISODate("2014-03-01T08:00:00Z") }
