@@ -8117,6 +8117,7 @@ const r = await collection.aggregate(...pipeline).toArray({});
 - Put $limit stages to the top as soon as you can. Also try to put it over $sort
 - Put $limit before $skip
 - When you use $group try to project all fields there instead of using later a $project stage.
+- Use accumulator expressions $map, $reduce and $filter in $project before an $unwind, if possible
 
 <br><br>
 #### Good 2 Know
