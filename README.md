@@ -7693,6 +7693,33 @@ const r = await collection.aggregate(pipeline).toArray({});
 <br><br>
 
 
+## check if string is empty
+```javascript
+/* // source collection
+[
+  {_id: '123', year: '2016'},
+  {_id: '123', year: ''},
+]
+*/
+
+const pipeline = [{$match: {{year: {"$exists" : true, "$ne" : ""}}}}];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */ });
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+
+/* result:
+[
+  {_id: '123', year: '2016'},
+]
+*/
+```
+
+<br><br>
+
+
 ## get number between range
 ```javascript
 // match results with year between 1980-1990
