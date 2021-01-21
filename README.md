@@ -3560,16 +3560,52 @@ ____________________________________________________
 
 
 
+
 <br><br>
 ____________________________________________________
 <br><br>
 - $merge	Writes the resulting documents of the aggregation pipeline to a collection. The stage can incorporate (insert new documents, merge documents, replace documents, keep existing documents, fail the operation, process documents with a custom update pipeline) the results into an output collection. To use the $merge stage, it must be the last stage in the pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#pipe._S_merge)
+- Guides:
+<br> https://www.youtube.com/watch?v=dz2dBL_5Lrg
+
+<br><br>
+- Syntax:
+```javascript
+{ $merge: {
+     into: <collection> -or- { db: <db>, coll: <collection> },
+     on: <identifier field> -or- [ <identifier field1>, ...],  // Optional
+     let: <variables>,                                         // Optional
+     whenMatched: <replace|keepExisting|merge|fail|pipeline>,  // Optional
+     whenNotMatched: <insert|discard|fail>                     // Optional
+} }
+```
+- Example:
+```javascript
+const pipeline = [
+    { $merge: { into: "myOutput", on: "_id", whenMatched: "replace", whenNotMatched: "insert" } }
+];
+
+// callback
+collection.aggregate(pipeline).toArray(function(e, docs) {/* .. */});
+
+// async
+const r = await collection.aggregate(pipeline).toArray({});
+```
+
+
 
 
 <br><br>
 ____________________________________________________
 <br><br>
-- $out	Writes the resulting documents of the aggregation pipeline to a collection. To use the $out stage, it must be the last stage in the pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/out/#pipe._S_out)
+- $out	Writes the resulting documents of the aggregation pipeline to a collection. **To use the $out stage, it must be the last stage in the pipeline. Also the collection must not exist, if it does exist it will get overwritten. When you create a new collection you must always have unique _id our you get a error.**. (https://docs.mongodb.com/manual/reference/operator/aggregation/out/#pipe._S_out)
+- Guides:
+<br> https://www.youtube.com/watch?v=jC4oMA0riWo
+
+<br><br>
+- **No use withing $facet**
+<br><br>
+
 - Syntax:
 ```javascript
 { $out: { db: "<output-db>", coll: "<output-collection>" } }
