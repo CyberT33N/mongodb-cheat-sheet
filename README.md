@@ -3564,7 +3564,9 @@ ____________________________________________________
 <br><br>
 ____________________________________________________
 <br><br>
-- $merge	Writes the resulting documents of the aggregation pipeline to a collection. The stage can incorporate (insert new documents, merge documents, replace documents, keep existing documents, fail the operation, process documents with a custom update pipeline) the results into an output collection. To use the $merge stage, it must be the last stage in the pipeline. (https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#pipe._S_merge)
+- $merge	Writes the resulting documents of the aggregation pipeline to a collection. The stage can incorporate (insert new documents, merge documents, replace documents, keep existing documents, fail the operation, process documents with a custom update pipeline) the results into an output collection.
+<br><br>
+**To use the $merge stage, it must be the last stage in the pipeline.** (https://docs.mongodb.com/manual/reference/operator/aggregation/merge/#pipe._S_merge)
 - Guides:
 <br> https://www.youtube.com/watch?v=dz2dBL_5Lrg
 
@@ -3578,6 +3580,35 @@ ____________________________________________________
      whenMatched: <replace|keepExisting|merge|fail|pipeline>,  // Optional
      whenNotMatched: <insert|discard|fail>                     // Optional
 } }
+```
+- Options:
+```javascript
+into | The output collection. Specify either:
+- The collection name as a string to output to a collection in the same database where the aggregation is run. For example:
+-- into: "myOutput"
+
+The database and collection name in a document to output to a collection in the specified database. For example:
+- into: { db:"myDB", coll:"myOutput" }
+
+
+
+
+on	| Optional. Field or fields that act as a unique identifier for a document. The identifier determines if a results document matches an already existing document in the output collection. Specify either:
+- A single field name as a string. For example:
+-- on: "_id"
+
+A combination of fields in an array. For example:
+- on: [ "date", "customerId" ]
+- The order of the fields in the array does not matter, and you cannot specify the same field multiple times.
+
+
+
+
+whenMatched	| Optional. The behavior of $merge if a result document and an existing document in the collection have the same value for the specified on field(s).
+
+let	| Optional. Specifies variables accessible for use in the whenMatched pipeline
+
+whenNotMatched	| Optional. The behavior of $merge if a result document does not match an existing document in the out collection.
 ```
 - Example:
 ```javascript
