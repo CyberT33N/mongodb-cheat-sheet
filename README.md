@@ -774,6 +774,95 @@ PORT=5000
 
 
 
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+# Database References
+
+<br><br>
+
+## $ref
+- The $ref field holds the name of the collection where the referenced document resides.
+
+
+<br><br>
+
+## $id
+- The $id field contains the value of the _id field in the referenced document.
+
+<br><br>
+
+## $db
+- Contains the name of the database where the referenced document resides.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
