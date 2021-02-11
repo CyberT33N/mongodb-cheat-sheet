@@ -471,14 +471,6 @@ ____________________________________________________
 <br><br>
 
 
-## Export database with all collections to .bson
-```bash
-mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_user_name --password your_password --out /target/folder/path
-```
-
-<br><br>
-
-
 ## Export specific collection with ALL fields to .json
 ```bash
 # --jsonArray will generated one json file. If not activated solo objects will be created to each document
@@ -500,18 +492,19 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 
 <br><br>
 
-#### Export specific database
+#### Export specific database with all collections to .bson
 ```bash
 # method #1
-mongodump -h 127.0.0.1:27017 -d testdb -u sampleuser -p samplepw # If you get auth error you maybe use this flag: --authenticationDatabase admin
+mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_user_name --password your_password --out /target/folder/path
 
 # method #2 - srv link
 mongodump --uri "mongodb://userhere:passwordhere@127.0.0.1:27017" -d testdb
 ```
 
+
 <br><br>
 
-#### Export all database
+#### Export all databases to .bson
 ```bash
 # method #1
 mongodump -h 127.0.0.1:27017 -u sampleuser -p samplepw # If you get auth error you maybe use this flag: --authenticationDatabase admin
@@ -519,6 +512,7 @@ mongodump -h 127.0.0.1:27017 -u sampleuser -p samplepw # If you get auth error y
 # method #2 - srv link
 mongodump --uri "mongodb://userhere:passwordhere@127.0.0.1:27017"
 ```
+
 
 
 
