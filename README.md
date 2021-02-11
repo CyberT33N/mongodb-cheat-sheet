@@ -452,22 +452,6 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 <br><br>
 
 
-## show current database
-```bash
-db
-```
-
-<br><br>
-
-
-## switch database
-```bash
-use databasenamehere
-```
-
-<br><br>
-
-
 ## Mongo Shell
 
 <br><br>
@@ -513,6 +497,22 @@ load('validateLab1.js')
 validateLab1(pipeline)
 ```
 
+
+#### show current database
+```bash
+db
+```
+
+<br><br>
+
+
+#### switch database
+```bash
+use databasenamehere
+databasenamehere.myCollection.insertOne( { x: 1 } );
+```
+
+<br><br>
 
 
 
