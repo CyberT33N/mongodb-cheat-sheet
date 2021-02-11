@@ -152,25 +152,64 @@ Stop Command:
 brew services stop mongodb
 ```
 
+
+
+
 <br><br>
 
 #### Fedora:
+
 Install Command:
 ```bash
 sudo dnf install downloadedpackage.rpm
 ```
+<br>
+
 Start Command:
 ```bash
 sudo service mongod start
 ```
+<br>
+
 Stop Command:
 ```bash
 sudo service mongod stop
 ```
+<br>
+
 Enable in general:
 ```bash
 sudo systemctl enable mongod
 ```
+
+<br>
+
+Alternative Install Method:
+```bash
+sudo dnf update
+
+cat <<EOF | sudo tee /etc/yum.repos.d/mongodb.repo
+[mongodb-4.2]
+name=MongoDB Repository
+baseurl=https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.2/x86_64/
+gpgcheck=1
+enabled=1
+gpgkey=https://www.mongodb.org/static/pgp/server-4.2.asc
+EOF
+
+sudo dnf -y install mongodb-org
+
+mongo -version
+```
+
+
+
+
+
+
+
+
+
 
 <br><br>
 
