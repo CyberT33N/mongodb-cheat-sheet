@@ -419,8 +419,9 @@ ____________________________________________________
 
 <br><br>
 
-# CLI
+# CLI (https://docs.mongodb.com/manual/mongo/)
 
+<br><br>
 
 ## MongoDB bin locations
 ```bash
@@ -445,6 +446,23 @@ mongodump --host xx.xxx.xx.xx --port 27017 --db your_db_name --username your_use
 # --pretty will pretty print the JSON to be human read able
 # https://docs.mongodb.com/manual/reference/program/mongoexport
 mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p password -d mydb -c mycollection -o mybackup.json
+```
+
+
+<br><br>
+
+
+## show current database
+```bash
+db
+```
+
+<br><br>
+
+
+## switch database
+```bash
+use databasenamehere
 ```
 
 <br><br>
