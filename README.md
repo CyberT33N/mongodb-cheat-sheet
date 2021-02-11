@@ -551,8 +551,13 @@ ConvertAndReplace() {
     else
       for f in *.bson;
       do
+        echo "File was found.. Current path: "; pwd
+
         JSONfile="$f.json"
-        bsondump --pretty "$f" > $JSONfile;
+        echo "New JSON file is called: $JSONfile"
+
+        bsondump --pretty "$f" > $JSONfile
+        sed -i -E "s/amazon/blaa/g" $JSONfile
       done
     fi
 
@@ -568,6 +573,7 @@ rm -rf dump
 mongodump --uri $MongoDBURI
 
 # first convert BSON to JSON and after this replace s3 links with new gcloud links
+cd dump
 ConvertAndReplace
 ```
 
