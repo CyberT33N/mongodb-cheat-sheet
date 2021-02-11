@@ -506,14 +506,14 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 
 
 
-## bsondump
+## bsondump (https://docs.mongodb.com/database-tools/bsondump/#mongodb-binary-bin.bsondump)
 - Convert BSON to JSON
 
 <br><br>
 
 #### dump entire database to BSON files
 ```bash
-mongodump --db db1
+bsondump --pretty --db db1
 ```
 
 <br><br>
@@ -521,29 +521,54 @@ mongodump --db db1
 #### convert all BSON files recursive from folder to JSON
 ```bash
 #!/bin/sh
-cd "$(dirname "$0")/dump"
+cd "$(dirname "$0")"
 printf "\nWe will display now the current directory used:"; pwd
 
+RegexMatchS3="https:[/][/]s3-eu-central-1[.]amazonaws[.]com[/][^'\"\`\]\\\]+"
+RegexMatchS3Host="https:[/][/]s3-eu-central-1[.]amazonaws[.]com[/]"
 
-recursiverm() {
-  for d in *;
+NewHost="https://anygooglelinkhere.com/"
+
+MongoDBURI="mongodb://user:pw@127.0.0.1:27017"
+
+
+ConvertAndReplace() {
+  for d in *
   do
-    if [ -d "$d" ]; then
-      (cd -- "$d" && recursiverm)
+  echo "Current file path: "; pwd
+
+  filename=$(basename -- "$d")
+  echo "Current FULL file name: $filename"
+
+  extension=${filename##*.}
+  echo "Current file extension: $extension"
+
+
+    if [ -d "$d" ]
+    then
+      echo "Folder was found we cd now into folder: $d"
+      (cd -- "$d" && ConvertAndReplace)
+    else
+      for f in *.bson;
+      do
+        JSONfile="$f.json"
+        bsondump --pretty "$f" > $JSONfile;
+      done
     fi
-    echo "Current file path: "; pwd
 
-    filename=$(basename -- "$d")
-    echo "Current FULL file name: $filename"
-
-    extension=${filename##*.}
-    echo "Current file extension: $extension"
-
-    for f in ./*.bson; do bsondump "$f" > "$f.json"; done
   done
 }
 
-(recursiverm)
+
+# ---- START SCRIPT ----
+# remove old dump folder
+rm -rf dump
+
+# create new dumb
+mongodump --uri $MongoDBURI
+
+# first convert BSON to JSON and after this replace s3 links with new gcloud links
+ConvertAndReplace
 ```
 
 
