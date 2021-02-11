@@ -468,10 +468,23 @@ ____________________________________________________
 "C:\Program Files\MongoDB\Server\4.2\bin"
 ```
 
+
+
+
+
+
+
+
+
 <br><br>
 
 
-## Export specific collection with ALL fields to .json
+## Mongoexport
+- Export Database/Collections
+
+<br><br>
+
+#### Export specific collection with ALL fields to .json
 ```bash
 # --jsonArray will generated one json file. If not activated solo objects will be created to each document
 # --pretty will pretty print the JSON to be human read able
@@ -480,10 +493,16 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 ```
 
 
-<br><br>
 
 
 
+
+
+
+
+
+
+<br><br><br><br>
 
 
 
