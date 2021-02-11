@@ -8162,9 +8162,6 @@ const r = await comments.aggregate(pipeline, {readConcern: { level: 'majority' }
 <br><br>
 
 
-
-
-
 #### pretty the result (https://docs.mongodb.com/manual/reference/method/cursor.pretty/)
 ```javascript
 const query = {"id": msg.room};
@@ -8185,6 +8182,44 @@ const r = await collection.findOne(query).pretty();
 
 
 
+
+<br><br>
+
+
+#### do regex text search recursive on any property of the document
+```javascript
+let resultAr = []
+const recursiveSearch = async function(query) {
+    await collection.find().forEach(function(items) {
+        var i = 0;
+        console.log('items: ' + JSON.stringify(items));
+
+        var recursiveFunc = async function(itemsArray, itemKey) {
+            var keyValue = itemsArray[itemKey];
+            console.log('keyValue: ' + keyValue);
+
+            if(typeof keyValue === "object") {
+                Object.keys(keyValue).forEach(function(keyValueKey) {
+                    recursiveFunc(keyValue, keyValueKey);
+                });
+            } else{
+                if(keyValue.match(query)) {
+                    console.log('match found: ' + keyValue);
+                    resultAr.push(keyValue);
+                }
+            }
+        };
+
+        Object.keys(items).forEach(key => {
+            console.log('key: ' + key);
+            recursiveFunc(items, key);
+        });
+    });
+};
+
+await recursiveSearch(/https:[/][/]s3-eu-central-1[.]amazonaws[.]com[/][^'"`\]\\]+/);
+console.log('resultAr: ' + resultAr);
+```
 
 
 
