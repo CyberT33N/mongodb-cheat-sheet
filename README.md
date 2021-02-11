@@ -587,6 +587,8 @@ log('connectMongoDB()');
 
         // check database user
         // clientOptions.authSource;
+        
+        const collection = myDB.collection('yourcollectionname');
 
         log( 'Successfully connected to MongoDB Database' );
         db.close();
