@@ -8025,6 +8025,9 @@ collection.createIndex({comments: "text"});
 ```javascript
 collection.createIndex({subject: "text", comments: "text"});
 
+// create text index on all fields in collection
+// collection.createIndex( { "$**": "text" } )
+
 collection.find( { $text: { $search: "bake coffee cake" } } )
 
 /* // result:
