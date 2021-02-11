@@ -480,7 +480,7 @@ ____________________________________________________
 
 
 ## Mongoexport
-- Export Database/Collections
+- Export Database/Collections to .json
 
 <br><br>
 
@@ -497,6 +497,54 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 
 
 
+
+
+
+
+
+<br><br><br><br>
+
+
+
+## bsondump
+- Convert BSON to JSON
+
+<br><br>
+
+#### dump entire database to BSON files
+```bash
+mongodump --db db1
+```
+
+<br><br>
+
+#### convert all BSON files recursive from folder to JSON
+```bash
+#!/bin/sh
+cd "$(dirname "$0")/dump"
+printf "\nWe will display now the current directory used:"; pwd
+
+
+recursiverm() {
+  for d in *;
+  do
+    if [ -d "$d" ]; then
+      (cd -- "$d" && recursiverm)
+    fi
+    echo "Current file path: "; pwd
+
+    filename=$(basename -- "$d")
+    echo "Current FULL file name: $filename"
+
+    extension=${filename##*.}
+    echo "Current file extension: $extension"
+
+    for f in ./*.bson; do bsondump "$f" > "$f.json"; done
+  done
+}
+
+(recursiverm)
+```
 
 
 
