@@ -541,7 +541,7 @@ var MongoClient = require('mongodb').MongoClient;
 
 
 
-const MongoDB_DB_URL =
+
 const options = {
   authSource: "admin", // This is the name of the cluster database that has the collection with the user credentials. For default it will be admin (https://docs.mongodb.com/manual/reference/connection-string/#urioption.authSource)
   useNewUrlParser: true,
