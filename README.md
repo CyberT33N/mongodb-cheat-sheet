@@ -491,6 +491,48 @@ mongoexport --jsonArray --pretty -h id.mongolab.com:60599 -u username -p passwor
 <br><br>
 
 
+
+
+
+
+## Mongodumb
+- Export Database/Collections
+
+<br><br>
+
+#### Export specific database
+```bash
+# method #1
+mongodump -h 127.0.0.1:27017 -d testdb -u sampleuser -p samplepw # If you get auth error you maybe use this flag: --authenticationDatabase admin
+
+# method #2 - srv link
+mongodump --uri "mongodb://userhere:passwordhere@127.0.0.1:27017" -d testdb
+```
+
+<br><br>
+
+#### Export all database
+```bash
+# method #1
+mongodump -h 127.0.0.1:27017 -u sampleuser -p samplepw # If you get auth error you maybe use this flag: --authenticationDatabase admin
+
+# method #2 - srv link
+mongodump --uri "mongodb://userhere:passwordhere@127.0.0.1:27017"
+```
+
+
+
+<br><br>
+
+
+
+
+
+
+
+
+
+
 ## Mongo Shell
 
 <br><br>
