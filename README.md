@@ -547,7 +547,10 @@ ConvertAndReplace() {
     if [ -d "$d" ]
     then
       echo "Folder was found we cd now into folder: $d"
-      (cd -- "$d" && ConvertAndReplace)
+      printf "\n Current file path before we cd: "; pwd
+      pushd "$d"
+      ConvertAndReplace
+      popd
     else
       for f in *.bson;
       do
