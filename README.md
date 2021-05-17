@@ -471,12 +471,28 @@ ____________________________________________________
 
 
 
+<br><br>
 
-
+## create user
+```bash
+use admin
+db.createUser({ user: "sa" , pwd: "sample", roles: ["userAdminAnyDatabase", "dbAdminAnyDatabase", "readWriteAnyDatabase"]})
+```
 
 
 
 <br><br>
+
+## delete user
+```bash
+db.dropUser('usernamehere')
+```
+
+
+
+<br><br>
+<br><br>
+
 
 
 ## Mongoexport
