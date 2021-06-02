@@ -409,6 +409,22 @@ mongodb://myDBReader:D1fficultP%40ssw0rd@mongodb0.example.com:27017/?authSource=
 
 
 
+<br><br>
+
+## Auth Problems
+- MongoDB users are scoped to dbs, even if they have cross-db privileges, so if the user you have isn't defined on db you'll need to put something like:
+```javascript
+// if the user is defined on the 'admin' db.
+mongoose.connect('mongodb://${user}:${pass}@${uri}/${db}?authSource=admin')
+```
+
+<br>
+
+- Also, if you're on mongodb 3.x, you might be using SCRAM-SHA-1 auth or not. Try both of the below:
+```javascript
+mongoose.connect('mongodb://${user}:${pass}@${uri}/${db}?authMechanism=SCRAM-SHA-1')
+mongoose.connect('mongodb://${user}:${pass}@${uri}/${db}?authMechanism=MONGODB-CR')
+```
 
 
 
