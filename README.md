@@ -1000,6 +1000,123 @@ PORT=5000
 
 
 
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+# Databases
+
+<br><br>
+
+## List all Databases
+```javascript
+const MongoClient = require('mongodb').MongoClient
+const client = new MongoClient(process.env.MONGODB_ADDRESS, { useUnifiedTopology: true })
+
+const conn = await client.connect()
+const dbs = await conn.db().admin().listDatabases()
+await conn.close()
+```
+
+
+<br><br>
+
+## Drop all Databases
+```javascript
+const MongoClient = require('mongodb').MongoClient
+const client = new MongoClient(process.env.MONGODB_ADDRESS, { useUnifiedTopology: true })
+
+const conn = await client.connect()
+const dbs = await conn.db().admin().listDatabases()
+await conn.close()
+
+for(const db of dbs.databases) {
+  const dbName = db.name
+  const url = `mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PW}@${process.env.HOST}:${process.env.PORT}/${dbName}?authSource=admin`
+
+  const client = new MongoClient(url, { useUnifiedTopology: true })
+  const conn = await client.connect()
+
+  await conn.db().dropDatabase()
+  await conn.close()
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <br><br>
