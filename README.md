@@ -401,6 +401,38 @@ mongodb://myDBReader:D1fficultP%40ssw0rd@mongodb0.example.com:27017/?authSource=
 
 
 
+
+<br><br>
+
+## Uri parser (https://www.npmjs.com/package/mongodb-uri)
+```bash
+var mongodbUri = require('mongodb-uri');
+var uri = 'mongodb://user%3An%40me:p%40ssword@host:1234/d%40tabase?authSource=%40dmin';
+var uriObject = mongodbUri.parse(uri);
+console.log(JSON.stringify(uriObject, null, 2));
+
+/*
+{
+  "scheme": "mongodb",
+  "hosts": [
+    {
+      "host": "host",
+      "port": 1234
+    }
+  ],
+  "username": "user:n@me",
+  "password": "p@ssword",
+  "options": {
+    "authSource": "@dmin"
+  },
+  "database": "d@tabase"
+}
+*/
+```
+
+
+
+
 <br><br>
 
 ## localhost URI
