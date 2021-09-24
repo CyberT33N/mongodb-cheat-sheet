@@ -1080,6 +1080,46 @@ for(const db of dbs.databases) {
 
 
 
+<br><br>
+
+## Drop Databases with specific prefix
+```javascript
+const MongoClient = require('mongodb').MongoClient
+const client = new MongoClient(uri, { useUnifiedTopology: true })
+const mongodbUri = require('mongodb-uri')
+let uriObj = mongodbUri.parse(uri)
+
+/**
+ *
+ * @returns {Promise<void>}
+ */
+const dropTestDbs = async () => {
+    try {
+        const conn = await client.connect()
+        const dbs = await conn.db().admin().listDatabases()
+
+        for(const db of dbs.databases) {
+            const dbName = db.name
+
+            if (dbName.includes('test')) {
+                uriObj.database = dbName
+                const uri = mongodbUri.format(uriObj)
+
+                const client = new MongoClient(uri, { useUnifiedTopology: true })
+                const conn = await client.connect()
+
+                await conn.db().dropDatabase()
+            }
+        }
+    } catch (e) {
+        throw new Error(`Can not drop test databases - Error: ${e}`)
+    }
+}
+```
+
+
+
+
 
 
 
