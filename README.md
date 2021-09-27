@@ -1109,6 +1109,8 @@ const dropTestDbs = async () => {
                 const conn = await client.connect()
 
                 await conn.db().dropDatabase()
+
+                await conn.close()
             }
         }
     } catch (e) {
