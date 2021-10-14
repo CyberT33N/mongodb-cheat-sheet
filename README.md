@@ -519,6 +519,18 @@ ____________________________________________________
 
 # CLI (https://docs.mongodb.com/manual/mongo/)
 
+
+
+<br><br>
+
+## mongoimport
+```bash
+sudo docker cp "/home/tmpEmbedDump-edited.csv"  mongomain:"tmpEmbedDump.csv"
+mongoimport -c collectionhere -d databasehere --file tmpEmbedDump.csv --type csv --headerline
+```
+
+
+
 <br><br>
 
 ## MongoDB bin locations
