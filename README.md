@@ -523,6 +523,22 @@ ____________________________________________________
 
 <br><br>
 
+## execute multiple mongo shell commands from bash
+- You can put your mongo shell commands inside of .js file and then use it with mongo shell
+```js
+use databasename
+db.collectionname.remove({})
+exit
+```
+```bash
+sudo docker exec -it mongomain bash -c "mongo < mongo.js"
+```
+
+
+
+<br><br>
+
+
 ## mongoimport
 ```csv
 firstname,lastname,age
