@@ -524,9 +524,33 @@ ____________________________________________________
 <br><br>
 
 ## mongoimport
+```csv
+firstname,lastname,age
+daniel,lolun,18
+lisa,bunt,19
+```
 ```bash
 sudo docker cp "/home/tmpEmbedDump-edited.csv"  mongomain:"tmpEmbedDump.csv"
 mongoimport -c collectionhere -d databasehere --file tmpEmbedDump.csv --type csv --headerline
+```
+
+#### Use tsv files without first line field names
+- We can define the fields name aswell with mongoimport
+```tsv
+firstname lastname age
+daniel	lolun	18
+lisa	bunt	19
+```
+```bash
+sed 's/|https/|"https/g; s/.jpg|/.jpg"|/g; s/|/\t/g' < '/home/usernamehere/tmpEmbedDump.csv' >> '/home/usernamehere/tmpEmbedDump-edited.tsv'
+sudo docker cp "/home/usernamehere/tmpEmbedDump-edited.tsv"  mongomain:"tmpEmbedDump.tsv"
+
+
+# mongo
+# use databasename
+# db.collectionname.remove({})   
+# exit
+mongoimport -c collectionhere -d databasehere --file tmpEmbedDump.tsv --type tsv --fields embed,mainthumb,thumbs,title,keywords,genre,actor,views,orientation
 ```
 
 
