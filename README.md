@@ -531,7 +531,7 @@ db.collectionname.remove({})
 exit
 ```
 ```bash
-sudo docker exec -it mongomain bash -c "mongo < mongo.js"
+sudo docker exec -it mongomain bash -c "mongosh < mongo.js"
 ```
 
 
@@ -561,8 +561,7 @@ lisa	bunt	19
 sed 's/|https/|"https/g; s/.jpg|/.jpg"|/g; s/|/\t/g' < '/home/usernamehere/tmpEmbedDump.csv' >> '/home/usernamehere/tmpEmbedDump-edited.tsv'
 sudo docker cp "/home/usernamehere/tmpEmbedDump-edited.tsv"  mongomain:"tmpEmbedDump.tsv"
 
-
-# mongo
+# mongosh
 # use databasename
 # db.collectionname.remove({})   
 # exit
