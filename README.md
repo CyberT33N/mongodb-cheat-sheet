@@ -560,6 +560,19 @@ db.dropUser('usernamehere')
 ```
 
 
+<br><br>
+
+## delete collection
+```bash
+mongo
+show dbs                     -> to list all the database
+use test-database            -> to select the database
+db.collectionname.remove({})      -> to select the collection and deletes all the data.
+```
+
+
+
+
 
 <br><br>
 <br><br>
