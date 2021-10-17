@@ -550,6 +550,9 @@ sudo docker cp "/home/tmpEmbedDump-edited.csv"  mongomain:"tmpEmbedDump.csv"
 mongoimport -c collectionhere -d databasehere --file tmpEmbedDump.csv --type csv --headerline
 ```
 
+<br><br>
+
+
 #### Use tsv files without first line field names
 - We can define the fields name aswell with mongoimport
 ```tsv
@@ -568,9 +571,43 @@ sudo docker cp "/home/usernamehere/tmpEmbedDump-edited.tsv"  mongomain:"tmpEmbed
 mongoimport -c collectionhere -d databasehere --file tmpEmbedDump.tsv --type tsv --fields embed,mainthumb,thumbs,title,keywords,genre,actor,views,orientation
 ```
 
-
-
 <br><br>
+
+
+#### Import json file
+```bash
+# the --drop flag will delete the collection before import
+# the --jsonArray flag must be used for an array that contains JSON´s
+mongoimport -c collectionName -d databaseName --drop --file $DUMBFILENAME.json --jsonArray
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br><br><br>
+
 
 ## MongoDB bin locations
 ```bash
