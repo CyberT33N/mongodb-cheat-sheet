@@ -580,10 +580,33 @@ mongoimport -c collectionhere -d databasehere --file tmpEmbedDump.tsv --type tsv
 # the --jsonArray flag must be used for an array that contains JSON´s
 mongoimport -c collectionName -d databaseName --drop --file $DUMBFILENAME.json --jsonArray
 ```
+<br><br>
 
 
 
+#### Convert csv to json and then import
+```javascript
+const options = {
+    delimiter: '|',
+    quote: '\'',
+    escape: '\'',
+    fork: true,
+    // eslint-disable-next-line max-len
+    headers: ['id', 'thumbs', 'url', 'title', 'channel', 'tags', 'pornstar', 'rating', 'duration', 'date', 'unknown']
+}
 
+const csvConverter = new csv(options)
+
+const readStream = fs.createReadStream(dumb)
+const writeStream = fs.createWriteStream(editDumb)
+readStream.pipe(csvConverter).pipe(writeStream)
+```
+
+```bash
+# the --drop flag will delete the collection before import
+# the --jsonArray flag must be used for an array that contains JSON´s
+mongoimport -c collectionName -d databaseName --drop --file $editDumb
+```
 
 
 
