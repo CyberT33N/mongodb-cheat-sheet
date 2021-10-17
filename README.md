@@ -586,6 +586,9 @@ mongoimport -c collectionName -d databaseName --drop --file $DUMBFILENAME.json -
 
 #### Convert csv to json and then import
 ```javascript
+const csv = require('csvtojson')
+const fs = require('fs-extra')
+
 const options = {
     delimiter: '|',
     quote: '\'',
