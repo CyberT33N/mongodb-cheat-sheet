@@ -1170,6 +1170,102 @@ PORT=5000
 
 
 
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+# Collections
+
+<br><br>
+
+## Drop Collections
+```javascript
+const MongoClient = require('mongodb').MongoClient
+const client = new MongoClient(process.env.MONGODB_ADDRESS, { useUnifiedTopology: true })
+
+const conn = await client.connect()
+
+const dbs = [`db1`, `db2`]
+
+for (const db of dbs) {
+    const collections = await conn.db(db).listCollections().toArray()
+
+    for (const collection of collections) {
+        const collectionName = collection.name
+
+        if (collectionName === 'abc') {
+            await conn.db(db).collection(collectionName).drop()
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 ____________________________________________________
