@@ -577,8 +577,15 @@ lisa,bunt,19
 ```
 ```bash
 sudo docker cp "/home/tmpEmbedDump-edited.csv"  mongomain:"tmpEmbedDump.csv"
-mongoimport -c collectionhere -d databasehere --file tmpEmbedDump.csv --type csv --headerline
+mongoimport -c $collection -d $db --file $editDumb --type csv --headerline
+
+# Or directly via mongo uri
+mongoimport -c $collection --uri=$MONGOURI/$db --drop --file $editDumb --jsonArray
 ```
+
+
+
+
 
 <br><br>
 
