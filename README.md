@@ -231,21 +231,51 @@ Enable in general:
 sudo systemctl enable mongod
 ```
 
+
+
+
+
+<br><br>
 <br><br>
 
 #### Ubuntu:
+
+
+<br><br>
+
+Install Command:
+```bash
+sudo apt install mongdb-org-server.xx.xx.deb
+# mongo-tools are needed for mongo shell e.q. mongimport
+sudo apt install mongo-tools
+```
+
+
+<br><br>
+
 Start Command:
 ```bash
 sudo service mongod start
 ```
+
+
+<br><br>
+
 Stop Command:
 ```bash
 sudo service mongod stop
 ```
+
+<br><br>
+
 Enable in general:
 ```bash
 sudo systemctl enable mongod
 ```
+
+
+
+
 
 <br><br>
 
