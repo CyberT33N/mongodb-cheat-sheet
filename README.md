@@ -570,6 +570,7 @@ sudo docker exec -it mongomain bash -c "mongosh < mongo.js"
 
 
 ## mongoimport
+- You can use -vvvvv 
 ```csv
 firstname,lastname,age
 daniel,lolun,18
@@ -583,8 +584,13 @@ mongoimport -c $collection -d $db --file $editDumb --type csv --headerline
 mongoimport -c $collection --uri=$MONGOURI/$db --drop --file $editDumb --jsonArray
 ```
 
+<br><br>
 
-
+#### Error Handling
+- You can use -vvvvv to check at which document your import failed
+```bash
+mongoimport -c $collection --uri=$MONGOURI/$db --drop --file $editDumb --jsonArray -vvvvv
+```
 
 
 <br><br>
