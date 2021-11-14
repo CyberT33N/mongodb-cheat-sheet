@@ -549,7 +549,12 @@ ____________________________________________________
 
 # CLI (https://docs.mongodb.com/manual/mongo/)
 
-
+<br><br>
+ 
+ ## connect to external mongodb by using uri
+ ```bash
+ mongo $uri $command
+ ```
 
 <br><br>
 
