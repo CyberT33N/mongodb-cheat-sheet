@@ -8697,19 +8697,19 @@ ____________________________________________________
 #### .createIndex() (https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/)
 - Syntax:
 ```javascript
-collection.createIndex({comments: "text"});
+await collection.createIndex({comments: "text"});
 ```
 
 <br><br>
 - text index (https://docs.mongodb.com/manual/core/index-text/#index-feature-text)
 - When you create a text index you can later to search operations on them. You can also text index multiple fields
 ```javascript
-collection.createIndex({subject: "text", comments: "text"});
+await collection.createIndex({subject: "text", comments: "text"});
 
 // create text index on all fields in collection
-// collection.createIndex( { "$**": "text" } )
+// await collection.createIndex( { "$**": "text" } )
 
-collection.find( { $text: { $search: "bake coffee cake" } } )
+await collection.find( { $text: { $search: "bake coffee cake" } } )
 
 /* // result:
 [
