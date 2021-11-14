@@ -1280,6 +1280,39 @@ for (const db of dbs) {
 
 
 
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+# index
+
+<br><br>
+
+## Create $text index on collection
+```javascript
+await conn.createIndex({
+  "title": "text",
+  "tags": "text",
+  "genre": "text",
+  "actor": "text"
+})
+```
+
+<br><br>
+
+## Find amount of indexes on collection
+```javascript
+await conn.indexes()
+```
+
+
+
+
+
+
 
 
 
