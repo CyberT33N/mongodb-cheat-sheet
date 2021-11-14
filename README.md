@@ -1291,7 +1291,12 @@ ____________________________________________________
 
 <br><br>
 
-## Create $text index on collection
+## createIndex()
+
+<br><br>
+
+#### Create $text index on collection
+- Notice that once you create a index you can not declare another one after. So If you want to define multiple text queries do this below
 ```javascript
 await conn.createIndex({
   "title": "text",
@@ -1301,7 +1306,9 @@ await conn.createIndex({
 })
 ```
 
-<br><br>
+
+
+<br><br><br><br>
 
 ## Find amount of indexes on collection
 ```javascript
