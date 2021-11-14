@@ -247,7 +247,7 @@ Install Command:
 ```bash
 sudo apt install mongdb-org-server.xx.xx.deb
 # mongo-tools are needed for mongo shell e.q. mongimport
-sudo apt install mongo-tools
+sudo apt install mongo-tools mongodb-clients
 ```
 
 
