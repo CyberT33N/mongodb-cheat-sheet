@@ -1308,12 +1308,82 @@ await conn.createIndex({
 
 
 
-<br><br><br><br>
+<br><br>
 
 ## Find amount of indexes on collection
 ```javascript
 await conn.indexes()
 ```
+
+<br><br>
+
+## Shell
+
+#### List Indexes for a Specific Collection
+```javascript
+db.posts.getIndexes()
+```
+<br><br>
+
+#### List All Indexes in the Current Database
+```javascript
+db.getCollectionNames().forEach(function(collection) {
+    indexes = db.getCollection(collection).getIndexes();
+    print("Indexes on " + collection + ":");
+    printjson(indexes);
+});
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
