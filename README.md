@@ -549,6 +549,29 @@ ____________________________________________________
 
 # CLI (https://docs.mongodb.com/manual/mongo/)
 
+
+
+<br><br>
+
+## mongorestore
+
+<br><br>
+ 
+ #### connect to external mongodb by using uri
+ - --drop flag will delete existing databases
+ ```bash
+   sudo docker run -ti --net=host -v /tmp/mongo_backup:/mongo_backup mongo:4.2.3 bash -c "mongorestore --drop --uri=${MONGODB_ADDRESS} --db=${destinationProject} /mongo_backup/${SOURCE_PROJECT}"
+
+ ```
+
+
+
+
+
+
+
+
+
 <br><br>
  
  ## connect to external mongodb by using uri
