@@ -11008,3 +11008,51 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+
+
+## Errors and Fixes
+
+
+
+
+## Error connecting to db: server returned error on SASL authentication step: BSON field ‘saslContinue.mechanism’ is an unknown field
+- Your mongoimport version can be outdated and not compatible with your MongoDB version from your server. Try to use the latest for both or find comatible versions if you can not use latest mongo db
+
+
+
+
