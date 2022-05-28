@@ -612,7 +612,26 @@ mongoimport -c $collection -d $db --file $editDumb --type csv --headerline
 mongoimport -c $collection --uri=$MONGOURI/$db --drop --file $editDumb --jsonArray
 ```
 
+
+
+
+
 <br><br>
+
+#### Update mongoimport
+- Download the latest mongodb database tools:
+  - https://www.mongodb.com/try/download/database-tools?tck=docs_databasetools
+```bash
+sudo dpkg -i --force-all /var/cache/apt/archives/mongodb-database-tools_100.3.1_amd64.deb
+sudo apt purge mongodb*
+```
+
+
+
+
+
+<br><br>
+
 
 #### Error Handling
 - You can use -vvvvv to check at which document your import failed
