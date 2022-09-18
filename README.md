@@ -9168,6 +9168,15 @@ const {title} = await collection.findOne(...query);
 #### find object id
 ```javascript
 // method #1
+ const res = await conn.findOne(ObjectID(docId))
+
+
+
+
+
+
+
+// method #2
 var ObjectId = require('mongodb').ObjectId;
 var id = "5f2a40a54d054559dcc566ff";
 var o_id = new ObjectId(id);
@@ -9182,7 +9191,7 @@ const r = await collection.findOne(query)
 
 
 
-// method #2
+// method #3
 const r = await collection.insertOne(obj);
 
 // you can access the id of the result by using "insertedId)"
