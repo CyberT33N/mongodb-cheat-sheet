@@ -1520,6 +1520,33 @@ for(const db of dbs.databases) {
 ```javascript
 const MongoClient = require('mongodb').MongoClient
 const client = new MongoClient(uri, { useUnifiedTopology: true })
+
+
+
+
+
+# Method #1
+const dropAllTestDbs = async() => {
+    let dbs = await client.db().admin().listDatabases()
+    dbs = dbs.databases.filter(db => db.name.includes('-test'))
+
+    for (const db of dbs) {
+        const { name } = db
+
+        await client.db(name).dropDatabase()
+        await client.close()
+    }
+}
+
+
+
+
+
+
+
+
+
+## Method #2
 const mongodbUri = require('mongodb-uri')
 let uriObj = mongodbUri.parse(uri)
 
