@@ -1354,6 +1354,15 @@ await conn.createIndex({
 
 ## Find amount of indexes on collection
 ```javascript
+# Method #1
+let currentIndexes = []
+
+ conn.listIndexes().forEach(index => {
+    currentIndexes.push(index)
+})
+
+
+# Method #2 - Maybe throw a error when collection does not exist
 await conn.indexes()
 ```
 
