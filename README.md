@@ -71,7 +71,12 @@ sudo dpkg --remove mongodb-compass
 
 
 
+<br><br><br><br>
 
+## Search Document with _id
+```javascript
+{"_id":ObjectId("60ec3b94dc86a75a5450e508")}
+```
 
 
 
