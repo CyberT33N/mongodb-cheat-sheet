@@ -9790,6 +9790,35 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 <br><br>
 
+#### Get values from different documents
+```
+db.getCollection('cs.EntityLookups').aggregate([
+  { $match: { "entityRef" : "customer.kundeKlickKategorien"}},
+  {
+        $group: {
+            _id: null,
+            text: { $push: "$name" }
+        }
+    },
+    {
+        $project: {
+            text: {
+                $reduce: {
+                    input: "$text",
+                    initialValue: "",
+                    in: {
+                        $cond: [ { "$eq": [ "$$value", "" ] }, "$$this", { $concat: [ "$$value", ",", "$$this" ] } ]
+                    }
+                }
+            }
+        }
+    }
+])
+```
+
+
+<br><br>
+
 #### choose all documents
 - We can use **'_id': null** or **'_id': ''**
 ```javascript
