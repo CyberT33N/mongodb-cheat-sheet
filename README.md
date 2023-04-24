@@ -11109,6 +11109,43 @@ const r = await collection.aggregate(pipeline).toArray({});
 
 
 
+<br><br>
+
+____________________________________________________
+____________________________________________________
+
+<br><br>
+
+# Replica Set
+
+
+## Find out which POD is primary
+- You can open shell on your POD and then enter mongo or mongosh. If it is primary then it will be something like this rs0:PRIMAR if not then rs0:SECONDARY
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
