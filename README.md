@@ -1485,7 +1485,7 @@ const indexDetails = await collection.indexes()
 <br><br>
 <br><br>
 
-### Example script checking and creating indices each new deploy
+### Example script checking and creating indices each new deploy - multi tenant with common db
 ```javascript
 // If you add multiple properties to a collection make sure that options.name is unique
 const projectIndices = {
