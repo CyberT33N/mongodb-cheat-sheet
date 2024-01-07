@@ -1327,6 +1327,40 @@ for (const db of dbs) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 ____________________________________________________
@@ -1336,14 +1370,325 @@ ____________________________________________________
 
 # index
 
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+## dropIndex()
+```
+await db.collection(collectionName).dropIndex(indexName)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+## indexExists()
+- Check if index exists
+```
+const indexExists = await collection.indexExists(indexName)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+## indexes()
+- Get details about indices on your collection
+- **will throw an error if the collection does not exist**
+```
+const indexDetails = await collection.indexes()
+```
+  - Example success response:
+   ```
+   [
+       {
+           v: 2,
+           key: {
+               _id: 1,
+           },
+           name: "_id_",
+       },
+       {
+           v: 2,
+           key: {
+               name: 1,
+           },
+           name: "U_name",
+           unique: true,
+       }
+   ]
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 
 ## createIndex()
+- https://www.mongodb.com/docs/manual/reference/method/db.collection.createIndex/#mongodb-method-db.collection.createIndex
+  
+- Will create an empty collection with the related index if the collection does not exists
+
+- The index name must be unique or your get following error:
+  ```
+  MongoServerError: An existing index has the same name as the requested index. When index names are not specified, they are auto generated and can cause conflicts. Please refer to our documentation. Requested index: { v: 2, unique: true, key: { description: 1 }, name: "U_name" }, existing index: { v: 2, unique: true, key: { name: 1 }, name: "U_name" }
+  ```
+  - This also means that you can not update an existing Index with the same index name!
+  - This also means that You can not change the the index options on property with existing index when you define a new index name
+
+- You can add new indices to a collection but you must use a new index name
+
+<br><br>
+<br><br>
+
+### Example script checking and creating indices each new deploy
+```javascript
+// If you add multiple properties to a collection make sure that options.name is unique
+const projectIndices = {
+    'Apple': {
+        name: {
+            index: { name: 1 },
+            options: { unique: true, name: 'U_name' }
+        }
+    }
+}
+
+// If you add multiple properties to a collection make sure that options.name is unique
+const commonAndProjectIndices = {
+    'Banana': {
+        name: {
+            index: { name: 1 },
+            options: { unique: true, name: 'U_name' }
+        }
+    },
+    'Fish': {
+        externalId_entityRef: {
+            index: { externalId: 1, entityRef: 1 },
+            options: { unique: true, name: 'CK_externalId_entityRef' }
+        }
+    }
+}
+
+/**
+ * Check if the given index already exists on the given collection connection.
+ * 
+ * --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  
+ * 
+ * Example structure for given index:
+ * 
+ * {
+ *     index: { type: 1, name: 1 },
+ *     options: { unique: true, name: 'U_typeAndName' }
+ * }
+ * 
+ * 
+ *  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  
+ * 
+ * .indexes() will throw an error if the collection does not exist, e.g.:
+ *   - 'ns does not exist: dbCommon.Fish'
+ *
+ * .indexes() example success response: 
+ *   [
+ *       {
+ *           v: 2,
+ *           key: {
+ *               _id: 1,
+ *           },
+ *           name: "_id_",
+ *       },
+ *       {
+ *           v: 2,
+ *           key: {
+ *               name: 1,
+ *           },
+ *           name: "U_name",
+ *           unique: true,
+ *       }
+ *   ]
+ *   
+ * 
+ * @param {Object} collection - MongoDB collection connection
+ * @param {Object} indexToCheck - Index details from this file
+ * @returns 
+ */
+const _checkIfIndexDuplicated = async (collection, indexToCheck) => {
+    const indexDetails = await collection.indexes()
+
+    // Iterate through every key of the index object
+    for (const [propName, value] of Object.entries(indexToCheck.index)) {
+        const { options } = indexToCheck
+        // The index name is set under options.name
+        const indexName = options.name
+
+        // Iterate through all existing indices from given collection connection
+        const isDuplicateIndex = indexDetails.some(index => {
+            // collection.indexes() will always only provide 1x key name under index.key
+            const existingPropName = Object.keys(index.key)[0]
+
+            // The index on _id will be set for default and can be ignored
+            if (existingPropName !== '_id') {
+                // Get the existing index key value from given collection connection
+                const existingValue = index.key[existingPropName]
+                // Get the existing index name from given collection connection
+                const existingIndexName = index.name
+
+                // ============ COMPARE ============
+                // index.key.probName === indexToCheck.index.probName
+                const isPropNameSame = existingPropName === propName
+                // index.key['probName'] === indexToCheck.index['probName']
+                const isIndexValueSame = existingValue === value
+                // index.name === indexToCheck.options.name
+                const isIndexNameSame = existingIndexName === indexName
+            
+                // Compare everything from indexToCheck.options with index object
+                const areOptionsSame = Object.keys(options)
+                    .every(key => index[key] === options[key])
+            
+                // If everything is equal then we return true
+                return isPropNameSame && areOptionsSame && isIndexValueSame && isIndexNameSame
+            }    
+        })
+
+        if (isDuplicateIndex) {
+            return isDuplicateIndex
+        }
+    }
+}
+
+/**
+ * @param {Object} db - MongoDB db connection
+ * @param {String} collectionName - MongoDB collection name
+ * @param {Object} index - index key and value for createIndex()
+ * @param {Object} options - index options for createIndex()
+ */
+const _createIndex = async (db, collectionName, index, options) => {
+    const { databaseName } = db
+    const collection = db.collection(collectionName)
+
+    const collections = await db.listCollections().toArray()
+    const collectionExists = collections.some(collection => collection.name === collectionName)
+
+    if (collectionExists) {
+        // Compare given index with existing index from given collection
+        if (await _checkIfIndexDuplicated(collection, { index, options })) {
+            console.log(`
+            The index you want to create does already exists.. We will skip the creation:
+            - Database Name: ${databaseName}
+            - Collection: ${collectionName}
+            - Given index: ${JSON.stringify(index)}
+            - Given index options: ${JSON.stringify(options)}
+            `)
+
+            return
+        } 
+
+        const indexName = options.name
+        const indexExists = await collection.indexExists(indexName)
+
+        if (indexExists) {
+            console.log(`
+            The index you want to create does exists with the same name but context is different.. We will drop now the old index:
+            - Database Name: ${databaseName}
+            - Collection: ${collectionName}
+            - Given index: ${JSON.stringify(index)}
+            - Given index options: ${JSON.stringify(options)}
+            `)
+
+            await db.collection(collectionName).dropIndex(indexName)
+        }
+    }
+
+    await collection.createIndex(index, options)
+    console.log(`
+    Successfully created index! Details:
+    - Database Name: ${databaseName}
+    - Collection: ${collectionName}
+    - Created index: ${JSON.stringify(index)}
+    - With options: ${JSON.stringify(options)}
+    `)
+}
+
+/**
+ * Automatically create indices with hardcoded informations from this file
+ * @param {Object} db - MongoDB db connection
+ * @param {String} dbName - MongoDB db name
+ */
+const createIndices = async (db, dbName) => {
+    let indicesAll
+
+    // We have indices which only exists in common db and we have aswell indices which exists in project and common db
+    if (dbName === 'dbCommon') {
+        indicesAll = commonAndProjectIndices
+    } else {
+        indicesAll = { ...commonAndProjectIndices, ...projectIndices }
+    }
+    
+    for (const [collectionName, indices] of Object.entries(indicesAll)) {
+        for (const [property, definition] of Object.entries(indices)) {
+            const { index, options } = definition
+            await _createIndex(db, collectionName, index, options)
+        }
+    }
+}
+
+module.exports = createIndices
+```
+
+
+
+
+
+
+
 
 <br><br>
 
 #### Create $text index on collection
-- Notice that once you create a index you can not declare another one after. So If you want to define multiple text queries do this below
+- Notice that once you create an index you can not declare another one after. So If you want to define multiple text queries do this below
 ```javascript
 await conn.createIndex({
   "title": "text",
@@ -1359,16 +1704,16 @@ await conn.createIndex({
 
 ## Find amount of indexes on collection
 ```javascript
-# Method #1
+# Method #1 - Maybe throw a error when collection does not exist
+await conn.indexes()
+
+
+# Method #2
 let currentIndexes = []
 
  conn.listIndexes().forEach(index => {
     currentIndexes.push(index)
 })
-
-
-# Method #2 - Maybe throw a error when collection does not exist
-await conn.indexes()
 ```
 
 <br><br>
@@ -1389,6 +1734,28 @@ db.getCollectionNames().forEach(function(collection) {
     printjson(indexes);
 });
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
