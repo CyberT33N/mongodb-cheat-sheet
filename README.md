@@ -1482,6 +1482,11 @@ const indexDetails = await collection.indexes()
 
 - You can add new indices to a collection but you must use a new index name
 
+- The index creation will fail if there already exists documents which violates the unique index or other index options. E.g. error:
+```
+MongoServerError: Index build failed: c6a43363-18fc-4f71-9312-7497023118b8: Collection commonDB.Fish ( 0494306a-fa76-452a-9701-acf3c033ed08 ) :: caused by :: E11000 duplicate key error collection: commonDB.Fish index: U_name dup key: { name: "Testmailing" }
+```
+
 <br><br>
 <br><br>
 
