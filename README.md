@@ -555,6 +555,90 @@ ____________________________________________________
 # CLI (https://docs.mongodb.com/manual/mongo/)
 
 
+<br><br>
+
+## Custom Scrips
+
+<br><br>
+ 
+### Clone db
+- This script will drop the source db, dumb the target db and then import the dumb under the db name of the dopped source db
+```shell
+#!/bin/bash
+
+# Usage:
+# bash '/home/dennis/Projects/db tools/clone_db_minikube.sh' sourceDBToDrop destinationDbToClone
+
+cd "$(dirname "$0")"; printf "\nCurrent working directory:"; pwd
+
+MONGODB_ADDRESS="mongodb://root:xxxxxxxxxxxxxxxxxxxx@127.0.0.1:37227"
+MONGO_QUERY_PARAMS="replicaSet=rs0&authSource=admin&readPreference=primary&directConnection=true"
+CONTEXT="minikube"
+NAMESPACE="test"
+
+# Check if both parameters are provided
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <source_database> <destination_database>"
+    exit 1
+fi
+
+mongo_port_forward_up() {
+    # mongo_port_forward_down
+    
+    kubectl config use-context $CONTEXT && ~/Projects/gitlab/port-forwards.sh $NAMESPACE > /dev/null & echo 'Waiting 5 seconds...' && sleep 5
+}
+
+mongo_port_forward_down() {
+    kill -9 $(lsof -t -i:37017)
+}
+
+# Assign parameters to variables
+SOURCE_DB="$1"
+DESTINATION_DB="$2"
+
+mongo_port_forward_up
+
+echo "We use context ${CONTEXT}"
+echo "We use namespace ${NAMESPACE}"
+echo "We use source db ${SOURCE_DB}"
+echo "We use destination db ${DESTINATION_DB}"
+
+# Dump the source database
+echo "Starting dumb source database ${SOURCE_DB} for minikube:"
+echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+DUMP_DIR="./dump-$(date +%s)-minikube-$SOURCE_DB"
+mongodump --uri="$MONGODB_ADDRESS/$SOURCE_DB?$MONGO_QUERY_PARAMS" --out="${DUMP_DIR}"
+echo "Created backup at ${DUMP_DIR}"
+
+# Dump the destination database
+echo "Starting dumping destination source database ${DESTINATION_DB} for minikube:"
+echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+DUMP_DIR="./dump-$(date +%s)-minikube-$DESTINATION_DB"
+mongodump --uri="$MONGODB_ADDRESS/$DESTINATION_DB?$MONGO_QUERY_PARAMS" --out="${DUMP_DIR}"
+echo "Created backup at ${DUMP_DIR}"
+
+# Drop the source database
+echo "Starting dropping source database ${SOURCE_DB} for minikube:"
+echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+mongosh "$MONGODB_ADDRESS/$SOURCE_DB?$MONGO_QUERY_PARAMS" --eval "db.dropDatabase()"
+
+# Import the dump into the destination database with the name of the source database
+# https://www.mongodb.com/docs/database-tools/mongorestore/
+RESTORE_DIR="${DUMP_DIR}/${DESTINATION_DB}"
+echo "Starting importing database from dir: ${RESTORE_DIR} for source db $SOURCE_DB for minikube:"
+echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+
+mongorestore --uri="$MONGODB_ADDRESS/$SOURCE_DB?$MONGO_QUERY_PARAMS" $RESTORE_DIR
+echo "Database migration complete."
+```
+
+
+
+
+
+
+
+
 
 <br><br>
 
