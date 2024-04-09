@@ -554,6 +554,35 @@ ____________________________________________________
 
 # CLI (https://docs.mongodb.com/manual/mongo/)
 
+<br><br>
+
+ ## connect to external mongodb by using uri
+ ```bash
+ mongo $uri $command
+ ```
+
+<br><br>
+
+## execute multiple mongo shell commands from bash
+- You can put your mongo shell commands inside of .js file and then use it with mongo shell
+```js
+use databasename
+db.collectionname.remove({})
+exit
+```
+```bash
+sudo docker exec -it mongomain bash -c "mongosh < mongo.js"
+```
+
+
+
+
+
+
+
+
+
+
 
 <br><br>
 
@@ -633,6 +662,90 @@ echo "Database migration complete."
 ```
 
 
+<br><br>
+<br><br>
+
+## Import Dump
+```shell
+#!/bin/bash
+
+# Set the MongoDB connection string
+MONGODB_ADDRESS="mongodb://root:xxxxxxxxxx@127.0.0.1:37327/anyDB?replicaSet=rs0&authSource=admin&readPreference=primary&directConnection=true"
+
+# Set the directory where the dump is located
+DUMP_DIR="./dump"
+
+# Function to start port-forwarding to MongoDB
+mongo_port_forward_up() {
+    local context=$1
+    local namespace=$2
+    kubectl config use-context $context && ~/Projects/gitlab//port-forwards.sh $namespace & echo 'Waiting 5 seconds...' && sleep 5
+}
+
+# Function to stop port-forwarding to MongoDB
+mongo_port_forward_down() {
+    kill -9 $(lsof -t -i:37327)
+}
+
+# Function to import the dump
+import_mongodb_dump() {
+    echo "Starting port-forward for minikube in namespace test:"
+    echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+    mongo_port_forward_up minikube test
+
+    echo "Importing MongoDB dump from ${DUMP_DIR}:"
+    echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+    # Iterate over all subdirectories in the dump directory
+    for databaseDir in "$DUMP_DIR"/*/; do
+        databaseName=$(basename "$databaseDir")
+        echo "databaseName: $databaseName"
+        
+        # Skip the admin and config collections
+        if [ "$databaseName" == "admin" ] || [ "$databaseName" == "config" ] || [ "$databaseName" == "local" ]; then
+            continue
+        fi
+        
+        # Iterate over all subdirectories in the database directory
+        for collectionDir in "$databaseDir"*; do
+            echo "collectionDir: $collectionDir"
+            collectionName=$(basename "$collectionDir")
+            echo "collectionName: $collectionName"
+
+            # Import the dump for the current database and collection
+            echo "Importing MongoDB dump for database '${databaseName}' and collection '${collectionName}':"
+            
+            mongorestore --drop --uri="mongodb://root:xxxxxxxxxxxxxx@127.0.0.1:37327/${databaseName}?replicaSet=rs0&authSource=admin&readPreference=primary&directConnection=true" --db=${databaseName} "$collectionDir"
+        done
+    done
+
+    echo "Killing port-forward for minikube:"
+    echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+    mongo_port_forward_down
+
+    echo "Imported MongoDB dump successfully."
+}
+
+# Call the function to import the dump
+import_mongodb_dump
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -641,8 +754,14 @@ echo "Database migration complete."
 
 
 <br><br>
+<br><br>
+<br><br>
+<br><br>
 
 ## mongorestore
+```
+mongorestore --drop --uri="mongodb://root:xxxxxxxxx@127.0.0.1:37327/${databaseName}?replicaSet=rs0&authSource=admin&readPreference=primary&directConnection=true" --db=${databaseName} "$collectionDir"
+```
 
 <br><br>
  
@@ -650,7 +769,6 @@ echo "Database migration complete."
  - --drop flag will delete existing databases
  ```bash
    sudo docker run -ti --net=host -v /tmp/mongo_backup:/mongo_backup mongo:4.2.3 bash -c "mongorestore --drop --uri=${MONGODB_ADDRESS} --db=${destinationProject} /mongo_backup/${SOURCE_PROJECT}"
-
  ```
 
 
@@ -661,28 +779,27 @@ echo "Database migration complete."
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
- 
- ## connect to external mongodb by using uri
- ```bash
- mongo $uri $command
- ```
-
-<br><br>
-
-## execute multiple mongo shell commands from bash
-- You can put your mongo shell commands inside of .js file and then use it with mongo shell
-```js
-use databasename
-db.collectionname.remove({})
-exit
-```
-```bash
-sudo docker exec -it mongomain bash -c "mongosh < mongo.js"
-```
-
-
-
 <br><br>
 
 
