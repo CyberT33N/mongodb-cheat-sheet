@@ -698,40 +698,78 @@ export MONGODB_ADDRESS
  
 ### Delete all dbs but not admin & config
 ```shell
-# ==== 3. DELETE all dbs again ====
-if [[ "$target_context" == "minikube" ]]; then
-    echo -e "\n[DELETE ALL DBS] - We clear all dbs now for context: $target_context" ☠️
-    read -p "Press Enter to continue..."
+#!/bin/bash
+cd "$(dirname "$0")"; printf "\nCurrent working directory:"; pwd
 
-    kubectl config use-context $target_context
+# ==== MINIKUBE - TEST ====
+# bash _deleteAllDbs.sh --target-context=minikube --target-namespace=test
 
-    HOST="localhost"
-    PORT="37327"
-    USERNAME="root"
-    PASSWORD="$(kubectl get secret -n "${target_namespace}" mongodb-data -o jsonpath='{ .data.mongodb-root-password }' | base64 -d)"
 
-    # MongoDB Befehl zum Löschen aller Datenbanken, außer denen auf der Blacklist
-    DELETE_COMMAND="db.adminCommand({dropAllUsersFromDatabase: 1}); db.dropDatabase()"
+source _port_forward.sh
 
-    # MongoDB Befehl zum Löschen einer einzelnen Datenbank
-    DELETE_DB_COMMAND="db.dropDatabase()"
+# Parse arguments
+for ARGUMENT in "$@"; do
+   KEY=$(echo $ARGUMENT | cut -f1 -d= | sed -e 's/--*//' -e 's/-/_/g')
+   VALUE=$(echo $ARGUMENT | cut -f2- -d=)
+   export "$KEY"="$VALUE"
+done
 
-    # Verbindung zur MongoDB herstellen und Befehl ausführen
-    mongo_command="mongosh"
-    if [ -n "$USERNAME" ] && [ -n "$PASSWORD" ]; then
-        mongo_command="$mongo_command -u $USERNAME -p $PASSWORD --authenticationDatabase admin"
-    fi
-    mongo_command="$mongo_command --host $HOST --port $PORT --eval"
-
-    # Alle Datenbanken löschen, außer die auf der Blacklist
-    echo "Lösche alle MongoDB Datenbanken außer denen auf der Blacklist..."
-    for db in $($mongo_command "db.getMongo().getDBs().databases.forEach(function(db) { if (!['config', 'admin', 'local'].includes(db.name)) { print(db.name); }})"); do
-        echo "Lösche Datenbank: $db"
-        $mongo_command "$DELETE_DB_COMMAND" --eval "use $db"
-    done
-    
-    echo "Alle MongoDB Datenbanken, außer denen auf der Blacklist, wurden gelöscht."
+if [[ "$target_context" == *\/* ]]; then
+    echo "No context found. Please provide a valid context"
+    exit 1
 fi
+
+if [[ "$target_namespace" == *\/* ]]; then
+    echo "No namespace found. Please provide a valid namespace"
+    exit 1
+fi
+
+target_port=${target_port:-"37327"}
+if [[ "$target_port" == *\/* ]]; then
+    echo "No port found. Please provide a valid port"
+    exit 1
+fi
+
+echo -e "\n[DELETE ALL DBS] - We clear all dbs now for context: $target_context" ☠️
+read -p "Press Enter to continue..."
+
+kubectl config use-context $target_context
+
+# ==== START PORT FORWARD ====
+echo -e "\n[_deleteAllDbs.sh] - Starting port-forward for $target_context:" 🚀
+read -p "Press Enter to continue..."
+mongo_port_forward_up $target_context $target_namespace $target_port
+
+HOST="localhost"
+PORT=$target_port
+USERNAME="root"
+PASSWORD="$(kubectl get secret -n "${target_namespace}" mongodb-data -o jsonpath='{ .data.mongodb-root-password }' | base64 -d)"
+
+# MongoDB Befehl zum Löschen einer einzelnen Datenbank
+DELETE_DB_COMMAND="db.dropDatabase()"
+
+# Verbindung zur MongoDB herstellen und Befehl ausführen
+mongo_command="mongosh"
+
+if [ -n "$USERNAME" ] && [ -n "$PASSWORD" ]; then
+     mongo_command="$mongo_command -u $USERNAME -p $PASSWORD --authenticationDatabase admin"
+fi
+mongo_command="$mongo_command --host $HOST --port $PORT --eval"
+
+# Alle Datenbanken löschen, außer die auf der Blacklist
+echo "Lösche alle MongoDB Datenbanken außer denen auf der Blacklist..."
+for db in $($mongo_command "db.getMongo().getDBs().databases.forEach(function(db) { if (!['config', 'admin', 'local'].includes(db.name)) { print(db.name); }})"); do
+     echo "Lösche Datenbank: $db"
+     # $mongo_command "$DELETE_DB_COMMAND" --eval "use $db"
+     $mongo_command --eval "use $db" --eval  "db.dropDatabase()"
+done
+
+echo "Alle MongoDB Datenbanken, außer denen auf der Blacklist, wurden gelöscht."
+
+# ==== KILL PORT FORWARD ====
+echo -e "\n[restore_dump.sh] - Killing port-forward for $target_context:" ☠️
+read -p "Press Enter to continue..."
+mongo_port_forward_down $target_port
 ```
 
 
