@@ -1256,7 +1256,12 @@ use test-database            -> to select the database
 db.collectionname.remove({})      -> to select the collection and deletes all the data.
 ```
 
+<br><br>
 
+## drop database
+```bash
+mongosh --eval "use <dbname>" --eval  "db.dropDatabase()"
+```
 
 
 
