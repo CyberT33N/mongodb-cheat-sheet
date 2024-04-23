@@ -586,7 +586,158 @@ sudo docker exec -it mongomain bash -c "mongosh < mongo.js"
 
 <br><br>
 
-## Custom Scrips
+## Custom Scripzs
+
+
+
+<br><br>
+ 
+### Create Dump
+```shell
+#!/bin/bash
+cd "$(dirname "$0")"; printf "\nCurrent working directory:"; pwd
+echo "=========================================================="
+echo "=========================================================="
+
+# Usage examples
+
+# ==== MINIKUBE - TEST ====
+# bash create_dump.sh --source-context=minikube --source-namespace=test
+
+source _port_forward.sh
+
+# Parse arguments
+for ARGUMENT in "$@"; do
+   KEY=$(echo $ARGUMENT | cut -f1 -d= | sed -e 's/--*//' -e 's/-/_/g')
+   VALUE=$(echo $ARGUMENT | cut -f2- -d=)
+   export "$KEY"="$VALUE"
+done
+
+if [[ "$source_context" == *\/* ]]; then
+    echo "No context found. Please provide a valid context"
+    exit 1
+fi
+
+if [[ "$source_namespace" == *\/* ]]; then
+    echo "No namespace found. Please provide a valid namespace"
+    exit 1
+fi
+
+source_port=${source_port:-"37327"}
+if [[ "$source_port" == *\/* ]]; then
+    echo "No port found. Please provide a valid port"
+    exit 1
+fi
+
+# ==== ENVIRONMENT ====
+echo -e "\nSetting up environment for $source_context.. Change context to $source_context.."
+kubectl config use-context $source_context
+
+# Create mongodb address
+source _create_mongodb_address_source.sh
+
+DUMP_DIR="./tmp/dump-$(date +%s)-$source_context"
+echo -e "\n[create_dump.sh] - Created DUMP_DIR Path: $DUMP_DIR"
+
+if [[ "$source_context" != "anyExample" ]]; then
+     echo -e "\nTurn down VPN for faster speed while dumping:"
+     nmcli con down "$(nmcli con | grep "OpenVPN-latest" | tr -s ' ' | cut -d' ' -f2)"
+fi
+
+# ==== START PORT FORWARD ====
+echo -e "\n[create_dump.sh] - Starting port-forward for $source_context:" 🚀
+read -p "Press Enter to continue..."
+mongo_port_forward_down $source_port
+mongo_port_forward_up $source_context $source_namespace $source_port
+
+# ==== DUMPING ====
+echo -e "\n[create_dump.sh] - Dumping all dbs from $source_context:" 💾
+read -p "Press Enter to continue..."
+mongodump --uri="$MONGODB_ADDRESS" --out="${DUMP_DIR}"
+
+# ==== KILL PORT FORWARD ====
+echo -e "\n[create_dump.sh] - Killing port-forward for $source_context:" ☠️
+read -p "Press Enter to continue..."
+mongo_port_forward_down $source_port
+
+# Turn on VPN
+if [[ "$source_context" != "test" ]]; then
+    echo -e "\n[create_dump.sh] - Turn on VPN"
+    nmcli con up "$(nmcli con | grep "OpenVPN-latest" | tr -s ' ' | cut -d' ' -f2)"
+fi
+
+echo -e "\n[create_dump.sh] - Created backup at ${DUMP_DIR}" 🎉
+export DUMP_DIR
+```
+
+<br><br>
+ 
+### Create Mongodb Adress
+```shell
+#!/bin/bash
+cd "$(dirname "$0")"; printf "\nCurrent working directory:"; pwd
+
+echo -e "\nCreate source MongoDB Adress for namespace $source_namespace" 🚀
+
+if [[ "$source_context" == "aic-idefix" ]]; then
+    echo -e "\n[create_dump.sh] - Turn on VPN"
+    nmcli con up "$(nmcli con | grep "OpenVPN-latest" | tr -s ' ' | cut -d' ' -f2)"
+fi
+
+MONGODB_USERNAME="root"
+MONGODB_PASSWORD="$(kubectl get secret -n "${source_namespace}" mongodb-data -o jsonpath='{ .data.mongodb-root-password }' | base64 -d)"
+MONGODB_ADDRESS="mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@localhost:${source_port}/?replicaSet=rs0&authSource=admin&readPreference=primary&directConnection=true"
+
+export MONGODB_ADDRESS
+```
+
+
+
+
+<br><br>
+ 
+### Delete all dbs but not admin & config
+```shell
+# ==== 3. DELETE all dbs again ====
+if [[ "$target_context" == "minikube" ]]; then
+    echo -e "\n[DELETE ALL DBS] - We clear all dbs now for context: $target_context" ☠️
+    read -p "Press Enter to continue..."
+
+    kubectl config use-context $target_context
+
+    HOST="localhost"
+    PORT="37327"
+    USERNAME="root"
+    PASSWORD="$(kubectl get secret -n "${target_namespace}" mongodb-data -o jsonpath='{ .data.mongodb-root-password }' | base64 -d)"
+
+    # MongoDB Befehl zum Löschen aller Datenbanken, außer denen auf der Blacklist
+    DELETE_COMMAND="db.adminCommand({dropAllUsersFromDatabase: 1}); db.dropDatabase()"
+
+    # MongoDB Befehl zum Löschen einer einzelnen Datenbank
+    DELETE_DB_COMMAND="db.dropDatabase()"
+
+    # Verbindung zur MongoDB herstellen und Befehl ausführen
+    mongo_command="mongosh"
+    if [ -n "$USERNAME" ] && [ -n "$PASSWORD" ]; then
+        mongo_command="$mongo_command -u $USERNAME -p $PASSWORD --authenticationDatabase admin"
+    fi
+    mongo_command="$mongo_command --host $HOST --port $PORT --eval"
+
+    # Alle Datenbanken löschen, außer die auf der Blacklist
+    echo "Lösche alle MongoDB Datenbanken außer denen auf der Blacklist..."
+    for db in $($mongo_command "db.getMongo().getDBs().databases.forEach(function(db) { if (!['config', 'admin', 'local'].includes(db.name)) { print(db.name); }})"); do
+        echo "Lösche Datenbank: $db"
+        $mongo_command "$DELETE_DB_COMMAND" --eval "use $db"
+    done
+    
+    echo "Alle MongoDB Datenbanken, außer denen auf der Blacklist, wurden gelöscht."
+fi
+```
+
+
+
+
+
 
 <br><br>
  
@@ -662,10 +813,133 @@ echo "Database migration complete."
 ```
 
 
+
+
+
+
+
+
 <br><br>
 <br><br>
 
 ## Import Dump
+
+<br><br>
+
+### Variant #1 (recommended)
+```shell
+#!/bin/bash
+cd "$(dirname "$0")"; printf "\nCurrent working directory:"; pwd
+echo "=========================================================="
+echo "=========================================================="
+
+# Usage examples
+
+# ==== MINIKUBE - TEST ====
+# bash ~/Projects/gitlab/ais-ccm-nodejs/ais-ccm-repo/lib/migrations/helper-scripts/restore_dump.sh --target-context=minikube --target-namespace=test
+
+source _port_forward.sh
+
+# Parse arguments
+for ARGUMENT in "$@"; do
+   KEY=$(echo $ARGUMENT | cut -f1 -d= | sed -e 's/--*//' -e 's/-/_/g')
+   VALUE=$(echo $ARGUMENT | cut -f2- -d=)
+   export "$KEY"="$VALUE"
+done
+
+if [[ "$target_context" == *\/* ]]; then
+    echo "No context found. Please provide a valid context"
+    exit 1
+fi
+
+if [[ "$target_namespace" == *\/* ]]; then
+    echo "No namespace found. Please provide a valid namespace"
+    exit 1
+fi
+
+target_port=${target_port:-"37327"}
+if [[ "$target_port" == *\/* ]]; then
+    echo "No port found. Please provide a valid port"
+    exit 1
+fi
+
+# ==== ENVIRONMENT ====
+echo -e "\n[restore_dump.sh] - Setting up environment for $target_context.. Change context to $target_context.."
+kubectl config use-context $target_context
+
+# Create mongodb address
+source _create_mongodb_address_target.sh
+
+# Deactivate VPN
+if [[ "$target_context" != "aic-idefix" ]]; then
+     echo -e "\n[restore_dump.sh] - Turn down VPN for faster speed while dumping:"
+     nmcli con down "$(nmcli con | grep "OpenVPN-latest" | tr -s ' ' | cut -d' ' -f2)"
+fi
+
+# ==== START PORT FORWARD ====
+echo -e "\n[restore_dump.sh] - Starting port-forward for $target_context:" 🚀
+read -p "Press Enter to continue..."
+mongo_port_forward_up $target_context $target_namespace $target_port
+
+# ==== RESTORE ====
+echo -e "\n[restore_dump.sh] - RESTORE all dbs from context $target_context from path ${DUMP_DIR}:" 💾
+read -p "Press Enter to continue..."
+
+# Function to import the dump
+import_mongodb_dump() {
+    # Iterate over all subdirectories in the dump directory
+    for databaseDir in "$DUMP_DIR"/*/; do
+        databaseName=$(basename "$databaseDir")
+        echo "databaseName: $databaseName"
+        
+        # Skip the admin and config collections
+        # if [ "$databaseName" == "admin" ] || [ "$databaseName" == "config" ] || [ "$databaseName" == "local" ]; then
+        #     continue
+        # fi
+        
+        # Iterate over all subdirectories in the database directory
+        for collectionDir in "$databaseDir"; do
+            echo "collectionDir: $collectionDir"
+            collectionName=$(basename "$collectionDir")
+            echo "collectionName: $collectionName"
+
+            # Import the dump for the current database and collection
+            echo "Importing MongoDB dump for database '${databaseName}' and collection '${collectionName}':"
+            
+            # mongorestore --drop --uri="mongodb://root:jqiaC9P1SoRL8J1ZTUeZ@127.0.0.1:37327/${databaseName}?replicaSet=rs0&authSource=admin&readPreference=primary&directConnection=true" --db=${databaseName} "$collectionDir"
+
+            mongorestore --drop --uri="$MONGODB_ADDRESS" --db=${databaseName} "$collectionDir"
+        done
+    done
+
+    echo "Killing port-forward for minikube:"
+    echo "Press Enter to continue..." && read -n 1 -s -r -p ""
+    mongo_port_forward_down
+
+    echo "Imported MongoDB dump successfully."
+}
+
+# Call the function to import the dump
+import_mongodb_dump
+
+# ==== KILL PORT FORWARD ====
+echo -e "\n[restore_dump.sh] - Killing port-forward for $target_context:" ☠️
+read -p "Press Enter to continue..."
+mongo_port_forward_down $target_port
+
+# Turn on VPN
+if [[ "$target_context" != "aic-idefix" ]]; then
+    echo -e "\n[restore_dump.sh] - Turn on VPN"
+    nmcli con up "$(nmcli con | grep "OpenVPN-latest" | tr -s ' ' | cut -d' ' -f2)"
+fi
+
+echo "[restore_dump.sh] - Restored backup from ${DUMP_DIR} to contect ${target_context}" 🎉
+export DUMP_DIR
+```
+
+<br><br>
+
+### Variant #2
 ```shell
 #!/bin/bash
 
@@ -753,8 +1027,22 @@ import_mongodb_dump
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 <br><br>
+____________________________________________________
+____________________________________________________
 <br><br>
 <br><br>
 
