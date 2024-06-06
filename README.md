@@ -554,6 +554,15 @@ ____________________________________________________
 
 # CLI (https://docs.mongodb.com/manual/mongo/)
 
+
+<br><br>
+
+ ## create admin session
+ ```bash
+mongo -u root
+ ```
+
+
 <br><br>
 
  ## connect to external mongodb by using uri
