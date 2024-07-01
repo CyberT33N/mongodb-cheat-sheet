@@ -1094,9 +1094,22 @@ ____________________________________________________
 <br><br>
 
 ## mongorestore
+
+<br><br>
+
+### Restore full dump
+```
+mongorestore --host localhost --port 37317 --username root --password xxxxxxxxx --authenticationDatabase=admin --dir mongodump.mongodb-data.blue.20240630.223012.test --gzip
+```
+
+<br><br>
+
+### Restore specific database
 ```
 mongorestore --drop --uri="mongodb://root:xxxxxxxxx@127.0.0.1:37327/${databaseName}?replicaSet=rs0&authSource=admin&readPreference=primary&directConnection=true" --db=${databaseName} "$collectionDir"
 ```
+
+
 
 <br><br>
  
