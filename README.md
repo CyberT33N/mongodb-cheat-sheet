@@ -103,6 +103,30 @@ sudo dpkg --remove mongodb-compass
 
 
 
+<br><br>
+____________________________________________________
+____________________________________________________
+<br><br>
+
+
+
+
+# MongoDB Helm Chart
+- https://github.com/CyberT33N/helm-cheat-sheet/blob/main/README.md#mongodb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
