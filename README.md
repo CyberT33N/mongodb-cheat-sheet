@@ -51,6 +51,16 @@ ____________________________________________________
 sudo dpkg -i 'mongodb-compass_1.23.0_amd64.deb'
 ```
 
+- If you get error `libffmpeg.so: cannot open shared object file: No such file or directory` try to download the binaries
+  - https://github.com/mongodb-js/compass/releases/download/v1.43.4/mongodb-compass-1.43.4-linux-x64.tar.gz
+    - Then move it to your desired location `sudo cp -r '/home/userName/Downloads/tmp/MongoDB Compass-linux-x64' '/opt/MongoDB Compass-linux-x64' ` and execute it with the --no-sandbox flag `'/opt/MongoDB Compass-linux-x64/MongoDB Compass' --no-sandbox
+`. The problem is that mongodb-compass is build with electron which is using chromium inside which is using its own sandbox which is for whatever reason not working. I guess for a solid fix you would have to create correct permissions.
+
+
+
+
+
+
 
 <br><br>
 
