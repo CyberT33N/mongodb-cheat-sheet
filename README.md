@@ -629,10 +629,43 @@ sudo docker exec -it mongomain bash -c "mongosh < mongo.js"
 
 <br><br>
 
-## Custom Scripzs
+## Custom Scripts
+
+
+### Restore single collection
+- This will not drop the collection
+```shell
+S3_CONFIG=k8s_minio_local
+S3_BUCKET=test-mongodb-data-bck
+BACKUP_NAME=mongodump.mongodb-data.green.20240818.223006.test.tar.gz
+
+DB_NAME=test-10002
+COLLECTION=CollectionName
+
+# ---------------------------
+
+# Clear old state
+rm -rf /tmp/$BACKUP_NAME
+
+# ---------------------------
+
+# Do Port Forward in another shell window
+kubectl config use-context minikube && ~/Projects/gitlab/mongodb/port-forwards.sh test > /dev/null
+
+# ---------------------------
+
+mc cp $S3_CONFIG/$S3_BUCKET/mongodb-data/$BACKUP_NAME.tar.gz /tmp/archive.tar.gz
+
+tar -xzvf /tmp/archive.tar.gz
+
+mongorestore --host localhost --port 37327 --username root --password xxxxxxxxxxx --db=$DB_NAME --collection=$COLLECTION --authenticationDatabase=admin --dir /tmp/$BACKUP_NAME/$DB_NAME/$COLLECTION.bson.gz --gzip
+
+rm -rf /tmp/$BACKUP_NAME
+```
 
 
 
+<br><br>
 <br><br>
  
 ### Create Dump
